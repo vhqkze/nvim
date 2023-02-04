@@ -1,0 +1,15 @@
+{
+    "Lua.telemetry.enable": false,
+    "Lua.diagnostics.globals": ["vim", "hs"],
+    "imselect.defaultInput": "com.apple.keylayout.ABC",
+    "imselect.enableFloating": false,
+    "sql.formatOptions": {
+        "tabWidth": 4,
+        "keywordCase": "upper",
+        "multilineLists": "expressionWidth",
+        "expressionWidth": 100
+    },
+    "python.analysis.diagnosticMode": "workspace",
+    "python.venvPath": "venv",
+    "python.pythonPath": "venv/bin/python"
+}
