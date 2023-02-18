@@ -198,6 +198,14 @@ require("lazy").setup({
         end,
     },
     {
+        "sindrets/diffview.nvim",
+        dependencies = { "nvim-lua/plenary.nvim" },
+        event = "VeryLazy",
+        config = function()
+            require("plugins.diffview")
+        end,
+    },
+    {
         "rmagatti/auto-session",
         event = "VeryLazy",
         config = function()

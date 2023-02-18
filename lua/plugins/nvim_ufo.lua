@@ -8,6 +8,7 @@ vim.opt.fillchars:append({
     foldclose = "", -- codicon
     vert = "▕",
     horizup = "─",
+    diff = " ",
 })
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
