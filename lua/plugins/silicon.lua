@@ -3,7 +3,7 @@ silicon.setup({
     output = os.getenv("HOME") .. "/Pictures/Screenshots/SILICON_$year$month$date_$time.png",
     theme = "auto",
     debug = false,
-    font = "Sarasa Term SC; Symbols Nerd Font; Iosevka; codicon",
+    font = "Sarasa Term SC; Symbols Nerd Font; codicon; Iosevka",
     bgColor = "#ffffff00",
     windowControls = false,
     shadowColor = "#000000",

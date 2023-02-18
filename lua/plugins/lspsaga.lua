@@ -55,8 +55,8 @@ vim.keymap.set("n", "[e", "<cmd>Lspsaga diagnostic_jump_prev<cr>", { silent = tr
 vim.keymap.set("n", "]e", "<cmd>Lspsaga diagnostic_jump_next<cr>", { silent = true, desc = "Next disgnostic" })
 -- or jump to error
 vim.keymap.set("n", "[E", function()
-    require("lspsaga.diagnostic").goto_prev({ severity = vim.diagnostic.severity.ERROR })
+    require("lspsaga.diagnostic"):goto_prev({ severity = vim.diagnostic.severity.ERROR })
 end, { silent = true, desc = "Previous error" })
 vim.keymap.set("n", "]E", function()
-    require("lspsaga.diagnostic").goto_next({ severity = vim.diagnostic.severity.ERROR })
+    require("lspsaga.diagnostic"):goto_next({ severity = vim.diagnostic.severity.ERROR })
 end, { silent = true, desc = "Next error" })

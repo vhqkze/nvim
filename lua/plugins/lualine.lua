@@ -99,15 +99,27 @@ require("lualine").setup({
         lualine_x = {
             {
                 function()
-                    if vim.api.nvim_get_vvar("hlsearch") == 0 then
-                        return ""
-                    end
+                    local starts = vim.fn.line("v")
+                    local ends = vim.fn.line(".")
+                    local line_count = starts <= ends and ends - starts + 1 or starts - ends + 1
+                    local chars = vim.fn.wordcount().visual_chars
+                    return line_count .. " L, " .. chars .. " C selected"
+                end,
+                cond = function()
+                    return vim.fn.mode():find("[Vv]") ~= nil
+                end,
+            },
+            {
+                function()
                     local res = vim.fn.searchcount({ maxcount = 10000, timeout = 500 })
                     if res.total > 0 then
                         return string.format("[%s/%d] %s", res.current, res.total, vim.fn.getreg("/"))
                     else
                         return ""
                     end
+                end,
+                cond = function ()
+                    return vim.api.nvim_get_vvar("hlsearch") ~= 0
                 end,
             },
             {

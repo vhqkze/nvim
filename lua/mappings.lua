@@ -60,6 +60,11 @@ vim.keymap.set("t", "<c-j>", "<c-\\><c-n><c-w>j", default_opts)
 vim.keymap.set("t", "<c-k>", "<c-\\><c-n><c-w>k", default_opts)
 vim.keymap.set("t", "<c-l>", "<c-\\><c-n><c-w>l", default_opts)
 
+vim.keymap.set("s", "<backspace>", "b<backspace>", default_opts)
+vim.keymap.set("s", "<del>", "<c-o>c", default_opts)
+vim.keymap.set("s", "<right>", "<c-g>o<esc>a", default_opts)
+vim.keymap.set("s", "<left>", "<esc>i", default_opts)
+
 -- vim-easy-align
 vim.keymap.set({ "x", "n" }, "ga", "<Plug>(EasyAlign)", default_opts)
 
@@ -77,10 +82,11 @@ vim.keymap.set("n", "<leader>pr", "ggVGp<cmd>Format<cr><cmd>sleep 300m<cr>gg", {
 
 -- diagnostic
 vim.keymap.set("n", "<leader>dt", function()
-    vim.diagnostic.config({
-        virtual_text = not vim.diagnostic.config().virtual_text,
-        underline = not vim.diagnostic.config().underline,
-    })
+    if vim.diagnostic.is_disabled(0) then
+        vim.diagnostic.enable(0)
+    else
+        vim.diagnostic.disable(0)
+    end
 end, { silent = true, desc = "Toggle diagnostic" })
 
 vim.keymap.set({ "n" }, "<ScrollWheelUp>", "<c-y>", default_opts)

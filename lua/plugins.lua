@@ -144,6 +144,14 @@ require("lazy").setup({
         end,
     },
     {
+        "m-demare/hlargs.nvim",
+        dependencies = { "nvim-treesitter/nvim-treesitter" },
+        event = "VeryLazy",
+        config = function()
+            require("plugins.hlargs")
+        end,
+    },
+    {
         "p00f/nvim-ts-rainbow",
         event = "BufEnter",
         dependencies = { "nvim-treesitter/nvim-treesitter" },
@@ -317,6 +325,15 @@ require("lazy").setup({
     {
         "machakann/vim-sandwich",
         event = "VeryLazy",
+        dependencies = {
+            {
+                "nvim-lua/plenary.nvim",
+                -- This plugin is not a dependency, I just use it to configure sandwich.
+                config = function()
+                    vim.g.sandwich_no_default_key_mappings = 1
+                end,
+            },
+        },
         config = function()
             require("plugins.sandwich")
         end,
@@ -458,6 +475,7 @@ require("lazy").setup({
         cond = function()
             return vim.fn.has("mac") == 1
         end,
+        event = "VeryLazy",
         config = function()
             require("plugins.silicon")
         end,
@@ -476,11 +494,32 @@ require("lazy").setup({
         enabled = function()
             return vim.fn.has("mac") == 1
         end,
+        config = true,
     },
     {
         "vhqkze/stringman",
         dev = true,
-        event = "VimEnter",
+        event = "VeryLazy",
         config = true,
+    },
+    {
+        "ggandor/leap.nvim",
+        cond = true,
+        event = "VeryLazy",
+        config = function()
+            require("plugins.leap")
+        end,
+    },
+    {
+        "danymat/neogen",
+        dependencies = { "nvim-treesitter/nvim-treesitter" },
+        event = "VeryLazy",
+        config = function()
+            require("plugins.neogen")
+        end,
+    },
+    {
+        "Vimjas/vim-python-pep8-indent",
+        ft = { "python" },
     },
 }, lazy_config)

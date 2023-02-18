@@ -5,5 +5,5 @@ require("auto-session").setup({
     auto_save_enabled = true,
     auto_restore_enabled = false,
     auto_session_suppress_dirs = { "/", "~/", "~/Downloads/" },
-    pre_save_cmds = { "NvimTreeClose" },
+    pre_save_cmds = { "NvimTreeClose", "SymbolsOutlineClose" },
 })
