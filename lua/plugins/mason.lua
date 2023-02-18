@@ -9,7 +9,7 @@ require("mason").setup({
     },
 })
 
-local lsp = { "sumneko_lua", "html", "pylsp", "jsonls", "bashls", "vimls", "yamlls" }
+local lsp = { "lua_ls", "html", "pylsp", "jsonls", "bashls", "vimls", "yamlls" }
 if vim.fn.executable("go") == 1 then
     table.insert(lsp, "gopls") -- go lsp
 end
