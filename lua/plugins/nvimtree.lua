@@ -1,5 +1,8 @@
 require("nvim-tree").setup({
-    update_cwd = true,
+    view = {
+        width = 45,
+    },
+    sync_root_with_cwd = true,
     filters = {
         custom = {
             "\\.DS_Store",
@@ -8,6 +11,7 @@ require("nvim-tree").setup({
     },
     renderer = {
         icons = {
+            git_placement = "signcolumn",
             glyphs = {
                 default = "",
             },
@@ -16,6 +20,10 @@ require("nvim-tree").setup({
     actions = {
         open_file = {
             quit_on_open = true,
+        },
+        change_dir = {
+            enable = true,
+            global = true,
         },
     },
     update_focused_file = {

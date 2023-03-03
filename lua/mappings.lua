@@ -31,7 +31,7 @@ vim.keymap.set("x", ">", ">gv", default_opts)
 -- vim.keymap.set("n", "*", "*<c-o>", default_opts)
 
 -- paste over currently selected text without yanking it
-vim.keymap.set("x", "p", '"_dP', default_opts)
+vim.keymap.set("x", "p", '"0P', default_opts)
 
 -- cancel search highlighting with esc
 vim.keymap.set("n", "<ESC>", ":nohlsearch<Bar>:echo<cr>", default_opts)

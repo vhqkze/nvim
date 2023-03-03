@@ -26,6 +26,9 @@ local lazy_config = {
         notify = false, -- get a notification when new updates are found
         frequency = 3600, -- check for updates every hour
     },
+    diff = {
+        cmd = "diffview.nvim",
+    },
     ui = {
         border = "rounded",
     },
@@ -35,6 +38,13 @@ local lazy_config = {
     },
     install = {
         colorscheme = { "catppuccin-macchiato", "tokyodark", "onedark", "habamax" },
+    },
+    performance = {
+        rtp = {
+            disabled_plugins = {
+                "netrwPlugin",
+            },
+        },
     },
 }
 
@@ -78,7 +88,6 @@ require("lazy").setup({
             require("plugins.icons")
         end,
     },
-
     {
         "nvim-lualine/lualine.nvim",
         dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -90,7 +99,7 @@ require("lazy").setup({
     {
         "nvim-tree/nvim-tree.lua",
         dependencies = { "nvim-tree/nvim-web-devicons" },
-        event = "VimEnter",
+        event = "VeryLazy",
         config = function()
             require("plugins.nvimtree")
         end,
@@ -415,7 +424,7 @@ require("lazy").setup({
             "hrsh7th/cmp-cmdline",
             "dmitmel/cmp-cmdline-history",
         },
-        event = "BufEnter",
+        event = { "InsertEnter", "CmdlineEnter" },
         config = function()
             require("plugins.nvim_cmp")
         end,
@@ -444,7 +453,7 @@ require("lazy").setup({
     },
     {
         "folke/noice.nvim",
-        event = "VimEnter",
+        event = "CmdlineEnter",
         dependencies = {
             "MunifTanjim/nui.nvim",
             "rcarriga/nvim-notify",
@@ -458,7 +467,7 @@ require("lazy").setup({
         "nyngwang/murmur.lua",
         event = { "BufRead", "BufEnter" },
         config = function()
-            require("murmur").setup({})
+            require("plugins.murmur")
         end,
     },
     {
@@ -482,7 +491,7 @@ require("lazy").setup({
     },
     {
         "jcdickinson/codeium.nvim",
-        event = "VimEnter",
+        event = "InsertEnter",
         config = function()
             require("plugins.codeium")
         end,

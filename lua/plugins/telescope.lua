@@ -38,6 +38,13 @@ telescope.setup({
         colorscheme = {
             enable_preview = true,
         },
+        help_tags = {
+            mappings = {
+                i = {
+                    ["<cr>"] = require("telescope.actions").select_vertical,
+                },
+            },
+        },
     },
 })
 
