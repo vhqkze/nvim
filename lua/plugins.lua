@@ -107,7 +107,7 @@ require("lazy").setup({
     {
         "akinsho/bufferline.nvim",
         version = "v3.*",
-        event = "VimEnter",
+        event = "VeryLazy",
         dependencies = { "nvim-tree/nvim-web-devicons" },
         config = function()
             require("plugins.bufferline")
@@ -115,7 +115,7 @@ require("lazy").setup({
     },
     {
         "tiagovla/scope.nvim", -- make bufferline only show buffers of the current tab
-        event = "VimEnter",
+        event = "VeryLazy",
         dependencies = { "akinsho/bufferline.nvim" },
         config = true,
     },
@@ -141,7 +141,6 @@ require("lazy").setup({
     },
     {
         "nvim-treesitter/nvim-treesitter",
-        enabled = true,
         commit = "12e95e160d7d45b76a36bca6303dd8447ab77490",
         event = "VeryLazy",
         build = function()
@@ -162,12 +161,12 @@ require("lazy").setup({
     },
     {
         "p00f/nvim-ts-rainbow",
-        event = "BufEnter",
+        event = "VeryLazy",
         dependencies = { "nvim-treesitter/nvim-treesitter" },
     },
     {
         "lukas-reineke/indent-blankline.nvim",
-        event = { "BufRead", "BufEnter" },
+        event = "VeryLazy",
         config = function()
             require("plugins.intentline")
         end,
@@ -224,7 +223,7 @@ require("lazy").setup({
     },
     {
         "rmagatti/auto-session",
-        event = "VeryLazy",
+        event = "VimEnter", -- do not use VeryLazy, otherwise it will not work
         config = function()
             require("plugins.auto_session")
         end,
@@ -248,12 +247,11 @@ require("lazy").setup({
     },
     {
         "Pocco81/auto-save.nvim",
-        event = { "InsertEnter", "BufEnter" },
+        event = { "InsertEnter", "TextChanged" },
         config = function()
             require("plugins.autosave")
         end,
     },
-
     {
         "mbbill/undotree",
         event = "BufRead",
@@ -308,7 +306,6 @@ require("lazy").setup({
     },
     {
         "kevinhwang91/nvim-ufo",
-        enabled = true,
         dependencies = { "kevinhwang91/promise-async" },
         event = "VeryLazy",
         config = function()
@@ -317,7 +314,6 @@ require("lazy").setup({
     },
     {
         "anuvyklack/pretty-fold.nvim",
-        cond = true,
         event = "VeryLazy",
         config = function()
             require("plugins.pretty_fold")
@@ -465,7 +461,7 @@ require("lazy").setup({
     {
         -- highlight cursor word
         "nyngwang/murmur.lua",
-        event = { "BufRead", "BufEnter" },
+        event = "VeryLazy",
         config = function()
             require("plugins.murmur")
         end,
@@ -513,8 +509,7 @@ require("lazy").setup({
     },
     {
         "ggandor/leap.nvim",
-        cond = true,
-        event = "VeryLazy",
+        event = "VimEnter", -- do not use VeryLazy, otherwise it will not work
         config = function()
             require("plugins.leap")
         end,
