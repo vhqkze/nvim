@@ -52,7 +52,7 @@ local on_attach = function(client, bufnr)
     if client.name == "pylsp" then
         client.server_capabilities.documentSymbolProvider = false
     end
-    if client.name ~= "pylsp" then
+    if client.server_capabilities.documentSymbolProvider then
         navic.attach(client, bufnr)
     end
     -- Enable completion triggered by <c-x><c-o>

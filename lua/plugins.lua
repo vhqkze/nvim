@@ -400,6 +400,19 @@ require("lazy").setup({
             require("plugins.nvim_navic")
         end,
     },
+    {
+        "utilyre/barbecue.nvim",
+        name = "barbecue",
+        version = "*",
+        dependencies = {
+            "SmiteshP/nvim-navic",
+            "nvim-tree/nvim-web-devicons", -- optional dependency
+        },
+        event = "VeryLazy",
+        config = function()
+            require("plugins.barbecue")
+        end,
+    },
     -- completion
     {
         "L3MON4D3/LuaSnip",

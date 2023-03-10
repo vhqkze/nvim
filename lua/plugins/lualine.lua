@@ -40,16 +40,6 @@ local mode_map = {
     ["t"]      = "TERMINAL",
 }
 
-local navic = require("nvim-navic")
-local function table_contains(t, v)
-    for _, value in pairs(t) do
-        if value == v then
-            return true
-        end
-    end
-    return false
-end
-
 local function tab_or_spc()
     local sep = "Tab Size"
     if vim.bo.expandtab then
@@ -59,14 +49,13 @@ local function tab_or_spc()
 end
 require("lualine").setup({
     options = {
-        theme = vim.g.colors_name == "onedark" and "nord" or "auto",
+        theme = "auto",
         section_separators = { left = "", right = "" },
         component_separators = "",
         disabled_filetypes = {
-            statusline = { "NvimTree", "startify", "Outline", "undotree" },
-            winbar = { "NvimTree", "startify", "Outline", "undotree", "diff", "toggleterm", "qf", "noice" },
+            statusline = {},
+            winbar = {},
         },
-        disabled_buftypes = { "terminal" },
         globalstatus = true,
     },
     sections = {
@@ -118,7 +107,7 @@ require("lualine").setup({
                         return ""
                     end
                 end,
-                cond = function ()
+                cond = function()
                     return vim.api.nvim_get_vvar("hlsearch") ~= 0
                 end,
             },
@@ -139,7 +128,7 @@ require("lualine").setup({
             {
                 "fileformat",
                 symbols = {
-                    unix = " ", -- e712
+                    unix = "", -- e712
                     dos = "", -- e70f
                     mac = "", -- e711
                 },
@@ -158,49 +147,11 @@ require("lualine").setup({
         lualine_y = { { "progress" } },
         lualine_z = { { "location" } },
     },
-    winbar = {
-        lualine_a = { { "filename" } },
-        lualine_b = {
-            -- use navic
-            {
-                function()
-                    local location = navic.get_location()
-                    return location:gsub(" -->", "")
-                end,
-                cond = navic.is_available,
-            },
-        },
-        lualine_y = { "diagnostics" },
-        lualine_z = {
-            {
-                function()
-                    local diags = vim.diagnostic.get(0)
-                    if next(diags) ~= nil then
-                        return ""
-                    else
-                        return ""
-                    end
-                end,
-                on_click = function()
-                    vim.cmd("Lspsaga diagnostic_jump_prev")
-                end,
-            },
-            {
-                function()
-                    local diags = vim.diagnostic.get(0)
-                    if next(diags) ~= nil then
-                        return " "
-                    else
-                        return ""
-                    end
-                end,
-                on_click = function()
-                    vim.cmd("Lspsaga diagnostic_jump_next")
-                end,
-            },
-        },
-    },
-    inactive_winbar = {
-        lualine_c = { "filename" },
-    },
+    winbar = {},
+    inactive_winbar = {},
+})
+
+require("lualine").hide({
+    place = { "tabline", "winbar" },
+    unhide = false,
 })
