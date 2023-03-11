@@ -1,6 +1,7 @@
 local lspconfig = require("lspconfig")
 local mason_lspconfig = require("mason-lspconfig")
 local navic = require("nvim-navic")
+local util = require("util")
 
 ---See https://www.reddit.com/r/neovim/comments/108tjy0/comment/j42cod9/?utm_source=share&utm_medium=web2x&context=3
 local function filter(arr, func)
@@ -135,14 +136,56 @@ mason_lspconfig.setup_handlers({
 
 require("lspconfig.ui.windows").default_options.border = "rounded"
 
+local cursorline_background = util.get_hl("CursorLine", "background")
+
+local function add_cursorline_sign_bg(name)
+    local hl = util.get_hl(name)
+    if hl then
+        hl.background = cursorline_background
+    end
+    return hl
+end
+
 local signs = { Error = " ", Warn = " ", Info = " ", Hint = " " }
 for type, icon in pairs(signs) do
     local hl = "DiagnosticSign" .. type
-    vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+    local cursor_hl = "CursorLineSign" .. type
+    vim.api.nvim_set_hl(0, cursor_hl, add_cursorline_sign_bg(hl))
+    vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "", culhl = cursor_hl })
 end
 
 vim.diagnostic.config({
     virtual_text = {
         prefix = "",
     },
+    severity_sort = {
+        reverse = true,
+    },
+})
+
+vim.api.nvim_create_autocmd("DiagnosticChanged", {
+    callback = function(args)
+        local buf = args.buf
+        local diagnostics = args.data.diagnostics
+        local line_numbers = {}
+        for _, diagnostic in ipairs(diagnostics) do
+            if vim.tbl_contains(line_numbers, diagnostic.lnum + 1) then
+                local line_signs = vim.fn.sign_getplaced(buf, { group = "*", lnum = diagnostic.lnum + 1 })[1].signs
+                local max_severity = { priority = 999 }
+                for _, sign in pairs(line_signs) do
+                    if sign.name:find("Diagnostic") and sign.priority < max_severity.priority then
+                        max_severity = sign
+                    end
+                end
+                if max_severity.priority ~= 999 then
+                    for _, sign in pairs(line_signs) do
+                        if sign.name:find("Diagnostic") and sign.id ~= max_severity.id then
+                            vim.fn.sign_unplace(sign.group, { buffer = buf, id = sign.id })
+                        end
+                    end
+                end
+            end
+            table.insert(line_numbers, diagnostic.lnum + 1)
+        end
+    end,
 })

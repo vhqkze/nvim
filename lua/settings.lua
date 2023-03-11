@@ -21,7 +21,7 @@ vim.opt.smartcase = true -- 如果有一个大写字母，则切换到大小写�
 -- vim.opt.incsearch = true -- 逐步搜索模式，对当前键入的字符进行搜索而不必等待键入完成
 vim.opt.wrapscan = true -- 重新搜索，在搜索到文件头或尾时，返回继续搜索，默认开启
 -- vim.opt.backspace = "indent,eol,start" -- backspace works on every char in insert mode
-vim.opt.wrap = true
+vim.opt.wrap = false
 vim.opt.swapfile = false
 vim.opt.cmdheight = 0
 vim.opt.whichwrap:append("hl[]") -- 让h、l键在行首、行尾时可以进入上一行、下一行
@@ -42,6 +42,12 @@ vim.opt.showmode = false
 vim.opt.laststatus = 3
 
 vim.opt.termguicolors = true
+vim.opt.signcolumn = "auto:3"
+vim.opt.splitbelow = true
+vim.opt.splitright = true
+if vim.fn.has("nvim-0.9.0") == 1 then
+    vim.opt.splitkeep = "topline"
+end
 
 vim.filetype.add({
     extension = {
