@@ -163,13 +163,6 @@ cmp.setup({
         end, { "i", "s" }),
         ["<C-d>"] = cmp.mapping.scroll_docs(4),
         ["<C-u>"] = cmp.mapping.scroll_docs(-4),
-        ["<CR>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                cmp.confirm({ select = true })
-            else
-                fallback() -- If you use vim-endwise, this fallback will behave the same as vim-endwise.
-            end
-        end, { "i", "s" }),
         ["<Esc>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
                 cmp.abort()
@@ -203,6 +196,20 @@ cmp.setup.filetype({ "markdown" }, {
         { name = "buffer" },
     },
 })
+
+-- 不放在setup里面，否则偶尔启动后<cr>的映射会丢，执行 :verbose imap <cr> 会显示找不到映射
+vim.keymap.set("i", "<cr>", function()
+    if cmp.visible() then
+        cmp.confirm({ select = true })
+    else
+        local ok, npairs = pcall(require, "nvim-autopairs")
+        if ok then
+            vim.fn.feedkeys(npairs.autopairs_cr(), "n")
+        else
+            vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<cr>", true, true, true), "n")
+        end
+    end
+end, { silent = true })
 
 local cmdline_mapping = {
     ["<Up>"] = cmp.mapping(function(fallback)
