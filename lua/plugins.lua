@@ -160,7 +160,7 @@ require("lazy").setup({
         end,
     },
     {
-        "p00f/nvim-ts-rainbow",
+        "mrjones2014/nvim-ts-rainbow",
         event = "VeryLazy",
         dependencies = { "nvim-treesitter/nvim-treesitter" },
     },
@@ -168,7 +168,7 @@ require("lazy").setup({
         "lukas-reineke/indent-blankline.nvim",
         event = "VeryLazy",
         config = function()
-            require("plugins.intentline")
+            require("plugins.indentline")
         end,
     },
     {
@@ -330,15 +330,9 @@ require("lazy").setup({
     {
         "machakann/vim-sandwich",
         event = "VeryLazy",
-        dependencies = {
-            {
-                "nvim-lua/plenary.nvim",
-                -- This plugin is not a dependency, I just use it to configure sandwich.
-                config = function()
-                    vim.g.sandwich_no_default_key_mappings = 1
-                end,
-            },
-        },
+        init = function()
+            vim.g.sandwich_no_default_key_mappings = 1
+        end,
         config = function()
             require("plugins.sandwich")
         end,
@@ -462,7 +456,7 @@ require("lazy").setup({
     },
     {
         "folke/noice.nvim",
-        event = "CmdlineEnter",
+        event = { "CmdlineEnter", "VeryLazy" },
         dependencies = {
             "MunifTanjim/nui.nvim",
             "rcarriga/nvim-notify",
@@ -474,6 +468,8 @@ require("lazy").setup({
     {
         -- highlight cursor word
         "nyngwang/murmur.lua",
+        commit = "bd63fc7d3122aececc9fe960660d1e4df2cf7550",
+        pin = true,
         event = "VeryLazy",
         config = function()
             require("plugins.murmur")

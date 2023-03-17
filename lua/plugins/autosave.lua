@@ -2,13 +2,11 @@ local autosave = require("auto-save")
 autosave.setup({
     enabled = true,
     execution_message = {
-        message = function()
-            return ("   " .. vim.fn.strftime("%H:%M:%S"))
-        end,
+        message = "",
         dim = 0.18,
         cleaning_interval = 1250,
     },
-    trigger_events = { "InsertLeave", "TextChanged" },
+    trigger_events = { "InsertLeave" },
     conditions = function(buf)
         local utils = require("auto-save.utils.data")
         local disable_filetypes = {}

@@ -2,7 +2,7 @@ local web_devicons = require("nvim-web-devicons")
 local my_icons = {
     norg = { icon = "",  color = "#4caf50", name = "neorg"      },
     md   = { icon = "",  color = "#ea7130", name = "markdown"   },
-    http = { icon = "爵", color = "#e53935", name = "http"       },
+    http = { icon = "",  color = "#e53935", name = "http"       },
     ahk  = { icon = "",  color = "#4caf50", name = "autohotkey" },
 }
 if web_devicons.has_loaded() then

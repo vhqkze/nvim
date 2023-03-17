@@ -30,7 +30,7 @@ require("barbecue").setup({
         normal = { bg = barbecue_background },
     },
     include_buftypes = { "", "help" },
-    exclude_filetypes = { "undotree", "diff", "toggleterm", "gitcommit" },
+    exclude_filetypes = { "undotree", "diff", "toggleterm", "gitcommit", "crontab" },
     custom_section = function()
         local diagnostics = vim.diagnostic.get(0)
         local diagnostic = {

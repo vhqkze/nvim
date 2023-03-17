@@ -40,7 +40,7 @@ local cmp_kinds = {
     Event         = " ",
     Operator      = " ",
     TypeParameter = " ",
-    Suggestion    = " ",
+    Codeium       = " ",
 }
 
 cmp.setup({
