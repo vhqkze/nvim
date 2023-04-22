@@ -136,22 +136,23 @@ mason_lspconfig.setup_handlers({
 
 require("lspconfig.ui.windows").default_options.border = "rounded"
 
-local cursorline_background = util.get_hl("CursorLine", "background")
+local cursorline_background = util.get_hl("CursorLine", "bg#")
 
 local function add_cursorline_sign_bg(name)
-    local hl = util.get_hl(name)
+    local hl = vim.api.nvim_get_hl_by_name(name, true)
     if hl then
         hl.background = cursorline_background
     end
     return hl
 end
 
-local signs = { Error = " ", Warn = " ", Info = " ", Hint = " " }
+local signs = { Error = " ", Warn = " ", Info = " ", Hint = " " }
 for type, icon in pairs(signs) do
     local hl = "DiagnosticSign" .. type
+    local texthl = "Diagnostic" .. type
     local cursor_hl = "CursorLineSign" .. type
-    vim.api.nvim_set_hl(0, cursor_hl, add_cursorline_sign_bg(hl))
-    vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "", culhl = cursor_hl })
+    vim.api.nvim_set_hl(0, cursor_hl, add_cursorline_sign_bg(texthl))
+    vim.fn.sign_define(hl, { text = icon, texthl = texthl, numhl = "", culhl = cursor_hl })
 end
 
 vim.diagnostic.config({

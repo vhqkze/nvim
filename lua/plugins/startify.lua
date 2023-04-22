@@ -1,20 +1,35 @@
-function list_session()
-    local sessions_dir = vim.fn.stdpath("data") .. "/sessions"
-    local pfile = io.popen("cd " .. sessions_dir .. "&& ls -t " .. "*.vim")
-    local result = {}
-    for filename in pfile:lines() do
-        local show_name = filename:gsub("%%", "/")
-        table.insert(result, { line = show_name, cmd = "SLoad " .. filename, path = "" })
+vim.g.startify_session_dir = vim.fn.stdpath("data") .. "/sessions"
+vim.g.startify_padding_left = 12
+
+---get all session files
+---@return table
+local function get_sessions()
+    local sessions_dir = vim.g.startify_session_dir
+    local files_with_abspath = vim.fn.split(vim.fn.globpath(sessions_dir, "*.vim"), "\n")
+    files_with_abspath = vim.fn.sort(files_with_abspath, function(i1, i2)
+        if vim.fn.getftime(i1) > vim.fn.getftime(i2) then
+            return -1
+        elseif vim.fn.getftime(i1) < vim.fn.getftime(i2) then
+            return 1
+        else
+            return 0
+        end
+    end)
+    local files = vim.fn.map(files_with_abspath, 'fnamemodify(v:val, ":t")')
+    local sessions = {}
+    for _, file in ipairs(files) do
+        if vim.endswith(file, ".vim") then
+            local display_name = file:gsub("%%", "/")
+            table.insert(sessions, { line = display_name, cmd = "SLoad " .. file })
+        end
     end
-    pfile:close()
-    return result
+    return sessions
 end
 
+local padding_left = string.rep(' ', vim.g.startify_padding_left)
 vim.g.startify_lists = {
-    { type = list_session, header = { "   Sessions" } },
-    { type = "files", header = { "   Recent files" } },
-    { type = "dir", header = { "   Recent files in " .. vim.fn.getcwd() } },
-    { type = "bookmarks", header = { "   Bookmarks" } },
+    { type = get_sessions, header = { padding_left .. "Sessions" } },
+    { type = "files",      header = { padding_left .. "Recent files" } },
+    { type = "dir",        header = { padding_left .. "Recent files in " .. vim.fn.getcwd() } },
+    { type = "bookmarks",  header = { padding_left .. "Bookmarks" } },
 }
-vim.g.startify_session_dir = vim.fn.stdpath("data") .. "/sessions"
-vim.g.startify_session_sort = 1

@@ -1,34 +1,13 @@
----get highligh color
----@param name string highlight name
----@param key? string background, foreground, special, italic, underline, bold, undercurl, strikethrough
-local function get_hl(name, key)
-    local ok, hl = pcall(vim.api.nvim_get_hl_by_name, name, true)
-    if ok then
-        if key == nil then
-            return hl
-        else
-            local value = hl[key]
-            if type(value) == "number" then
-                return string.format("#%06x", value)
-            else
-                return value
-            end
-        end
-    end
-    return nil
-end
+local util = require("util")
 
-local barbecue_background = get_hl("StatusLine", "background")
-vim.api.nvim_set_hl(0, "BarbecueDiagnosticError", { fg = get_hl("DiagnosticSignError", "foreground"), bg = barbecue_background })
-vim.api.nvim_set_hl(0, "BarbecueDiagnosticWarn", { fg = get_hl("DiagnosticSignWarn", "foreground"), bg = barbecue_background })
-vim.api.nvim_set_hl(0, "BarbecueDiagnosticInfo", { fg = get_hl("DiagnosticSignInfo", "foreground"), bg = barbecue_background })
-vim.api.nvim_set_hl(0, "BarbecueDiagnosticHint", { fg = get_hl("DiagnosticSignHint", "foreground"), bg = barbecue_background })
+local barbecue_background = util.get_hl("StatusLine", "bg#")
+vim.api.nvim_set_hl(0, "BarbecueDiagnosticError", { fg = util.get_hl("DiagnosticSignError", "fg#"), bg = barbecue_background })
+vim.api.nvim_set_hl(0, "BarbecueDiagnosticWarn", { fg = util.get_hl("DiagnosticSignWarn", "fg#"), bg = barbecue_background })
+vim.api.nvim_set_hl(0, "BarbecueDiagnosticInfo", { fg = util.get_hl("DiagnosticSignInfo", "fg#"), bg = barbecue_background })
+vim.api.nvim_set_hl(0, "BarbecueDiagnosticHint", { fg = util.get_hl("DiagnosticSignHint", "fg#"), bg = barbecue_background })
 
 require("barbecue").setup({
     attach_navic = false, -- attach navic to LSPs by yourself.
-    theme = {
-        normal = { bg = barbecue_background },
-    },
     include_buftypes = { "", "help" },
     exclude_filetypes = { "undotree", "diff", "toggleterm", "gitcommit", "crontab" },
     custom_section = function()
@@ -50,7 +29,7 @@ require("barbecue").setup({
                 diagnostic.Hint = diagnostic.Hint + 1
             end
         end
-        local signs = { Error = " ", Warn = " ", Info = " ", Hint = " " }
+        local signs = { Error = " ", Warn = " ", Info = " ", Hint = " " }
         local result_error = { diagnostic.Error > 0 and (signs.Error .. diagnostic.Error .. " ") or "", "BarbecueDiagnosticError" }
         local result_warn = { diagnostic.Warn > 0 and (signs.Warn .. diagnostic.Warn .. " ") or "", "BarbecueDiagnosticWarn" }
         local result_info = { diagnostic.Info > 0 and (signs.Info .. diagnostic.Info .. " ") or "", "BarbecueDiagnosticInfo" }

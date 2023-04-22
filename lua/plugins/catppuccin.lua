@@ -14,4 +14,12 @@ require("catppuccin").setup({
             }
         end,
     },
+    styles = {
+        functions = { "italic" },
+    },
+    integrations = {
+        barbecue = {
+            alt_background = true,
+        },
+    },
 })
