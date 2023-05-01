@@ -48,7 +48,6 @@ telescope.setup({
     },
 })
 
-telescope.load_extension("session-lens")
 vim.api.nvim_create_user_command("Theme", require("telescope.builtin").colorscheme, {})
 
 vim.keymap.set("n", "<m-j>", "<cmd>Telescope<cr>", { silent = true })
@@ -59,3 +58,4 @@ vim.keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", { silent = tru
 vim.keymap.set("n", "<leader>fs", "<cmd>Telescope session-lens search_session<cr>", { silent = true })
 vim.keymap.set("n", "<leader>fc", "<cmd>Telescope commands<cr>", { silent = true })
 vim.keymap.set("n", "<leader>ft", "<cmd>Telescope filetypes<cr>", { silent = true })
+vim.keymap.set("n", "<leader>fr", "<cmd>Telescope resume<cr>", {silent = true})

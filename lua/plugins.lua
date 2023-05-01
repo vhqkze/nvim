@@ -84,6 +84,7 @@ require("lazy").setup({
     },
     {
         "nvim-tree/nvim-web-devicons",
+        event = "UiEnter",
         config = function()
             require("plugins.icons")
         end,
@@ -91,7 +92,7 @@ require("lazy").setup({
     {
         "nvim-lualine/lualine.nvim",
         dependencies = { "nvim-tree/nvim-web-devicons" },
-        event = "VimEnter",
+        event = "UiEnter",
         config = function()
             require("plugins.lualine")
         end,
@@ -135,13 +136,13 @@ require("lazy").setup({
     },
     {
         "folke/which-key.nvim",
+        event = "UiEnter",
         config = function()
             require("plugins.which_key")
         end,
     },
     {
         "nvim-treesitter/nvim-treesitter",
-        commit = "12e95e160d7d45b76a36bca6303dd8447ab77490",
         event = "VeryLazy",
         build = function()
             local ts_update = require("nvim-treesitter.install").update({ with_sync = true })
@@ -173,7 +174,7 @@ require("lazy").setup({
     },
     {
         "mhinz/vim-startify",
-        event = "VimEnter",
+        event = vim.fn.argc() == 0 and "VimEnter" or "VeryLazy",
         config = function()
             require("plugins.startify")
         end,
@@ -190,13 +191,6 @@ require("lazy").setup({
         event = "VeryLazy",
         config = function()
             require("plugins.comment")
-        end,
-    },
-    {
-        "ethanholz/nvim-lastplace",
-        cond = false,
-        config = function()
-            require("plugins.nvim_lastplace")
         end,
     },
     {
@@ -229,15 +223,6 @@ require("lazy").setup({
         end,
     },
     {
-        "rmagatti/session-lens",
-        event = "VeryLazy",
-        dependencies = {
-            "rmagatti/auto-session",
-            "nvim-telescope/telescope.nvim",
-        },
-        config = true,
-    },
-    {
         "nvim-telescope/telescope.nvim",
         dependencies = { "nvim-lua/plenary.nvim" },
         event = "VeryLazy",
@@ -254,7 +239,7 @@ require("lazy").setup({
     },
     {
         "mbbill/undotree",
-        event = "BufRead",
+        event = { "BufRead", "VeryLazy" },
         config = function()
             require("plugins.undotree")
         end,
@@ -359,14 +344,14 @@ require("lazy").setup({
     },
     {
         "glepnir/lspsaga.nvim",
-        event = "BufRead",
+        event = { "BufRead", "VeryLazy" },
         config = function()
             require("plugins.lspsaga")
         end,
     },
     {
         "jose-elias-alvarez/null-ls.nvim",
-        event = "BufRead",
+        event = { "BufRead", "VeryLazy" },
         dependencies = { "nvim-lua/plenary.nvim" },
         config = function()
             require("plugins.null_ls")
@@ -374,14 +359,14 @@ require("lazy").setup({
     },
     {
         "mhartington/formatter.nvim",
-        event = "BufRead",
+        event = { "BufRead", "VeryLazy" },
         config = function()
             require("plugins.formatter")
         end,
     },
     {
         "ray-x/lsp_signature.nvim",
-        event = "BufRead",
+        event = { "BufRead", "VeryLazy" },
         config = function()
             require("plugins.lsp_signature")
         end,
@@ -441,7 +426,7 @@ require("lazy").setup({
     },
     {
         "CRAG666/code_runner.nvim",
-        event = "BufRead",
+        event = { "BufRead", "VeryLazy" },
         dependencies = { "nvim-lua/plenary.nvim" },
         config = function()
             require("plugins.code_runner")
@@ -456,7 +441,7 @@ require("lazy").setup({
     },
     {
         "folke/noice.nvim",
-        event = { "CmdlineEnter", "VeryLazy" },
+        event = { "UiEnter", "CmdlineEnter", "VeryLazy" },
         dependencies = {
             "MunifTanjim/nui.nvim",
             "rcarriga/nvim-notify",
@@ -482,16 +467,6 @@ require("lazy").setup({
         end,
         config = function()
             require("plugins.osc52")
-        end,
-    },
-    {
-        "narutoxy/silicon.lua",
-        cond = function()
-            return vim.fn.has("mac") == 1
-        end,
-        event = "VeryLazy",
-        config = function()
-            require("plugins.silicon")
         end,
     },
     {
