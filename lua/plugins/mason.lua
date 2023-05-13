@@ -27,6 +27,8 @@ local need_install = {
     "prettier",
     "stylua",
     "yapf",
+    "shfmt",
+    "shellcheck",
     "lemminx", -- xml lsp
     "nginx-language-server",
 }

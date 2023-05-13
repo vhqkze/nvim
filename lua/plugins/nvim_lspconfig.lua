@@ -119,6 +119,13 @@ mason_lspconfig.setup_handlers({
             end,
         })
     end,
+    ["bashls"] = function()
+        lspconfig.bashls.setup({
+            on_attach = on_attach,
+            capabilities = capabilities,
+            filetypes = { "sh", "bash", "zsh" },
+        })
+    end,
 })
 
 -- for _, server_name in pairs(require("lspconfig").util.available_servers()) do

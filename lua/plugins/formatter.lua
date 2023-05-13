@@ -88,15 +88,12 @@ require("formatter").setup({
         },
         python = require("formatter.filetypes.python").yapf,
         go = require("formatter.filetypes.go").gofmt,
+        sh = require("formatter.filetypes.sh").shfmt,
+        bash = require("formatter.filetypes.sh").shfmt,
+        zsh = require("formatter.filetypes.sh").shfmt,
 
         ["*"] = {
-            function()
-                if vim.fn.has("mac") == 1 then
-                    return { exe = "sed", args = { "-i", "''", "'s/[ \t]*$//'" } }
-                else
-                    return require("formatter.filetypes.any").remove_trailing_whitespace()
-                end
-            end,
+            require("formatter.filetypes.any").remove_trailing_whitespace,
         },
     },
 })
