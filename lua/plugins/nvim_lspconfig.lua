@@ -128,6 +128,14 @@ mason_lspconfig.setup_handlers({
     end,
 })
 
+if vim.fn.executable("sourcekit-lsp") == 1 then
+    lspconfig.sourcekit.setup({
+        on_attach = on_attach,
+        capabilities = capabilities,
+        root_dir = lspconfig.util.root_pattern("Package.swift", ".git"),
+    })
+end
+
 -- for _, server_name in pairs(require("lspconfig").util.available_servers()) do
 --     lspconfig[server_name].setup({
 --         on_attach = on_attach,

@@ -8,6 +8,10 @@ require("code_runner").setup({
         typescript = "deno run",
         rust = "cd $dir && rustc $fileName && $dir/$fileNameWithoutExt",
         go = "go run",
+        swift = "swift",
+        sh = "bash",
+        bash = "bash",
+        zsh = "zsh",
     },
 })
 

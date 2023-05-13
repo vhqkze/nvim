@@ -88,6 +88,17 @@ require("formatter").setup({
         },
         python = require("formatter.filetypes.python").yapf,
         go = require("formatter.filetypes.go").gofmt,
+        swift = {
+            function()
+                return {
+                    exe = "swiftformat",
+                    args = {
+                        "--indent 4",
+                    },
+                    stdin = true,
+                }
+            end,
+        },
         sh = require("formatter.filetypes.sh").shfmt,
         bash = require("formatter.filetypes.sh").shfmt,
         zsh = require("formatter.filetypes.sh").shfmt,

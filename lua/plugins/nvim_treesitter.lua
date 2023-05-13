@@ -25,6 +25,7 @@ require("nvim-treesitter.configs").setup({
         "python",
         "regex",
         "sql",
+        "swift",
         "toml",
         "vim",
         "yaml",
