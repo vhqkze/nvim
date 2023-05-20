@@ -2,6 +2,7 @@ local lspconfig = require("lspconfig")
 local mason_lspconfig = require("mason-lspconfig")
 local navic = require("nvim-navic")
 local util = require("util")
+local navbuddy = require("nvim-navbuddy")
 
 ---See https://www.reddit.com/r/neovim/comments/108tjy0/comment/j42cod9/?utm_source=share&utm_medium=web2x&context=3
 local function filter(arr, func)
@@ -55,6 +56,7 @@ local on_attach = function(client, bufnr)
     end
     if client.server_capabilities.documentSymbolProvider then
         navic.attach(client, bufnr)
+        navbuddy.attach(client, bufnr)
     end
     -- Enable completion triggered by <c-x><c-o>
     -- vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
@@ -115,7 +117,9 @@ mason_lspconfig.setup_handlers({
                 client.server_capabilities.renameProvider = false
                 client.server_capabilities.definitionProvider = false
                 client.server_capabilities.referencesProvider = false
+                client.server_capabilities.completionProvider = false
                 navic.attach(client, bufnr)
+                navbuddy.attach(client, bufnr)
             end,
         })
     end,
@@ -172,7 +176,7 @@ end
 
 vim.diagnostic.config({
     virtual_text = {
-        prefix = "",
+        prefix = "",
     },
     severity_sort = {
         reverse = true,

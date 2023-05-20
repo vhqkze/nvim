@@ -392,6 +392,17 @@ require("lazy").setup({
             require("plugins.barbecue")
         end,
     },
+    {
+        "SmiteshP/nvim-navbuddy",
+        lazy=true,
+        dependencies = {
+            "SmiteshP/nvim-navic",
+            "MunifTanjim/nui.nvim",
+        },
+        config = function()
+            require("plugins.nvim_navbuddy")
+        end,
+    },
     -- completion
     {
         "L3MON4D3/LuaSnip",

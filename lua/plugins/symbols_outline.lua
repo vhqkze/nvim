@@ -8,7 +8,7 @@ require("symbols-outline").setup({
         hover_symbol = "J",
     },
     symbols = {
-        File          = { icon = " ", hl = "@test.uri"    },
+        File          = { icon = " ", hl = "@text.uri"    },
         Module        = { icon = " ", hl = "@namespace"   },
         Namespace     = { icon = " ", hl = "@namespace"   },
         Package       = { icon = " ", hl = "@namespace"   },
