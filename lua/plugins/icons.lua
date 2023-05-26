@@ -11,4 +11,4 @@ else
     web_devicons.setup({ override = my_icons, color_icons = true, default = true })
 end
 
-web_devicons.set_default_icon("", "#51a0cf")
+web_devicons.set_default_icon("", "#51a0cf")

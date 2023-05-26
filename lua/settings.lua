@@ -49,6 +49,24 @@ if vim.fn.has("nvim-0.9.0") == 1 then
     vim.opt.splitkeep = "topline"
 end
 
+vim.opt.fillchars:append({
+    horiz     = "─",
+    horizup   = "┴",
+    horizdown = "┬",
+    vert      = "│",
+    vertleft  = "┤",
+    vertright = "├",
+    verthoriz = "┼",
+
+    fold      = " ",
+    foldopen  = "",
+    foldclose = "",
+    foldsep   = " ",
+
+    diff      = " ",
+    eob       = " ",
+})
+
 vim.filetype.add({
     extension = {
         ---@diagnostic disable-next-line: unused-local

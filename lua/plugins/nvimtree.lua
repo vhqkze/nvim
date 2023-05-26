@@ -1,6 +1,9 @@
 require("nvim-tree").setup({
     view = {
-        width = 45,
+        width = {
+            min = 25,
+            max = 50,
+        },
     },
     sync_root_with_cwd = true,
     filters = {
@@ -12,10 +15,28 @@ require("nvim-tree").setup({
     renderer = {
         icons = {
             git_placement = "signcolumn",
+            symlink_arrow = " -> ",
             glyphs = {
-                default = "",
+                default = "",
+                folder = {
+                    arrow_closed = "",
+                    arrow_open = "",
+                },
+                git = {
+                    unstaged  = "",
+                    staged    = "",
+                    unmerged  = "",
+                    renamed   = "",
+                    untracked = "",
+                    deleted   = "",
+                    ignored   = "",
+                },
             },
         },
+    },
+    git = {
+        show_on_dirs = true,
+        show_on_open_dirs = false,
     },
     actions = {
         open_file = {
@@ -24,6 +45,11 @@ require("nvim-tree").setup({
         change_dir = {
             enable = true,
             global = true,
+        },
+        file_popup = {
+            open_win_config = {
+                border = "rounded",
+            },
         },
     },
     update_focused_file = {
