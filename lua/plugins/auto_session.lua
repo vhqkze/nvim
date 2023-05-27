@@ -6,4 +6,7 @@ require("auto-session").setup({
     auto_restore_enabled = false,
     auto_session_suppress_dirs = { "/", "~/", "~/Downloads/" },
     pre_save_cmds = { "NvimTreeClose", "SymbolsOutlineClose" },
+    session_lens = {
+        load_on_setup = false,
+    },
 })
