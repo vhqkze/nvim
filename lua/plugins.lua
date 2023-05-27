@@ -394,7 +394,7 @@ require("lazy").setup({
     },
     {
         "SmiteshP/nvim-navbuddy",
-        lazy=true,
+        lazy = true,
         dependencies = {
             "SmiteshP/nvim-navic",
             "MunifTanjim/nui.nvim",
