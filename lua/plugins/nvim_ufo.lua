@@ -34,41 +34,104 @@ local function customizeSelector(bufnr)
         end)
 end
 
--- Customize fold text
--- use setup: fold_virt_text_handler = handler
-local handler = function(virtText, lnum, endLnum, width, truncate) -- hello
+local function addVirtText(virtText, width, truncate, isEnd)
     local newVirtText = {}
-    -- local suffix = ('  %d '):format(endLnum - lnum)
-    local suffix = ""
-    local sufWidth = vim.fn.strdisplaywidth(suffix)
-    local targetWidth = width - sufWidth
-    local curWidth = 0
-    for _, chunk in ipairs(virtText) do
+    local usedWidth = 0
+    for i, chunk in ipairs(virtText) do
         local chunkText = chunk[1]
+        if isEnd and i == 1 and vim.trim(chunkText) == "" then
+            goto continue
+        end
         local chunkWidth = vim.fn.strdisplaywidth(chunkText)
-        if targetWidth > curWidth + chunkWidth then
+        if usedWidth + chunkWidth <= width then
             table.insert(newVirtText, chunk)
+            usedWidth = usedWidth + chunkWidth
         else
-            chunkText = truncate(chunkText, targetWidth - curWidth)
+            chunkText = truncate(chunkText, width - usedWidth)
+            chunkWidth = vim.fn.strdisplaywidth(chunkText)
             local hlGroup = chunk[2]
             table.insert(newVirtText, { chunkText, hlGroup })
-            chunkWidth = vim.fn.strdisplaywidth(chunkText)
-            -- str width returned from truncate() may less than 2nd argument, need padding
-            if curWidth + chunkWidth < targetWidth then
-                suffix = suffix .. (" "):rep(targetWidth - curWidth - chunkWidth)
-            end
+            usedWidth = usedWidth + chunkWidth
             break
         end
-        curWidth = curWidth + chunkWidth
+        ::continue::
     end
-    table.insert(newVirtText, { suffix, "MoreMsg" })
+    return newVirtText, usedWidth
+end
+
+-- Customize fold text
+-- use setup: fold_virt_text_handler = handler
+local function handler(virtText, lnum, endLnum, width, truncate, ctx)
+    local newVirtText = {}
+    local usedWidth = 0
+    -- fold start line
+    local startVirt, start_width = addVirtText(virtText, width, truncate, false)
+    for _, item in ipairs(startVirt) do
+        table.insert(newVirtText, item)
+    end
+    usedWidth = usedWidth + start_width
+    if usedWidth >= width then
+        return newVirtText
+    end
+    -- fold end line
+    local endVirtText = ctx.get_fold_virt_text(endLnum)
+    local start_content = vim.trim(vim.fn.getline(lnum))
+    local end_content = vim.trim(vim.fn.getline(endLnum))
+    local filetype = vim.bo.filetype
+    local show_end_line = false
+    local need_end_ft = { "python", "go", "toml", "java", "javascript", "json", "jsonc" }
+    if vim.tbl_contains(need_end_ft, filetype) then
+        show_end_line = show_end_line or end_content:match("^%s-[}%])]")
+    elseif filetype == "lua" then
+        show_end_line = show_end_line or end_content:match("^%s-[}%])]")
+        show_end_line = show_end_line or end_content:match("^%s-end")
+    elseif vim.tbl_contains({ "sh", "bash", "zsh" }, filetype) then
+        show_end_line = show_end_line or end_content:match("^%s-[}%])]")
+        show_end_line = show_end_line or end_content:match("^%s-fi")
+        show_end_line = show_end_line or end_content:match("^%s-esac")
+    elseif filetype == "vim" then
+        show_end_line = show_end_line or end_content:match("^%s-[}%])]")
+        show_end_line = show_end_line or end_content:match("^%s-endif")
+        show_end_line = show_end_line or end_content:match("^%s-endfunction")
+    end
+    if show_end_line then
+        table.insert(newVirtText, { " ••• ", "UfoFoldedFg" })
+        usedWidth = usedWidth + 5
+        local endVirt, end_width = addVirtText(endVirtText, width - usedWidth, truncate, true)
+        for _, item in ipairs(endVirt) do
+            table.insert(newVirtText, item)
+        end
+        usedWidth = usedWidth + end_width
+    end
+    if usedWidth >= width then
+        return newVirtText
+    end
+    -- fold right
+    local folded_lines = endLnum - lnum + 1
+    local all_lines = vim.fn.line("$")
+    local percentage = math.floor(folded_lines / all_lines * 100)
+    local fold_right = string.format(" %s lines:%3s%% •••", folded_lines, percentage)
+    table.insert(newVirtText, { " ", "UfoFoldedFg" })
+    usedWidth = usedWidth + 1
+    local count = width - usedWidth - vim.fn.strdisplaywidth(fold_right)
+    table.insert(newVirtText, { string.rep("•", count), "UfoFoldedFg" })
+    table.insert(newVirtText, { fold_right, "UfoFoldedFg" })
     return newVirtText
 end
 
+local ftMap = {
+    json = "treesitter",
+    jsonc = "treesitter",
+    lua = "treesitter",
+    swift = "treesitter",
+    vim = "treesitter",
+}
+
 require("ufo").setup({
+    enable_get_fold_virt_text = true,
     close_fold_kinds = { "imports", "comment" },
     provider_selector = function(bufnr, filetype, buftype)
-        return customizeSelector
+        return ftMap[filetype] or customizeSelector
     end,
     fold_virt_text_handler = handler,
 })

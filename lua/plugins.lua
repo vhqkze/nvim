@@ -298,13 +298,6 @@ require("lazy").setup({
         end,
     },
     {
-        "anuvyklack/pretty-fold.nvim",
-        event = "VeryLazy",
-        config = function()
-            require("plugins.pretty_fold")
-        end,
-    },
-    {
         "junegunn/vim-easy-align",
         event = "VeryLazy",
     },
