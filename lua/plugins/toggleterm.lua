@@ -29,3 +29,10 @@ vim.keymap.set("n", "<m-8>", function()
         terminal.display_name = "Console"
     end
 end, { silent = true })
+
+local pytest = require("pytest")
+vim.keymap.set("n", "<leader>nc", pytest.run_class, { silent = true, desc = "pytest class" })
+vim.keymap.set("n", "<leader>nn", pytest.run_function, { silent = true, desc = "pytest function" })
+vim.keymap.set("n", "<leader>nl", pytest.rerun_last_test, { silent = true, desc = "rerun last command" })
+vim.keymap.set("n", "<leader>ne", pytest.rerun_failed_tests, { silent = true, desc = "rerun failed tests" })
+vim.keymap.set("n", "<leader>no", pytest.toggle, { silent = true, desc = "toggle console" })
