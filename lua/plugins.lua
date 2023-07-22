@@ -481,10 +481,10 @@ require("lazy").setup({
         config = true,
     },
     {
-        "ggandor/leap.nvim",
-        event = "VimEnter", -- do not use VeryLazy, otherwise it will not work
+        "folke/flash.nvim",
+        event = "VeryLazy",
         config = function()
-            require("plugins.leap")
+            require("plugins.flash")
         end,
     },
     {
