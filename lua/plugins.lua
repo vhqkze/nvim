@@ -422,14 +422,6 @@ require("lazy").setup({
         end,
     },
     {
-        "CRAG666/code_runner.nvim",
-        event = { "BufRead", "VeryLazy" },
-        dependencies = { "nvim-lua/plenary.nvim" },
-        config = function()
-            require("plugins.code_runner")
-        end,
-    },
-    {
         "stevearc/dressing.nvim",
         event = "VeryLazy",
         config = function()

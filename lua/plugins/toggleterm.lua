@@ -30,6 +30,10 @@ vim.keymap.set("n", "<m-8>", function()
     end
 end, { silent = true })
 
+local runner = require("runner")
+vim.keymap.set("n", "<leader>rr", runner.run_file, { silent = true, desc = "run current file" })
+vim.keymap.set("n", "<leader>ro", runner.toggle, { silent = true, desc = "toggle runner" })
+
 local pytest = require("pytest")
 vim.keymap.set("n", "<leader>nc", pytest.run_class, { silent = true, desc = "pytest class" })
 vim.keymap.set("n", "<leader>nn", pytest.run_function, { silent = true, desc = "pytest function" })
