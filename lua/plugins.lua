@@ -51,36 +51,42 @@ local lazy_config = {
 require("lazy").setup({
     {
         "joshdick/onedark.vim",
-        event = "VimEnter",
+        cond = false,
+        priority = 1000,
         config = function()
             vim.g.onedark_terminal_italics = 1
         end,
     },
     {
         "mhartington/oceanic-next",
-        event = "VimEnter",
+        cond = false,
+        priority = 1000,
         config = function()
             vim.g.oceanic_next_terminal_bold = 1
             vim.g.oceanic_next_terminal_italic = 1
         end,
     },
     {
-        "tiagovla/tokyodark.nvim",
-        event = "VimEnter",
+        "folke/tokyonight.nvim",
+        cond = false,
+        priority = 1000,
+        config = function()
+            require("plugins.tokyonight")
+        end,
     },
     {
         "catppuccin/nvim",
+        cond = true,
         name = "catppuccin",
-        lazy = false,
         priority = 1000,
         config = function()
             require("plugins.catppuccin")
-            vim.cmd.colorscheme("catppuccin-macchiato")
         end,
     },
     {
         "arcticicestudio/nord-vim",
-        event = "VimEnter",
+        cond = false,
+        priority = 1000,
     },
     {
         "nvim-tree/nvim-web-devicons",
@@ -500,3 +506,6 @@ require("lazy").setup({
         ft = { "python" },
     },
 }, lazy_config)
+
+-- vim.cmd.colorscheme("tokyonight-storm")
+vim.cmd.colorscheme("catppuccin-macchiato")

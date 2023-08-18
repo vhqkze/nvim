@@ -70,9 +70,13 @@ local hls = {
 local util = require("util")
 
 for t, d in pairs(hls) do
-    vim.cmd("hi Navbuddy" .. t .. " guifg=" .. util.get_hl(d, 'fg#'))
+    local color = util.get_hl(d, "fg#")
+    if color ~= nil and color ~= "" then
+        vim.cmd("hi Navbuddy" .. t .. " guifg=" .. color)
+    end
 end
 
 vim.cmd("hi NavbuddyNormalFloat guibg=" .. util.get_hl("normal", "bg#"))
+vim.cmd("hi NavbuddyFloatBorder guibg=" .. util.get_hl("normal", "bg#"))
 
 vim.keymap.set("n", "<leader>nb", navbuddy.open, { silent = true })

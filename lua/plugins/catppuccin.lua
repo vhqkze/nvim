@@ -11,6 +11,9 @@ require("catppuccin").setup({
         macchiato = function(colors)
             return {
                 Visual = { bg = "#3e4452" },
+                IncSearch = { fg = "#1e2030", bg = "#ff9e64" },
+                CurSearch = { fg = "#1e2030", bg = "#ff9e64" },
+                FlashLabel = { fg = "#c0caf5", bg = "#ff007c", bold = true },
             }
         end,
     },
