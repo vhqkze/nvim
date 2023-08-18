@@ -102,6 +102,7 @@ require("formatter").setup({
         sh = require("formatter.filetypes.sh").shfmt,
         bash = require("formatter.filetypes.sh").shfmt,
         zsh = require("formatter.filetypes.sh").shfmt,
+        toml = require("formatter.filetypes.toml").taplo,
 
         ["*"] = {
             require("formatter.filetypes.any").remove_trailing_whitespace,
