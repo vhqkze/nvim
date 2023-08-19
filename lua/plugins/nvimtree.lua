@@ -23,7 +23,7 @@ require("nvim-tree").setup({
                     arrow_open = "",
                 },
                 git = {
-                    unstaged  = "",
+                    unstaged  = "",
                     staged    = "",
                     unmerged  = "",
                     renamed   = "",

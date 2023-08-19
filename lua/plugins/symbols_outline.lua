@@ -1,4 +1,6 @@
 require("symbols-outline").setup({
+    fold_markers = { "", "" },
+    show_guides = true,
     wrap = false,
     auto_preview = false,
     lsp_blacklist = {},
@@ -38,6 +40,13 @@ require("symbols-outline").setup({
         Fragment      = { icon = " ", hl = "@constant"    }, -- TODO: icon
     },
 })
+
+require("symbols-outline.ui").markers = {
+    bottom = " ",
+    middle = " ",
+    vertical = " ",
+    horizontal = " ",
+}
 
 vim.keymap.set({ "n", "i" }, "<M-7>", function()
     local win_ids = vim.api.nvim_list_wins()

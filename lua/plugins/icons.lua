@@ -4,6 +4,7 @@ local my_icons = {
     md   = { icon = "",  color = "#ea7130", name = "markdown"   },
     http = { icon = "",  color = "#e53935", name = "http"       },
     ahk  = { icon = "",  color = "#4caf50", name = "autohotkey" },
+    log  = { icon = "󱂅",  color = "#4caf50", name = "log" },
 }
 if web_devicons.has_loaded() then
     web_devicons.set_icon(my_icons)

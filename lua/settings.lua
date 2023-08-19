@@ -40,6 +40,7 @@ vim.g.loaded_node_provider = 0
 
 vim.opt.showmode = false
 vim.opt.laststatus = 3
+vim.opt.list = false
 
 vim.opt.termguicolors = true
 vim.opt.signcolumn = "auto:3"
@@ -65,6 +66,12 @@ vim.opt.fillchars:append({
 
     diff      = " ",
     eob       = " ",
+    lastline  = ".",
+})
+vim.opt.listchars:append({
+    tab = ">-",
+    space = "·",
+    trail = "·",
 })
 
 vim.filetype.add({
@@ -73,5 +80,6 @@ vim.filetype.add({
         bak = function(path, bufnr)
             return vim.filetype.match({ filename = path:gsub("%.bak$", "") })
         end,
+        log = "log",
     },
 })
