@@ -200,10 +200,14 @@ require("lazy").setup({
         end,
     },
     {
-        "norcalli/nvim-colorizer.lua",
+        "NvChad/nvim-colorizer.lua",
         event = "VeryLazy",
         config = function()
-            require("colorizer").setup()
+            require("colorizer").setup({
+                user_default_options = {
+                    AARRGGBB = true,
+                },
+            })
         end,
     },
     {
@@ -342,7 +346,7 @@ require("lazy").setup({
         dependencies = { "williamboman/mason.nvim" },
     },
     {
-        "glepnir/lspsaga.nvim",
+        "nvimdev/lspsaga.nvim",
         event = { "BufRead", "VeryLazy" },
         config = function()
             require("plugins.lspsaga")

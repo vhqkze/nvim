@@ -8,6 +8,7 @@ require("bufferline").setup({
             { filetype = "undotree", text = "Undo", text_align = "center", padding = 0 },
         },
         show_close_icon = false,
+        always_show_bufferline = false,
     },
 })
 
