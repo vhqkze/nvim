@@ -4,24 +4,35 @@ require("lspsaga").setup({
         scroll_down = "<c-d>",
     },
     finder = {
-        quit = { "q", "<esc>", "<c-c>" },
+        default = "def+ref+imp",
+        keys = {
+            quit = { "q", "<esc>", "<c-c>" },
+        },
     },
     definition = {
-        quit = "q",
-        close = "<esc>",
+        keys = {
+            quit = "q",
+            edit = "<C-c>o",
+            vsplit = "<C-c>v",
+            split = "<C-c>i",
+            tabe = "<C-c>t",
+            close = "<C-c>k",
+        },
     },
+    diagnostic = {},
     lightbulb = {
         virtual_text = false,
     },
     rename = {
-        quit = "<c-c>",
+        keys = {
+            quit = "<c-c>",
+        },
     },
     symbol_in_winbar = {
         enable = false,
         separator = "  ",
     },
     ui = {
-        theme = "round",
         border = "rounded",
         code_action = "💡",
         diagnostic = "🐞",
@@ -32,7 +43,7 @@ require("lspsaga").setup({
 vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<cr>", { silent = true })
 
 -- lsp finder to find the cursor word definition and reference
-vim.keymap.set("n", "gh", "<cmd>Lspsaga lsp_finder<cr>", { silent = true, desc = "Find definition and reference" })
+vim.keymap.set("n", "gh", "<cmd>Lspsaga finder<cr>", { silent = true, desc = "Find definition and reference" })
 
 -- code action
 vim.keymap.set("n", "<leader>ca", "<cmd>Lspsaga code_action<cr>", { silent = true, desc = "Code Action" })
