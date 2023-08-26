@@ -58,6 +58,9 @@ local on_attach = function(client, bufnr)
         navic.attach(client, bufnr)
         navbuddy.attach(client, bufnr)
     end
+    if client.server_capabilities.inlayHintProvider then
+        vim.lsp.inlay_hint(bufnr, true)
+    end
     -- Enable completion triggered by <c-x><c-o>
     -- vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
@@ -103,6 +106,12 @@ mason_lspconfig.setup_handlers({
                     diagnostics = {
                         globals = { "vim", "hs" },
                     },
+                    hint = {
+                        enable = true,
+                    },
+                    workspace = {
+                        checkThirdParty = false
+                    }
                 },
             },
         })
