@@ -79,9 +79,12 @@ local function handler(virtText, lnum, endLnum, width, truncate, ctx)
     local end_content = vim.trim(vim.fn.getline(endLnum))
     local filetype = vim.bo.filetype
     local show_end_line = false
-    local need_end_ft = { "python", "go", "toml", "java", "javascript", "json", "jsonc" }
+    local need_end_ft = { "go", "toml", "java", "javascript", "json", "jsonc" }
     if vim.tbl_contains(need_end_ft, filetype) then
         show_end_line = show_end_line or end_content:match("^%s-[}%])]")
+    elseif filetype == "python" then
+        show_end_line = show_end_line or end_content:match("^%s-[}%])]")
+        show_end_line = show_end_line or end_content:match([[^%s-"""]])
     elseif filetype == "lua" then
         show_end_line = show_end_line or end_content:match("^%s-[}%])]")
         show_end_line = show_end_line or end_content:match("^%s-end")
@@ -93,12 +96,19 @@ local function handler(virtText, lnum, endLnum, width, truncate, ctx)
         show_end_line = show_end_line or end_content:match("^%s-[}%])]")
         show_end_line = show_end_line or end_content:match("^%s-endif")
         show_end_line = show_end_line or end_content:match("^%s-endfunction")
+    elseif filetype == "markdown" then
+        show_end_line = show_end_line or end_content:match("^%s-```")
     end
     if show_end_line then
         table.insert(newVirtText, { " ••• ", "UfoFoldedFg" })
         usedWidth = usedWidth + 5
         local endVirt, end_width = addVirtText(endVirtText, width - usedWidth, truncate, true)
-        for _, item in ipairs(endVirt) do
+        for i, item in ipairs(endVirt) do
+            if i == 1 and vim.startswith(item[1], " ") then
+                end_width = end_width - #item[1]
+                item[1] = string.gsub(item[1], "^%s*", "")
+                end_width = end_width + #item[1]
+            end
             table.insert(newVirtText, item)
         end
         usedWidth = usedWidth + end_width
@@ -120,6 +130,7 @@ local function handler(virtText, lnum, endLnum, width, truncate, ctx)
 end
 
 local ftMap = {
+    go = "treesitter",
     json = "treesitter",
     jsonc = "treesitter",
     lua = "treesitter",
