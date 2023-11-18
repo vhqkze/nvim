@@ -167,12 +167,15 @@ require("lazy").setup({
         end,
     },
     {
-        "mrjones2014/nvim-ts-rainbow",
+        "HiPhish/rainbow-delimiters.nvim",
         event = "VeryLazy",
-        dependencies = { "nvim-treesitter/nvim-treesitter" },
+        config = function()
+            require("plugins.rainbow_delimiters")
+        end,
     },
     {
         "lukas-reineke/indent-blankline.nvim",
+        main = "ibl",
         event = "VeryLazy",
         config = function()
             require("plugins.indentline")
