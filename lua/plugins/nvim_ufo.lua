@@ -103,11 +103,15 @@ local function handler(virtText, lnum, endLnum, width, truncate, ctx)
         table.insert(newVirtText, { " ••• ", "UfoFoldedFg" })
         usedWidth = usedWidth + 5
         local endVirt, end_width = addVirtText(endVirtText, width - usedWidth, truncate, true)
-        for i, item in ipairs(endVirt) do
-            if i == 1 and vim.startswith(item[1], " ") then
+        local remove_start_blank = true
+        for _, item in ipairs(endVirt) do
+            if remove_start_blank and string.match(item[1], "^%s") then
                 end_width = end_width - #item[1]
                 item[1] = string.gsub(item[1], "^%s*", "")
                 end_width = end_width + #item[1]
+            end
+            if #item[1] > 0 then
+                remove_start_blank = false
             end
             table.insert(newVirtText, item)
         end
