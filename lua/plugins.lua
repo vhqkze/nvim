@@ -182,11 +182,12 @@ require("lazy").setup({
         end,
     },
     {
-        "mhinz/vim-startify",
-        event = vim.fn.argc() == 0 and "VimEnter" or "VeryLazy",
+        "nvimdev/dashboard-nvim",
+        event = "VimEnter",
         config = function()
-            require("plugins.startify")
+            require("plugins.dashboard")
         end,
+        dependencies = { { "nvim-tree/nvim-web-devicons" } },
     },
     {
         "iamcco/markdown-preview.nvim",
