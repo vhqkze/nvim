@@ -357,11 +357,10 @@ require("lazy").setup({
         end,
     },
     {
-        "jose-elias-alvarez/null-ls.nvim",
+        "mfussenegger/nvim-lint",
         event = { "BufRead", "VeryLazy" },
-        dependencies = { "nvim-lua/plenary.nvim" },
         config = function()
-            require("plugins.null_ls")
+            require("plugins.nvim_lint")
         end,
     },
     {
