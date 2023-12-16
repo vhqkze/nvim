@@ -231,7 +231,7 @@ require("lazy").setup({
     },
     {
         "rmagatti/auto-session",
-        event = "VimEnter", -- do not use VeryLazy, otherwise it will not work
+        event = "VeryLazy",
         config = function()
             require("plugins.auto_session")
         end,
