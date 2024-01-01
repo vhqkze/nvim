@@ -2,18 +2,6 @@ vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
 vim.opt.foldenable = true
 
-if vim.fn.has("nvim-0.9.0") == 1 then
-    vim.o.statuscolumn = "%s%=%l %#FoldColumn#%{"
-        .. "foldlevel(v:lnum) > foldlevel(v:lnum - 1)"
-        .. "? foldclosed(v:lnum) == -1"
-        .. '? ""'
-        .. ': ""'
-        .. ": foldlevel(v:lnum) == 0"
-        .. '? " "'
-        .. ': " "'
-        .. "} "
-end
-
 -- lsp->treesitter->indent
 local function customizeSelector(bufnr)
     local function handleFallbackException(err, providerName)

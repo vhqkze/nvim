@@ -1,7 +1,6 @@
 local lspconfig = require("lspconfig")
 local mason_lspconfig = require("mason-lspconfig")
 local navic = require("nvim-navic")
-local util = require("util")
 local navbuddy = require("nvim-navbuddy")
 
 ---See https://www.reddit.com/r/neovim/comments/108tjy0/comment/j42cod9/?utm_source=share&utm_medium=web2x&context=3
@@ -164,23 +163,11 @@ end
 
 require("lspconfig.ui.windows").default_options.border = "rounded"
 
-local cursorline_background = util.get_hl("CursorLine", "bg#")
-
-local function add_cursorline_sign_bg(name)
-    local hl = vim.api.nvim_get_hl_by_name(name, true)
-    if hl then
-        hl.background = cursorline_background
-    end
-    return hl
-end
-
 local signs = { Error = " ", Warn = " ", Info = " ", Hint = " " }
 for type, icon in pairs(signs) do
     local hl = "DiagnosticSign" .. type
     local texthl = "Diagnostic" .. type
-    local cursor_hl = "CursorLineSign" .. type
-    vim.api.nvim_set_hl(0, cursor_hl, add_cursorline_sign_bg(texthl))
-    vim.fn.sign_define(hl, { text = icon, texthl = texthl, numhl = "", culhl = cursor_hl })
+    vim.fn.sign_define(hl, { text = icon, texthl = texthl, numhl = "" })
 end
 
 vim.diagnostic.config({

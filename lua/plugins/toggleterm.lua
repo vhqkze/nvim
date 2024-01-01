@@ -2,6 +2,8 @@ require("toggleterm").setup({
     shade_terminals = false,
     on_open = function()
         vim.opt_local.signcolumn = "no"
+        vim.opt_local.foldcolumn = "0"
+        vim.opt_local.statuscolumn = ""
     end,
     hide_numbers = true,
     open_mapping = "<c-_>",
