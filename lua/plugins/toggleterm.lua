@@ -1,9 +1,12 @@
 require("toggleterm").setup({
     shade_terminals = false,
-    on_open = function()
+    on_open = function(term)
         vim.opt_local.signcolumn = "no"
         vim.opt_local.foldcolumn = "0"
         vim.opt_local.statuscolumn = ""
+        vim.defer_fn(function ()
+            vim.wo[term.window].winbar = ""
+        end, 0)
     end,
     hide_numbers = true,
     open_mapping = "<c-_>",

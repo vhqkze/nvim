@@ -57,6 +57,9 @@ local function run(cmd, display_name)
             if M.stay then
                 vim.api.nvim_set_current_win(current_window)
             end
+            vim.defer_fn(function()
+                vim.wo[term.window].winbar = ""
+            end, 0)
         end,
         on_stderr = function()
             vim.notify("task stderr", vim.log.levels.ERROR, { title = module_name })
