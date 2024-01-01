@@ -22,7 +22,7 @@ require("catppuccin").setup({
     },
     integrations = {
         barbecue = {
-            alt_background = true,
+            alt_background = false,
         },
     },
 })
