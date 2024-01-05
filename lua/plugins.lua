@@ -5,7 +5,7 @@ if not vim.loop.fs_stat(lazypath) then
         "git",
         "clone",
         "--filter=blob:none",
-        "https://ghproxy.com/https://github.com/folke/lazy.nvim.git",
+        "https://github.com/folke/lazy.nvim.git",
         "--branch=stable", -- latest stable release
         lazypath,
     })
@@ -17,7 +17,7 @@ local lazy_config = {
         lazy = false,
     },
     git = {
-        url_format = "https://ghproxy.com/https://github.com/%s.git",
+        url_format = "https://github.com/%s.git",
     },
     checker = {
         -- automatically check for plugin updates
