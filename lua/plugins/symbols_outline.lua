@@ -53,7 +53,7 @@ vim.keymap.set({ "n", "i" }, "<M-7>", function()
     local cur_win_id = vim.api.nvim_get_current_win()
     for _, win_id in pairs(win_ids) do
         local buf_id = vim.api.nvim_win_get_buf(win_id)
-        if vim.api.nvim_buf_get_option(buf_id, "filetype") == "Outline" then -- found outline window
+        if vim.api.nvim_get_option_value("filetype", { buf = buf_id }) == "Outline" then -- found outline window
             if win_id == cur_win_id then -- right in outline
                 return vim.cmd("SymbolsOutlineClose")
             else -- not in outline

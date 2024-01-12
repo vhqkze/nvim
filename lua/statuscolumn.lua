@@ -100,7 +100,7 @@ end
 
 function FoldSymbol()
     local winid = vim.api.nvim_get_current_win()
-    local culopt = vim.api.nvim_win_get_option(winid, "cursorlineopt")
+    local culopt = vim.api.nvim_get_option_value("cursorlineopt", { win = winid })
     local fillchars = vim.opt.fillchars:get()
     local result = ""
     local width = 3
@@ -108,7 +108,7 @@ function FoldSymbol()
         wp = ffi.C.find_window_by_handle(winid, ffi.new("Error")),
         lnum = vim.v.lnum,
         relnum = vim.v.relnum,
-        cul = vim.api.nvim_win_get_option(winid, "cursorline") and (culopt:find("number") or culopt:find("both")),
+        cul = vim.api.nvim_get_option_value("cursorline", { win = winid }) and (culopt:find("number") or culopt:find("both")),
     }
     local foldinfo = ffi.C.fold_info(args.wp, args.lnum)
     local level = foldinfo.level
