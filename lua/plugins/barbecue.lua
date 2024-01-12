@@ -3,29 +3,12 @@ require("barbecue").setup({
     include_buftypes = { "", "help" },
     exclude_filetypes = { "undotree", "diff", "toggleterm", "gitcommit", "crontab" },
     custom_section = function()
-        local diagnostics = vim.diagnostic.get(0)
-        local diagnostic = {
-            Error = 0,
-            Warn = 0,
-            Info = 0,
-            Hint = 0,
-        }
-        for _, d in ipairs(diagnostics) do
-            if d.severity == 1 then
-                diagnostic.Error = diagnostic.Error + 1
-            elseif d.severity == 2 then
-                diagnostic.Warn = diagnostic.Warn + 1
-            elseif d.severity == 3 then
-                diagnostic.Info = diagnostic.Info + 1
-            elseif d.severity == 4 then
-                diagnostic.Hint = diagnostic.Hint + 1
-            end
-        end
+        local diagnostic_count = vim.diagnostic.count(0)
         local signs = { Error = " ", Warn = " ", Info = " ", Hint = " " }
-        local result_error = { diagnostic.Error > 0 and (signs.Error .. diagnostic.Error .. " ") or "", "DiagnosticSignError" }
-        local result_warn = { diagnostic.Warn > 0 and (signs.Warn .. diagnostic.Warn .. " ") or "", "DiagnosticSignWarn" }
-        local result_info = { diagnostic.Info > 0 and (signs.Info .. diagnostic.Info .. " ") or "", "DiagnosticSignInfo" }
-        local result_hint = { diagnostic.Hint > 0 and (signs.Hint .. diagnostic.Hint .. " ") or "", "DiagnosticSignHint" }
+        local result_error = { diagnostic_count[1] and (signs.Error .. diagnostic_count[1] .. " ") or "", "DiagnosticSignError" }
+        local result_warn = { diagnostic_count[2] and (signs.Warn .. diagnostic_count[2] .. " ") or "", "DiagnosticSignWarn" }
+        local result_info = { diagnostic_count[3] and (signs.Info .. diagnostic_count[3] .. " ") or "", "DiagnosticSignInfo" }
+        local result_hint = { diagnostic_count[4] and (signs.Hint .. diagnostic_count[4] .. " ") or "", "DiagnosticSignHint" }
         return {
             result_error,
             result_warn,
