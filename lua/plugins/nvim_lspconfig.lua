@@ -163,19 +163,20 @@ end
 
 require("lspconfig.ui.windows").default_options.border = "rounded"
 
-local signs = { Error = " ", Warn = " ", Info = " ", Hint = " " }
-for type, icon in pairs(signs) do
-    local hl = "DiagnosticSign" .. type
-    local texthl = "Diagnostic" .. type
-    vim.fn.sign_define(hl, { text = icon, texthl = texthl, numhl = "" })
-end
-
 vim.diagnostic.config({
     virtual_text = {
         prefix = "",
     },
+    signs = {
+        text = {
+            [vim.diagnostic.severity.ERROR] = "",
+            [vim.diagnostic.severity.WARN] = "",
+            [vim.diagnostic.severity.INFO] = "",
+            [vim.diagnostic.severity.HINT] = "",
+        },
+    },
     severity_sort = {
-        reverse = true,
+        reverse = false,
     },
 })
 
