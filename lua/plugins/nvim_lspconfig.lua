@@ -180,29 +180,29 @@ vim.diagnostic.config({
     },
 })
 
-vim.api.nvim_create_autocmd("DiagnosticChanged", {
-    callback = function(args)
-        local buf = args.buf
-        local diagnostics = args.data.diagnostics
-        local line_numbers = {}
-        for _, diagnostic in ipairs(diagnostics) do
-            if vim.tbl_contains(line_numbers, diagnostic.lnum + 1) then
-                local line_signs = vim.fn.sign_getplaced(buf, { group = "*", lnum = diagnostic.lnum + 1 })[1].signs
-                local max_severity = { priority = 999 }
-                for _, sign in pairs(line_signs) do
-                    if sign.name:find("Diagnostic") and sign.priority < max_severity.priority then
-                        max_severity = sign
-                    end
-                end
-                if max_severity.priority ~= 999 then
-                    for _, sign in pairs(line_signs) do
-                        if sign.name:find("Diagnostic") and sign.id ~= max_severity.id then
-                            vim.fn.sign_unplace(sign.group, { buffer = buf, id = sign.id })
-                        end
-                    end
+-- Create a custom namespace. This will aggregate signs from all other
+-- namespaces and only show the one with the highest severity on a
+-- given line
+local ns = vim.api.nvim_create_namespace("my_diagnostics_signs")
+local orig_signs_handler = vim.diagnostic.handlers.signs
+
+vim.diagnostic.handlers.signs = {
+    show = function(_, bufnr, _, opts)
+        local diagnostics = vim.diagnostic.get(bufnr)
+        local line_count = vim.api.nvim_buf_line_count(bufnr)
+        local max_severity_per_line = {}
+        for _, d in pairs(diagnostics) do
+            if d.lnum < line_count then
+                local m = max_severity_per_line[d.lnum]
+                if not m or d.severity < m.severity then
+                    max_severity_per_line[d.lnum] = d
                 end
             end
-            table.insert(line_numbers, diagnostic.lnum + 1)
         end
+        local filtered_diagnostics = vim.tbl_values(max_severity_per_line)
+        orig_signs_handler.show(ns, bufnr, filtered_diagnostics, opts)
     end,
-})
+    hide = function(_, bufnr)
+        orig_signs_handler.hide(ns, bufnr)
+    end,
+}
