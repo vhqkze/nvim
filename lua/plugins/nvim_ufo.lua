@@ -2,24 +2,80 @@ vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
 vim.opt.foldenable = true
 
+--- 对连续的多行注释折叠
+--- 单独的一行注释不会折叠
+--- 中间间隔一行或多行空行的两行注释会视为一整块注释
+---@param bufnr integer
+---@return table
+local function getCommentFolds(bufnr)
+    local comment_folds = {}
+    local line_count = vim.api.nvim_buf_line_count(bufnr)
+    local is_in_comment = false
+    local comment_start = 0
+    local comment_end = 0
+    local commentstring = vim.o.commentstring
+    local comment_pattern = "^%s*" .. commentstring:sub(1, 1)
+    if commentstring == "" then
+        return comment_folds
+    end
+    for i = 0, line_count - 1 do
+        local line = vim.api.nvim_buf_get_lines(bufnr, i, i + 1, false)[1]
+        local is_comment_line = line:match(comment_pattern)
+        if not is_in_comment and is_comment_line then
+            is_in_comment = true
+            comment_start = i
+            comment_end = i
+        elseif is_in_comment and is_comment_line then
+            comment_end = i
+        elseif is_in_comment and not line:match("^%s*$") and not is_comment_line then
+            is_in_comment = false
+            if comment_end > comment_start then
+                table.insert(comment_folds, { startLine = comment_start, endLine = comment_end, kind = "comment" })
+            end
+        end
+    end
+    if is_in_comment and comment_end > comment_start then
+        table.insert(comment_folds, { startLine = comment_start, endLine = comment_end, kind = "comment" })
+    end
+    return comment_folds
+end
+
+local function getFoldsWithCustom(bufnr, providerName)
+    local folds = require("ufo").getFolds(bufnr, providerName)
+    if providerName == "lsp" then
+        folds = folds:thenCall(function(lsp_folds)
+            for _, comment_fold in pairs(getCommentFolds(bufnr)) do
+                table.insert(lsp_folds, comment_fold)
+            end
+            return lsp_folds
+        end)
+    else
+        for _, comment_fold in pairs(getCommentFolds(bufnr)) do
+            table.insert(folds, comment_fold)
+        end
+    end
+    return folds
+end
+
 -- lsp->treesitter->indent
 local function customizeSelector(bufnr)
     local function handleFallbackException(err, providerName)
         if type(err) == "string" and err:match("UfoFallbackException") then
-            return require("ufo").getFolds(bufnr, providerName)
+            return getFoldsWithCustom(bufnr, providerName)
         else
             return require("promise").reject(err)
         end
     end
 
-    return require("ufo")
-        .getFolds(bufnr, "lsp")
+    local folds = getFoldsWithCustom(bufnr, "lsp")
         :catch(function(err)
             return handleFallbackException(err, "treesitter")
         end)
         :catch(function(err)
             return handleFallbackException(err, "indent")
         end)
+
+    return folds
 end
 
 local function addVirtText(virtText, width, truncate, isEnd)
@@ -134,7 +190,12 @@ require("ufo").setup({
     enable_get_fold_virt_text = true,
     close_fold_kinds = { "imports", "comment" },
     provider_selector = function(bufnr, filetype, buftype)
-        return ftMap[filetype] or customizeSelector
+        if vim.tbl_get(ftMap, filetype) then
+            return function()
+                return getFoldsWithCustom(bufnr, ftMap[filetype])
+            end
+        end
+        return customizeSelector
     end,
     fold_virt_text_handler = handler,
 })
