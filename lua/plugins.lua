@@ -512,6 +512,11 @@ require("lazy").setup({
         "Vimjas/vim-python-pep8-indent",
         ft = { "python" },
     },
+    {
+        "mcauley-penney/visual-whitespace.nvim",
+        event = "VeryLazy",
+        config = true,
+    },
 }, lazy_config)
 
 -- vim.cmd.colorscheme("tokyonight-storm")
