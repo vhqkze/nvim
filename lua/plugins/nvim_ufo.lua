@@ -44,6 +44,9 @@ local function getFoldsWithCustom(bufnr, providerName)
     local folds = require("ufo").getFolds(bufnr, providerName)
     if providerName == "lsp" then
         folds = folds:thenCall(function(lsp_folds)
+            if lsp_folds == nil then
+                lsp_folds = {}
+            end
             for _, comment_fold in pairs(getCommentFolds(bufnr)) do
                 table.insert(lsp_folds, comment_fold)
             end
@@ -188,7 +191,10 @@ local ftMap = {
 
 require("ufo").setup({
     enable_get_fold_virt_text = true,
-    close_fold_kinds = { "imports", "comment" },
+    close_fold_kinds_for_ft = {
+        default = { "imports", "comment" },
+        html = {},
+    },
     provider_selector = function(bufnr, filetype, buftype)
         if vim.tbl_get(ftMap, filetype) then
             return function()
