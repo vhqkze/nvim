@@ -37,7 +37,7 @@ local lazy_config = {
         patterns = { "vhqkze" },
     },
     install = {
-        colorscheme = { "catppuccin-macchiato", "tokyodark", "onedark", "habamax" },
+        colorscheme = { "catppuccin-macchiato", "tokyonight-storm", "onedark", "habamax" },
     },
     performance = {
         rtp = {
@@ -68,7 +68,7 @@ require("lazy").setup({
     },
     {
         "folke/tokyonight.nvim",
-        cond = false,
+        cond = true,
         priority = 1000,
         config = function()
             require("plugins.tokyonight")
@@ -76,7 +76,7 @@ require("lazy").setup({
     },
     {
         "catppuccin/nvim",
-        cond = true,
+        cond = false,
         name = "catppuccin",
         priority = 1000,
         config = function()
@@ -519,5 +519,5 @@ require("lazy").setup({
     },
 }, lazy_config)
 
--- vim.cmd.colorscheme("tokyonight-storm")
-vim.cmd.colorscheme("catppuccin-macchiato")
+vim.cmd.colorscheme("tokyonight-storm")
+-- vim.cmd.colorscheme("catppuccin-macchiato")

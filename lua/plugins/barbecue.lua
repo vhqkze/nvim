@@ -2,6 +2,7 @@ require("barbecue").setup({
     attach_navic = false, -- attach navic to LSPs by yourself.
     include_buftypes = { "", "help" },
     exclude_filetypes = { "undotree", "diff", "toggleterm", "gitcommit", "crontab" },
+    theme = 'tokyonight',
     custom_section = function()
         local diagnostic_count = vim.diagnostic.count(0)
         local signs = { Error = " ", Warn = " ", Info = " ", Hint = " " }
