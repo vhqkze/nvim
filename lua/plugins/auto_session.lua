@@ -49,9 +49,11 @@ require("auto-session").setup({
                 vim.env.PATH = virtual_env .. "/bin:" .. vim.env.PATH
                 vim.env.VIRTUAL_ENV = virtual_env
                 -- Reconfigure pyright with the provided python path
-                if vim.fn.exists(":PyrightSetPythonPath") == 2 then
-                    vim.cmd({ cmd = "PyrightSetPythonPath", args = { virtual_env .. "/bin/python" } })
-                end
+                vim.schedule(function()
+                    if vim.fn.exists(":PyrightSetPythonPath") == 2 then
+                        vim.cmd({ cmd = "PyrightSetPythonPath", args = { virtual_env .. "/bin/python" } })
+                    end
+                end)
             end
         end,
     },
