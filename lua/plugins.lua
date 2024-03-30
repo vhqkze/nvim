@@ -113,7 +113,7 @@ require("lazy").setup({
     },
     {
         "akinsho/bufferline.nvim",
-        version = "v3.*",
+        version = "*",
         event = "VeryLazy",
         dependencies = { "nvim-tree/nvim-web-devicons" },
         config = function()
@@ -460,15 +460,6 @@ require("lazy").setup({
         event = "VeryLazy",
         config = function()
             require("plugins.murmur")
-        end,
-    },
-    {
-        "ojroques/nvim-osc52",
-        cond = function()
-            return vim.fn.has("linux") == 1
-        end,
-        config = function()
-            require("plugins.osc52")
         end,
     },
     {
