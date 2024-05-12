@@ -27,6 +27,7 @@ vim.opt.cmdheight = 0
 vim.opt.whichwrap:append("hl[]") -- 让h、l键在行首、行尾时可以进入上一行、下一行
 
 vim.opt.clipboard:append("unnamedplus")
+vim.opt.shortmess:append('I')
 
 -- provider
 if vim.fn.has("mac") == 1 then
