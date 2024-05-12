@@ -183,7 +183,7 @@ require("lazy").setup({
     },
     {
         "nvimdev/dashboard-nvim",
-        event = "VimEnter",
+        event = "UiEnter",
         config = function()
             require("plugins.dashboard")
         end,
@@ -194,13 +194,6 @@ require("lazy").setup({
         ft = { "markdown" },
         build = function()
             vim.fn["mkdp#util#install"]()
-        end,
-    },
-    {
-        "numToStr/Comment.nvim",
-        event = "VeryLazy",
-        config = function()
-            require("plugins.comment")
         end,
     },
     {
@@ -268,10 +261,16 @@ require("lazy").setup({
         end,
     },
     {
+        "vhyrro/luarocks.nvim",
+        -- priority = 1000, -- We'd like this plugin to load first out of the rest
+        event = "VeryLazy",
+        config = true, -- This automatically runs `require("luarocks-nvim").setup()`
+    },
+    {
         "nvim-neorg/neorg",
         ft = { "norg" },
-        dependencies = { "nvim-lua/plenary.nvim" },
-        build = ":Neorg sync-parsers",
+        dependencies = { "vhyrro/luarocks.nvim" },
+        version = "*",
         config = function()
             require("plugins.neorg")
         end,
