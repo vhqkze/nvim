@@ -58,7 +58,7 @@ local on_attach = function(client, bufnr)
         navbuddy.attach(client, bufnr)
     end
     if client.server_capabilities.inlayHintProvider then
-        vim.lsp.inlay_hint.enable(bufnr, true)
+        vim.lsp.inlay_hint.enable(true)
     end
     -- Enable completion triggered by <c-x><c-o>
     -- vim.api.nvim_set_option_value("omnifunc", "v:lua.vim.lsp.omnifunc", {buf = bufnr})
