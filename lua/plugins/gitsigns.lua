@@ -3,6 +3,7 @@ require("gitsigns").setup({
     preview_config = {
         border = "rounded",
     },
+    sign_priority = 100,
     on_attach = function(bufnr)
         local gs = package.loaded.gitsigns
 
@@ -15,27 +16,29 @@ require("gitsigns").setup({
         -- Navigation
         map("n", "]c", function()
             if vim.wo.diff then
-                return "]c"
+                vim.cmd.normal({ "]c", bang = true })
+            else
+                gs.nav_hunk("next")
             end
-            vim.schedule(function()
-                gs.next_hunk()
-            end)
-            return "<Ignore>"
-        end, { expr = true, desc = "Gitsigns next_hunk" })
+        end, { silent = true, desc = "Gitsigns next_hunk" })
 
         map("n", "[c", function()
             if vim.wo.diff then
-                return "[c"
+                vim.cmd.normal({ "[c", bang = true })
+            else
+                gs.nav_hunk("prev")
             end
-            vim.schedule(function()
-                gs.prev_hunk()
-            end)
-            return "<Ignore>"
-        end, { expr = true, desc = "Gitsigns prev_hunk" })
+        end, { silent = true, desc = "Gitsigns prev_hunk" })
 
         -- Actions
-        map({ "n", "v" }, "<leader>hs", ":Gitsigns stage_hunk<CR>", { silent = true, desc = "Gitsigns stage_hunk" })
-        map({ "n", "v" }, "<leader>hr", ":Gitsigns reset_hunk<CR>", { silent = true, desc = "Gitsigns reset_hunk" })
+        map("n", "<leader>hs", gs.stage_hunk, { silent = true, desc = "Gitsigns stage_hunk" })
+        map("n", "<leader>hr", gs.reset_hunk, { silent = true, desc = "Gitsigns reset_hunk" })
+        map("v", "<leader>hs", function()
+            gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
+        end, { silent = true, desc = "Gitsigns stage_selected" })
+        map("v", "<leader>hr", function()
+            gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
+        end, { silent = true, desc = "Gitsigns reset_selected" })
         map("n", "<leader>hS", gs.stage_buffer, { silent = true, desc = "Gitsigns stage_buffer" })
         map("n", "<leader>hu", gs.undo_stage_hunk, { silent = true, desc = "Gitsigns undo_stage_hunk" })
         map("n", "<leader>hR", gs.reset_buffer, { silent = true, desc = "Gitsigns reset_buffer" })
