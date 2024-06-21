@@ -503,6 +503,28 @@ require("lazy").setup({
         ft = { "python" },
     },
     {
+        "nvim-pack/nvim-spectre",
+        event = "VeryLazy",
+        build = function()
+            if vim.fn.executable("cargo") == 0 then
+                vim.notify("cargo not found!", vim.log.levels.ERROR, { title = "Spectre" })
+                return
+            end
+            local repodir = vim.fn.fnamemodify(lazypath, ":h") .. "/nvim-spectre"
+            vim.system({ "./build.sh" }, { cwd = repodir, text = true }, function(obj)
+                if obj.code == 0 then
+                    vim.notify("Spectre build success", vim.log.levels.INFO, { title = "Spectre" })
+                else
+                    local spectre_msg = "Spectre build failed!\n" .. vim.trim(obj.stderr)
+                    vim.notify(spectre_msg, vim.log.levels.ERROR, { title = "Spectre" })
+                end
+            end)
+        end,
+        config = function()
+            require("plugins.spectre")
+        end,
+    },
+    {
         "mcauley-penney/visual-whitespace.nvim",
         event = "VeryLazy",
         config = true,

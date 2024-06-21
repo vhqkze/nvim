@@ -221,6 +221,10 @@ local my_opts = {
             signcolumn = "yes",
         },
         man = "",
+        spectre_panel = {
+            statuscolumn = " %l%@v:lua.FoldClick@%{v:lua.FoldSymbol()}%X",
+            number = true,
+        },
         ["*"] = "",
     },
     nowrite = {
