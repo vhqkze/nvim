@@ -190,7 +190,6 @@ local my_opts = {
                 "%s",
                 "%=",
                 "%l",
-                "%@v:lua.PytestClick@%{%v:lua.PytestSymbol()%}%X",
                 "%@v:lua.FoldClick@%{v:lua.FoldSymbol()}%X",
             },
             signcolumn = "yes:2",
@@ -277,24 +276,21 @@ vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter" }, {
     end,
 })
 
-vim.defer_fn(function()
-    vim.cmd(string.format("hi CursorLineNr guibg=%s", cursorline_background))
-    vim.cmd(string.format("hi CursorLineFold guibg=%s", cursorline_background))
-    vim.cmd(string.format("hi CursorLineSign guibg=%s", cursorline_background))
-    local all_signs = vim.fn.sign_getdefined()
-    for _, sign in ipairs(all_signs) do
-        sign.culhl = "CursorLine" .. sign.name
-        local texthl_name = sign.texthl
-        if texthl_name ~= nil then
-            local texthl = vim.api.nvim_get_hl(0, { name = sign.texthl, link = true })
-            if texthl ~= nil then
-                texthl.background = cursorline_background
-                vim.api.nvim_set_hl(0, sign.culhl, texthl)
-                vim.fn.sign_define(sign.name, { texthl = sign.texthl, text = sign.text, numhl = sign.numhl or "", culhl = sign.culhl })
-            end
+vim.cmd(string.format("hi CursorLineNr guibg=%s", cursorline_background))
+vim.cmd(string.format("hi CursorLineFold guibg=%s", cursorline_background))
+vim.cmd(string.format("hi CursorLineSign guibg=%s", cursorline_background))
+
+vim.schedule(function()
+    local cl_bg = vim.api.nvim_get_hl(0, { name = "CursorLine", link = false }).bg
+    for _, sign in ipairs(vim.fn.sign_getdefined()) do
+        if sign.texthl then
+            local hl = vim.api.nvim_get_hl(0, { name = sign.texthl, link = false })
+            local name = sign.texthl .. "Cul"
+            vim.api.nvim_set_hl(0, name, { fg = hl.fg, bg = cl_bg })
+            vim.fn.sign_define(sign.name, { culhl = name })
         end
     end
-end, 3000)
+end)
 
 vim.keymap.set("n", "<leader>in", function()
     local result = ""
