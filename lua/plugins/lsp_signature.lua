@@ -5,7 +5,7 @@ require("lsp_signature").setup({
     handler_opts = {
         border = "rounded", -- double, rounded, single, shadow, none
     },
-    toggle_key = "<m-p>",
+    toggle_key = "<D-p>",
     padding = " ",
     hint_prefix = "💡 ",
 })

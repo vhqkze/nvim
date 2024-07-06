@@ -1,15 +1,20 @@
+local Terminal = require("toggleterm.terminal").Terminal
+
 require("toggleterm").setup({
     shade_terminals = false,
     on_open = function(term)
+        vim.keymap.set("n", "q", function()
+            term:toggle()
+        end, { silent = true, buffer = term.bufnr })
         vim.opt_local.signcolumn = "no"
         vim.opt_local.foldcolumn = "0"
         vim.opt_local.statuscolumn = ""
-        vim.defer_fn(function ()
+        vim.schedule(function()
             vim.wo[term.window].winbar = ""
-        end, 0)
+        end)
     end,
     hide_numbers = true,
-    open_mapping = "<c-_>",
+    open_mapping = vim.env.TMUX == nil and "<c-/>" or "<c-_>",
     insert_mappings = true,
     terminal_mappings = true,
 })
@@ -29,7 +34,7 @@ vim.keymap.set("n", "<m-8>", function()
     }
     local command = commands[filetype]
     if command then
-        local terminal = require("toggleterm.terminal").Terminal:new({ cmd = command, count = 88 })
+        local terminal = Terminal:new({ cmd = command, count = 88 })
         terminal:toggle()
         terminal.display_name = "Console"
     end
@@ -40,6 +45,7 @@ vim.keymap.set("n", "<leader>rr", runner.run_file, { silent = true, desc = "run 
 vim.keymap.set("n", "<leader>ro", runner.toggle, { silent = true, desc = "toggle runner" })
 
 local pytest = require("pytest")
+vim.keymap.set("n", "<leader>nf", pytest.run_file, { silent = true, desc = "pytest file" })
 vim.keymap.set("n", "<leader>nc", pytest.run_class, { silent = true, desc = "pytest class" })
 vim.keymap.set("n", "<leader>nn", pytest.run_function, { silent = true, desc = "pytest function" })
 vim.keymap.set("n", "<leader>nl", pytest.rerun_last_test, { silent = true, desc = "rerun last command" })

@@ -45,4 +45,4 @@ require("neogen").setup({
     },
 })
 
-vim.keymap.set("n", "<leader>nf", require("neogen").generate, { silent = true, desc = "neogen" })
+vim.keymap.set("n", "<leader>ng", require("neogen").generate, { silent = true, desc = "neogen" })

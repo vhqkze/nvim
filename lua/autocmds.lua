@@ -10,7 +10,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 -- windows to close with "q"
 vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "help", "qf", "lspinfo", "list", "lspsagaoutline" },
+    pattern = { "help", "qf", "lspinfo", "list", "lspsagaoutline", "notify" },
     callback = function()
         vim.keymap.set("n", "q", "<cmd>close<cr>", { silent = true, buffer = true })
     end,
@@ -70,4 +70,4 @@ local function close_old_bufs()
 end
 ---@diagnostic disable-next-line: undefined-field
 local timer = vim.uv.new_timer()
-timer:start(30 * 60 * 1000, 60 * 1000, vim.schedule_wrap(close_old_bufs))
+timer:start(60 * 1000, 60 * 1000, vim.schedule_wrap(close_old_bufs))

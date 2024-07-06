@@ -152,7 +152,6 @@ telescope.setup({
     },
 })
 
-
 vim.api.nvim_create_user_command("Symbols", function()
     local files = vim.api.nvim_get_runtime_file("data/telescope-sources/*.json", true)
     if #files == 0 then
@@ -191,7 +190,7 @@ vim.keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", { silent = tru
 vim.keymap.set("n", "<leader>fs", function()
     require("auto-session").setup_session_lens()
     require("auto-session.session-lens").search_session()
-end, { silent = true })
+end, { silent = true, desc = "Search Sessions" })
 vim.keymap.set("n", "<leader>fc", "<cmd>Telescope commands<cr>", { silent = true })
 vim.keymap.set("n", "<leader>ft", "<cmd>Telescope filetypes<cr>", { silent = true })
 vim.keymap.set("n", "<leader>fr", "<cmd>Telescope resume<cr>", { silent = true })

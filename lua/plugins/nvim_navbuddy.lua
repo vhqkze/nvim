@@ -79,4 +79,4 @@ end
 vim.cmd("hi NavbuddyNormalFloat guibg=" .. util.get_hl("normal", "bg#"))
 vim.cmd("hi NavbuddyFloatBorder guibg=" .. util.get_hl("normal", "bg#"))
 
-vim.keymap.set("n", "<leader>nb", navbuddy.open, { silent = true })
+vim.keymap.set("n", "<leader>nb", navbuddy.open, { silent = true, desc = "Navbuddy" })
