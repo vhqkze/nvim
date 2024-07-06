@@ -2,7 +2,7 @@ vim.opt.number = true -- 显示行号
 vim.opt.numberwidth = 1 -- 行号宽度
 vim.opt.cursorline = true -- 高亮当前行
 
-vim.opt.smartindent = true -- 智能缩进
+vim.opt.smartindent = false -- 智能缩进
 vim.opt.expandtab = true -- 输入tab自动转为空格
 vim.opt.tabstop = 4 -- 设置tab字符显示宽度
 vim.opt.softtabstop = 4 -- tab转为多少个空格
@@ -27,7 +27,7 @@ vim.opt.cmdheight = 0
 vim.opt.whichwrap:append("hl[]") -- 让h、l键在行首、行尾时可以进入上一行、下一行
 
 vim.opt.clipboard:append("unnamedplus")
-vim.opt.shortmess:append('I')
+vim.opt.shortmess:append("I")
 
 -- provider
 if vim.fn.has("mac") == 1 then
@@ -47,9 +47,7 @@ vim.opt.termguicolors = true
 vim.opt.signcolumn = "auto:3"
 vim.opt.splitbelow = true
 vim.opt.splitright = true
-if vim.fn.has("nvim-0.9.0") == 1 then
-    vim.opt.splitkeep = "topline"
-end
+vim.opt.splitkeep = "topline"
 
 vim.opt.fillchars:append({
     horiz     = "─",
@@ -74,6 +72,8 @@ vim.opt.listchars:append({
     space = "·",
     trail = "·",
 })
+vim.opt.diffopt:append({ "vertical" })
+vim.opt.mousescroll = "ver:1,hor:2"
 
 vim.filetype.add({
     extension = {
