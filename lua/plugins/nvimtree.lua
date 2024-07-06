@@ -13,7 +13,13 @@ require("nvim-tree").setup({
         },
     },
     renderer = {
+        group_empty = true,
         icons = {
+            web_devicons = {
+                folder = {
+                    enable = false,
+                },
+            },
             git_placement = "signcolumn",
             symlink_arrow = " -> ",
             glyphs = {
