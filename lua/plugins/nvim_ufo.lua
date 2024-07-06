@@ -126,7 +126,7 @@ local function handler(virtText, lnum, endLnum, width, truncate, ctx)
     local end_content = vim.trim(vim.fn.getline(endLnum))
     local filetype = vim.bo.filetype
     local show_end_line = false
-    local need_end_ft = { "go", "toml", "java", "javascript", "json", "jsonc" }
+    local need_end_ft = { "go", "toml", "java", "json", "jsonc", "nix" }
     if vim.tbl_contains(need_end_ft, filetype) then
         show_end_line = show_end_line or end_content:match("^%s-[}%])]")
     elseif filetype == "python" then
@@ -145,6 +145,14 @@ local function handler(virtText, lnum, endLnum, width, truncate, ctx)
         show_end_line = show_end_line or end_content:match("^%s-endfunction")
     elseif filetype == "markdown" then
         show_end_line = show_end_line or end_content:match("^%s-```")
+    elseif filetype == "ron" then
+        show_end_line = show_end_line or end_content:match("^%s-%)")
+    elseif filetype == "javascript" then
+        show_end_line = true
+    end
+    -- fold-marker
+    if start_content:match("{{{") and end_content:match("}}}%s-$") then
+        show_end_line = true
     end
     if show_end_line then
         table.insert(newVirtText, { " ••• ", "UfoFoldedFg" })
@@ -194,6 +202,7 @@ require("ufo").setup({
     close_fold_kinds_for_ft = {
         default = { "imports", "comment" },
         html = {},
+        xml = {},
     },
     provider_selector = function(bufnr, filetype, buftype)
         if vim.tbl_get(ftMap, filetype) then
