@@ -10,12 +10,8 @@ end
 vim.opt.completeopt = "menu,menuone,noselect"
 vim.opt.complete = ""
 
--- need codicon
--- https://raw.githubusercontent.com/microsoft/vscode-codicons/main/dist/codicon.ttf
--- install font, and need config it in kitty:
--- symbol_map U+EA60-U+EC0D codicon
 local cmp_kinds = {
-    Text          = " ",
+    Text          = " ",
     Method        = " ",
     Function      = " ",
     Constructor   = " ",
@@ -31,7 +27,7 @@ local cmp_kinds = {
     Keyword       = " ",
     Snippet       = " ",
     Color         = " ",
-    File          = " ",
+    File          = " ",
     Reference     = " ",
     Folder        = " ",
     EnumMember    = " ",
@@ -75,7 +71,13 @@ cmp.setup({
                 cmdline_history = "[History]",
                 codeium         = "[Codeium]",
             }
-            local source_name = source_names[entry.source.name] or "[other]"
+            -- show lsp client name
+            local source_name = ""
+            if entry.source.name == "nvim_lsp" then
+                source_name = string.format("[%s]", entry.source.source.client.name)
+            else
+                source_name = source_names[entry.source.name] or string.format("<%s>", entry.source.name)
+            end
             vim_item.menu = string.format("%-10s", kind_text) .. "  " .. source_name
             if string.len(vim_item.abbr) > 50 then
                 vim_item.abbr = string.sub(vim_item.abbr, 1, 50)
@@ -171,18 +173,34 @@ cmp.setup({
             end
         end, { "i", "s" }),
     },
+    matching = {
+        disallow_fuzzy_matching = false,
+        disallow_fullfuzzy_matching = false,
+        disallow_partial_fuzzy_matching = false,
+        disallow_partial_matching = false,
+        disallow_prefix_unmatching = false,
+        disallow_symbol_nonprefix_matching = false,
+    },
+    sorting = {
+        priority_weight = 1.0,
+        comparators = {
+            cmp.config.compare.offset,
+            cmp.config.compare.exact,
+            cmp.config.compare.score,
+            cmp.config.compare.recently_used,
+            require("cmp-under-comparator").under,
+            cmp.config.compare.locality,
+            cmp.config.compare.kind,
+            cmp.config.compare.sort_text,
+            cmp.config.compare.length,
+            cmp.config.compare.order,
+        },
+    },
     preselect = cmp.PreselectMode.None,
     sources = cmp.config.sources({
         { name = "luasnip" },
         { name = "codeium" },
-        { name = "nvim_lua" },
-        {
-            name = "nvim_lsp",
-            entry_filter = function(entry, ctx)
-                return require("cmp.types").lsp.CompletionItemKind[entry:get_kind()] ~= "Text"
-            end,
-        },
-    }, {
+        { name = "nvim_lsp" },
         { name = "buffer", option = {
             keyword_length = 3,
         }, max_item_count = 6 },
@@ -190,9 +208,36 @@ cmp.setup({
     }),
 })
 
+cmp.setup.filetype({ "lua" }, {
+    sources = {
+        { name = "luasnip" },
+        { name = "codeium" },
+        {
+            name = "nvim_lsp",
+            entry_filter = function(entry, ctx)
+                return require("cmp.types").lsp.CompletionItemKind[entry:get_kind()] ~= "Text"
+            end,
+        },
+        { name = "nvim_lua" },
+        { name = "path" },
+        { name = "buffer" },
+    },
+})
+
 cmp.setup.filetype({ "markdown" }, {
     sources = {
+        { name = "luasnip" },
+        { name = "codeium" },
         { name = "path" },
+        { name = "buffer" },
+    },
+})
+
+cmp.setup.filetype({ "norg" }, {
+    sources = {
+        { name = "luasnip" },
+        { name = "codeium" },
+        { name = "neorg" },
         { name = "buffer" },
     },
 })
@@ -240,13 +285,11 @@ local cmdline_mapping = {
         end
     end, { "c" }),
 }
+
 local cmdline_formatting = {
     fields = { "abbr", "menu" },
     format = function(entry, vim_item)
         local source_names = {
-            nvim_lsp        = "[LSP]",
-            luasnip         = "[Snip]",
-            nvim_lua        = "[Lua]",
             buffer          = "[Buffer]",
             path            = "[Path]",
             cmdline         = "[cmd]",
@@ -285,6 +328,13 @@ cmp.setup.cmdline({ "/", "?" }, {
 cmp.setup.cmdline(":", {
     mapping = cmdline_mapping,
     formatting = cmdline_formatting,
+    matching = {
+        disallow_fuzzy_matching = false,
+        disallow_fullfuzzy_matching = false,
+        disallow_partial_fuzzy_matching = false,
+        disallow_partial_matching = false,
+        disallow_prefix_unmatching = false,
+    },
     window = {
         completion = {
             winhighlight = "Normal:Pmenu,FloatBorder:PmenuSel,Search:None,CursorLine:PmenuSel",
@@ -308,13 +358,13 @@ cmp.setup.cmdline(":", {
 })
 
 local highlight_config = {
-    PmenuSel                 = { bg = "#494d64", fg = "NONE" },
+    PmenuSel                 = { bg = "#494d64", fg = "NONE"    },
     Pmenu                    = { fg = "#C5CDD9", bg = "#22252A" },
 
-    CmpItemAbbrDeprecated    = { fg = "#7E8294", bg = "NONE", underline = true },
-    CmpItemAbbrMatch         = { fg = "#82AAFF", bg = "NONE", bold      = true },
-    CmpItemAbbrMatchFuzzy    = { fg = "#82AAFF", bg = "NONE", bold      = true },
-    CmpItemMenu              = { fg = "#C792EA", bg = "NONE", italic    = true },
+    CmpItemAbbrDeprecated    = { fg = "#7E8294", bg = "NONE",   strikethrough = true },
+    CmpItemAbbrMatch         = { fg = "#82AAFF", bg = "NONE",   bold          = true },
+    CmpItemAbbrMatchFuzzy    = { fg = "#82AAFF", bg = "NONE",   bold          = true },
+    CmpItemMenu              = { fg = "#C792EA", bg = "NONE",   italic        = true },
 
     CmpItemKindField         = { fg = "#EED8DA", bg = "#B5585F" },
     CmpItemKindProperty      = { fg = "#EED8DA", bg = "#B5585F" },
@@ -348,6 +398,8 @@ local highlight_config = {
     CmpItemKindInterface     = { fg = "#D8EEEB", bg = "#58B5A8" },
     CmpItemKindColor         = { fg = "#D8EEEB", bg = "#58B5A8" },
     CmpItemKindTypeParameter = { fg = "#D8EEEB", bg = "#58B5A8" },
+
+    CmpItemKindCodeium       = { fg = "#C3E88D", bg = "#9F5EBD" },
 }
 for key, value in pairs(highlight_config) do
     vim.api.nvim_set_hl(0, key, value)

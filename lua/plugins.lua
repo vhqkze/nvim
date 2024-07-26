@@ -424,9 +424,10 @@ require("lazy").setup({
             "hrsh7th/cmp-buffer",
             "hrsh7th/cmp-path",
             "saadparwaiz1/cmp_luasnip",
-            "doxnit/cmp-luasnip-choice",
+            "L3MON4D3/cmp-luasnip-choice",
             "hrsh7th/cmp-cmdline",
             "dmitmel/cmp-cmdline-history",
+            "lukas-reineke/cmp-under-comparator",
         },
         event = { "InsertEnter", "CmdlineEnter" },
         config = function()
@@ -457,7 +458,7 @@ require("lazy").setup({
         config = true,
     },
     {
-        "jcdickinson/codeium.nvim",
+        "Exafunction/codeium.nvim",
         event = "InsertEnter",
         config = function()
             require("plugins.codeium")
