@@ -452,14 +452,9 @@ require("lazy").setup({
         end,
     },
     {
-        -- highlight cursor word
-        "nyngwang/murmur.lua",
-        commit = "bd63fc7d3122aececc9fe960660d1e4df2cf7550",
-        pin = true,
+        "vhqkze/text-radar",
         event = "VeryLazy",
-        config = function()
-            require("plugins.murmur")
-        end,
+        config = true,
     },
     {
         "jcdickinson/codeium.nvim",
