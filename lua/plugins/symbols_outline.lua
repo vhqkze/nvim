@@ -1,65 +1,88 @@
-require("symbols-outline").setup({
-    fold_markers = { "", "" },
-    show_guides = true,
-    wrap = false,
-    auto_preview = false,
-    lsp_blacklist = {},
-    symbol_blacklist = { "Enum", "Variable", "Module" },
-    autofold_depth = 1,
+local outline = require("outline")
+
+outline.setup({
+    outline_window = {
+        auto_close = true,
+        wrap = false,
+    },
+    guides = {
+        enabled = true,
+        markers = {
+            -- It is recommended for bottom and middle markers to use the same number
+            -- of characters to align all child nodes vertically.
+            bottom = " ",
+            middle = " ",
+            vertical = "▕ ",
+        },
+    },
+    symbol_folding = {
+        autofold_depth = 1,
+        markers = { "", "" },
+    },
+    preview_window = {
+        auto_preview = false,
+    },
     keymaps = {
         hover_symbol = "J",
     },
+    provider = {
+        lsp = {
+            blacklist_clients = {},
+        },
+    },
     symbols = {
-        File          = { icon = " ", hl = "@text.uri"    },
-        Module        = { icon = " ", hl = "@namespace"   },
-        Namespace     = { icon = " ", hl = "@namespace"   },
-        Package       = { icon = " ", hl = "@namespace"   },
-        Class         = { icon = " ", hl = "@type"        },
-        Method        = { icon = " ", hl = "@method"      },
-        Property      = { icon = " ", hl = "@method"      },
-        Field         = { icon = " ", hl = "@field"       },
-        Constructor   = { icon = " ", hl = "@constructor" },
-        Enum          = { icon = " ", hl = "@type"        },
-        Interface     = { icon = " ", hl = "@type"        },
-        Function      = { icon = " ", hl = "@function"    },
-        Variable      = { icon = " ", hl = "@constant"    },
-        Constant      = { icon = " ", hl = "@constant"    },
-        String        = { icon = " ", hl = "@string"      },
-        Number        = { icon = " ", hl = "@number"      },
-        Boolean       = { icon = " ", hl = "@boolean"     },
-        Array         = { icon = " ", hl = "@constant"    },
-        Object        = { icon = " ", hl = "@type"        },
-        Key           = { icon = " ", hl = "@type"        },
-        Null          = { icon = " ", hl = "@type"        },
-        EnumMember    = { icon = " ", hl = "@field"       },
-        Struct        = { icon = " ", hl = "@type"        },
-        Event         = { icon = " ", hl = "@type"        },
-        Operator      = { icon = " ", hl = "@operator"    },
-        TypeParameter = { icon = " ", hl = "@parameter"   },
-        Component     = { icon = " ", hl = "@function"    }, -- TODO: icon
-        Fragment      = { icon = " ", hl = "@constant"    }, -- TODO: icon
+        filter = {
+            default = { exclude = true },
+            python = { "Enum", "Variable", "Module", exclude = true },
+        },
+        icons = {
+            Array         = { hl = "Constant",   icon = " " },
+            Boolean       = { hl = "Boolean",    icon = " " },
+            Class         = { hl = "Type",       icon = " " },
+            Component     = { hl = "Function",   icon = " " },  -- TODO: fix icon
+            Constant      = { hl = "Constant",   icon = " " },
+            Constructor   = { hl = "Special",    icon = " " },
+            Enum          = { hl = "Type",       icon = " " },
+            EnumMember    = { hl = "Identifier", icon = " " },
+            Event         = { hl = "Type",       icon = " " },
+            Field         = { hl = "Identifier", icon = " " },
+            File          = { hl = "Identifier", icon = " " },
+            Fragment      = { hl = "Constant",   icon = " " },  -- TODO: fix icon
+            Function      = { hl = "Function",   icon = " " },
+            Interface     = { hl = "Type",       icon = " " },
+            Key           = { hl = "Type",       icon = " " },
+            Method        = { hl = "Function",   icon = " " },
+            Module        = { hl = "Function",   icon = " " },
+            Namespace     = { hl = "Include",    icon = " " },
+            Null          = { hl = "Include",    icon = " " },
+            Number        = { hl = "Type",       icon = " " },
+            Object        = { hl = "Number",     icon = " " },
+            Operator      = { hl = "Type",       icon = " " },
+            Package       = { hl = "Identifier", icon = " " },
+            Parameter     = { hl = "Include",    icon = " " },
+            Property      = { hl = "Identifier", icon = " " },
+            StaticMethod  = { hl = "Identifier", icon = " " },
+            String        = { hl = "Function",   icon = " " },
+            Struct        = { hl = "String",     icon = " " },
+            TypeAlias     = { hl = "Structure",  icon = " " },
+            TypeParameter = { hl = "Type",       icon = " " },
+            Variable      = { hl = "Identifier", icon = " " },
+        },
     },
 })
 
-require("symbols-outline.ui").markers = {
-    bottom = " ",
-    middle = " ",
-    vertical = " ",
-    horizontal = " ",
-}
-
 vim.keymap.set({ "n", "i" }, "<M-7>", function()
-    local win_ids = vim.api.nvim_list_wins()
-    local cur_win_id = vim.api.nvim_get_current_win()
-    for _, win_id in pairs(win_ids) do
-        local buf_id = vim.api.nvim_win_get_buf(win_id)
-        if vim.api.nvim_get_option_value("filetype", { buf = buf_id }) == "Outline" then -- found outline window
-            if win_id == cur_win_id then -- right in outline
-                return vim.cmd("SymbolsOutlineClose")
-            else -- not in outline
-                return vim.api.nvim_set_current_win(win_id)
-            end
+    if outline.is_open() then
+        if outline.has_focus() then
+            outline.close()
+        else
+            outline.focus_outline()
+        end
+    else
+        if not outline.has_provider() then
+            vim.notify("No supported provider...", vim.log.levels.ERROR, { title = "Outline" })
+        else
+            outline.open()
         end
     end
-    return vim.cmd("SymbolsOutlineOpen")
-end, { silent = true, desc = "Toggle SymbolsOutline" })
+end, { silent = true, desc = "Toggle Outline" })

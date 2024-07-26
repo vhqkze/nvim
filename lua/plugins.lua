@@ -134,7 +134,7 @@ require("lazy").setup({
         end,
     },
     {
-        "simrat39/symbols-outline.nvim",
+        "hedyhli/outline.nvim",
         event = "VeryLazy",
         config = function()
             require("plugins.symbols_outline")
