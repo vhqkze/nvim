@@ -70,7 +70,7 @@ local function run(cmd, display_name)
                 out = { text = "Failure!", level = "error" }
             end
             vim.notify("Job finished: " .. out.text, out.level, { title = module_name })
-            require("util").system_notify("task finished.", module_name)
+            require("utils").system_notify("task finished.", module_name)
         end,
     })
     M.console.display_name = display_name or cmd:gsub("^.-::", "")

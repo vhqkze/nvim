@@ -67,16 +67,16 @@ local hls = {
     TypeParameter = "@parameter",
 }
 
-local util = require("util")
+local utils = require("utils")
 
 for t, d in pairs(hls) do
-    local color = util.get_hl(d, "fg#")
+    local color = utils.get_hl(d, "fg#")
     if color ~= nil and color ~= "" then
         vim.cmd("hi Navbuddy" .. t .. " guifg=" .. color)
     end
 end
 
-vim.cmd("hi NavbuddyNormalFloat guibg=" .. util.get_hl("normal", "bg#"))
-vim.cmd("hi NavbuddyFloatBorder guibg=" .. util.get_hl("normal", "bg#"))
+vim.cmd("hi NavbuddyNormalFloat guibg=" .. utils.get_hl("normal", "bg#"))
+vim.cmd("hi NavbuddyFloatBorder guibg=" .. utils.get_hl("normal", "bg#"))
 
 vim.keymap.set("n", "<leader>nb", navbuddy.open, { silent = true, desc = "Navbuddy" })

@@ -1,4 +1,4 @@
-local util = require("util")
+local utils = require("utils")
 local ffi = require("ffi")
 
 ffi.cdef([[
@@ -18,7 +18,7 @@ ffi.cdef([[
 	int win_col_off(win_T *wp);
 ]])
 
-local cursorline_background = util.get_hl("CursorLine", "bg#")
+local cursorline_background = utils.get_hl("CursorLine", "bg#")
 
 local function add_cursorline_sign_bg(texthl)
     local new_hl_name = "CursorLine" .. texthl

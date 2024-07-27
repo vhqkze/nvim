@@ -195,4 +195,4 @@ vim.keymap.set("n", "<leader>fc", "<cmd>Telescope commands<cr>", { silent = true
 vim.keymap.set("n", "<leader>ft", "<cmd>Telescope filetypes<cr>", { silent = true })
 vim.keymap.set("n", "<leader>fr", "<cmd>Telescope resume<cr>", { silent = true })
 
-vim.cmd("hi TelescopeSelectionCaret guibg=" .. require("util").get_hl("TelescopeSelection", "bg#"))
+vim.cmd("hi TelescopeSelectionCaret guibg=" .. require("utils").get_hl("TelescopeSelection", "bg#"))
