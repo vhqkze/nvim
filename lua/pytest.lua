@@ -4,7 +4,7 @@ local Terminal = require("toggleterm.terminal").Terminal
 local M = {}
 M.console = nil
 M.last_command = nil
-M.stay = false -- stay focus current window
+M.stay = true -- stay focus current window
 local module_name = "Pytest"
 
 function M.is_pytest_file()
@@ -84,7 +84,7 @@ function M.get_function()
     if location == nil then
         return
     end
-    local file = vim.fn.expand("%:p")
+    local file = vim.fn.shellescape(vim.fn.expand("%:p"))
     local count = #location
     for i = 1, count do
         local item = location[count + 1 - i]
@@ -105,7 +105,7 @@ function M.get_class()
     if location == nil then
         return
     end
-    local file = vim.fn.expand("%:p")
+    local file = vim.fn.shellescape(vim.fn.expand("%:p"))
     local count = #location
     for i = 1, count do
         local item = location[count + 1 - i]
@@ -119,6 +119,11 @@ function M.get_class()
             return cmd
         end
     end
+end
+
+function M.run_file()
+    local file = vim.fn.shellescape(vim.fn.expand("%:p"))
+    run(file)
 end
 
 function M.run_class()
