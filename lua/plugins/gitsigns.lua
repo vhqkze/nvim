@@ -4,6 +4,7 @@ require("gitsigns").setup({
         border = "rounded",
     },
     sign_priority = 100,
+    culhl = true,
     on_attach = function(bufnr)
         local gs = package.loaded.gitsigns
 

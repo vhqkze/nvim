@@ -206,3 +206,27 @@ vim.diagnostic.handlers.signs = {
         orig_signs_handler.hide(ns, bufnr)
     end,
 }
+
+--- add cursorline_hl_group for diagnostic signs
+vim.api.nvim_create_autocmd("DiagnosticChanged", {
+    callback = function(args)
+        local namespaces = vim.api.nvim_get_namespaces()
+        for ns_name, ns_id in pairs(namespaces) do
+            if string.find(ns_name, "/diagnostic/signs$") then
+                local sign_marks = vim.api.nvim_buf_get_extmarks(0, ns_id, 0, -1, { details = true, hl_name = true, type = "sign" })
+                for _, extmark in ipairs(sign_marks) do
+                    if not extmark[4].cursorline_hl_group then
+                        local extmark_opts = {}
+                        extmark_opts.id = extmark[1]
+                        extmark_opts.cursorline_hl_group = extmark[4].sign_hl_group .. "Cul"
+                        extmark_opts.priority = extmark[4].priority
+                        extmark_opts.right_gravity = extmark[4].right_gravity
+                        extmark_opts.sign_hl_group = extmark[4].sign_hl_group
+                        extmark_opts.sign_text = extmark[4].sign_text
+                        vim.api.nvim_buf_set_extmark(0, ns_id, extmark[2], extmark[3], extmark_opts)
+                    end
+                end
+            end
+        end
+    end,
+})
