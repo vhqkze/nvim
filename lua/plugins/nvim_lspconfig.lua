@@ -60,6 +60,9 @@ local on_attach = function(client, bufnr)
     if client.server_capabilities.inlayHintProvider then
         vim.lsp.inlay_hint.enable(true)
     end
+    if client.server_capabilities.semanticTokensProvider then
+        vim.treesitter.stop(bufnr)
+    end
     -- Enable completion triggered by <c-x><c-o>
     -- vim.api.nvim_set_option_value("omnifunc", "v:lua.vim.lsp.omnifunc", {buf = bufnr})
 
@@ -75,7 +78,7 @@ local on_attach = function(client, bufnr)
         print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
     end, { silent = true, buffer = bufnr, desc = "Show workspace folders" })
     vim.keymap.set("n", "<space>D", vim.lsp.buf.type_definition, { silent = true, buffer = bufnr, desc = "type definition" })
-    vim.keymap.set("n", "gr", vim.lsp.buf.references, { silent = true, buffer = bufnr, desc = "Go to references" })
+    vim.keymap.set("n", "grr", vim.lsp.buf.references, { silent = true, buffer = bufnr })
     vim.keymap.set("n", "<space>f", function()
         vim.lsp.buf.format({ async = true })
     end, { silent = true, buffer = bufnr, desc = "lsp formatting" })
@@ -109,8 +112,8 @@ mason_lspconfig.setup_handlers({
                         enable = true,
                     },
                     workspace = {
-                        checkThirdParty = false
-                    }
+                        checkThirdParty = false,
+                    },
                 },
             },
         })
@@ -136,6 +139,46 @@ mason_lspconfig.setup_handlers({
             on_attach = on_attach,
             capabilities = capabilities,
             filetypes = { "sh", "bash", "zsh" },
+        })
+    end,
+    ["yamlls"] = function()
+        lspconfig.yamlls.setup({
+            on_attach = on_attach,
+            capabilities = capabilities,
+            settings = {
+                yaml = {
+                    format = {
+                        enable = true,
+                        bracketSpacing = false,
+                    },
+                    hover = true,
+                    completion = true,
+                    schemaStore = {
+                        enable = true,
+                    },
+                    editor = {
+                        formatOnType = true,
+                    },
+                    keyOrdering = false,
+                },
+            },
+        })
+    end,
+    ["ltex"] = function()
+        lspconfig.ltex.setup({
+            on_attach = on_attach,
+            capabilities = capabilities,
+            filetypes = { "assciidoc", "gitcommit", "html", "latex", "mail", "markdown", "org", "plaintex", "restructuredtext", "text" },
+            settings = {
+                ltex = {
+                    enabled = { "assciidoc", "gitcommit", "html", "latex", "mail", "markdown", "org", "plaintex", "restructuredtext", "text" },
+                    language = "zh-CN",
+                    dictionary = {
+                        ["en-US"] = { "Neovim", "LuaJIT" },
+                    },
+                    checkFrequency = "save",
+                },
+            },
         })
     end,
 })
@@ -177,6 +220,9 @@ vim.diagnostic.config({
     },
     severity_sort = {
         reverse = false,
+    },
+    float = {
+        source = true,
     },
 })
 

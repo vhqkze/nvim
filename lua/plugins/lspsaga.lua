@@ -9,6 +9,12 @@ require("lspsaga").setup({
             quit = { "q", "<esc>", "<c-c>" },
         },
     },
+    code_action = {
+        show_server_name = true,
+        keys = {
+            quit = { "q", "<esc>", "<c-c>" },
+        },
+    },
     definition = {
         keys = {
             quit = "q",
