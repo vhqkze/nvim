@@ -37,6 +37,8 @@ require("lint").linters_by_ft = {
 
 vim.api.nvim_create_autocmd({ "BufRead", "TextChanged", "BufWritePost", "InsertLeave" }, {
     callback = function()
-        require("lint").try_lint()
+        if vim.bo.modifiable then
+            require("lint").try_lint()
+        end
     end,
 })
