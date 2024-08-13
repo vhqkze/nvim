@@ -28,19 +28,24 @@ function M.save_to_file(content, filename, mode)
     return true
 end
 
-function M.system_notify(content, title, subtitle, sound)
+--- send system notification
+---@param content string
+---@param title? string
+---@param sound? string
+function M.system_notify(content, title, sound)
+    title = title or "Neovim"
+    if vim.env.TERM == "xterm-kitty" then
+        local msg = string.format("\x1b]99;i=1:d=0:p=title;%s\x1b\\\x1b]99;i=1:d=1:p=body;%s\x1b\\", title, content)
+        io.write(msg)
+        return
+    end
     if vim.fn.has("mac") == 1 then
         local cmd = string.format('display notification "%s"', content)
-        if title ~= nil then
-            cmd = cmd .. string.format(' with title "%s"', title)
-        end
-        if subtitle ~= nil then
-            cmd = cmd .. string.format(' with subtitle "%s"', subtitle)
-        end
         if sound ~= nil then
             cmd = cmd .. string.format(' sound name "%s"', sound)
         end
         vim.system({ "osascript", "-e", cmd })
+        return
     end
 end
 
