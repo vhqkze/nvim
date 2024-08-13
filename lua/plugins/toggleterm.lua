@@ -31,7 +31,8 @@ end, { silent = true })
 
 local runner = require("runner")
 vim.keymap.set("n", "<leader>rr", runner.run_file, { silent = true, desc = "run current file" })
-vim.keymap.set("n", "<leader>ro", runner.toggle, { silent = true, desc = "toggle runner" })
+vim.keymap.set("n", "<leader>rl", runner.run_last_command, { silent = true, desc = "run last command" })
+vim.keymap.set("n", "<leader>ro", runner.toggle, { silent = true, desc = "toggle runner window" })
 
 local pytest = require("pytest")
 vim.keymap.set("n", "<leader>nf", pytest.run_file, { silent = true, desc = "pytest file" })
