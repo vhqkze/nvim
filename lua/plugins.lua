@@ -12,6 +12,8 @@ if not vim.uv.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+local IS_ME = vim.env.LOGNAME == "vhqkze"
+
 local lazy_config = {
     defaults = {
         lazy = false,
@@ -455,6 +457,7 @@ require("lazy").setup({
     },
     {
         "vhqkze/text-radar",
+        cond = IS_ME,
         event = "VeryLazy",
         config = true,
     },
@@ -467,7 +470,7 @@ require("lazy").setup({
     },
     {
         "vhqkze/nvim-switch-ime",
-        dev = true,
+        cond = IS_ME,
         event = "InsertEnter",
         enabled = function()
             return vim.fn.has("mac") == 1
@@ -476,7 +479,7 @@ require("lazy").setup({
     },
     {
         "vhqkze/stringman",
-        dev = true,
+        cond = IS_ME,
         event = "VeryLazy",
         config = true,
     },
