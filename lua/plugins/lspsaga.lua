@@ -27,6 +27,7 @@ require("lspsaga").setup({
     },
     diagnostic = {},
     lightbulb = {
+        sign_priority = 5,
         virtual_text = false,
     },
     rename = {
