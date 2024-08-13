@@ -44,25 +44,9 @@ local function run(cmd, display_name)
         hidden = true,
         dir = "git_dir",
         direction = "horizontal",
-        start_in_insert = false,
         close_on_exit = false,
         on_open = function(term)
-            vim.opt_local.signcolumn = "no"
-            vim.opt_local.foldcolumn = "0"
-            vim.opt_local.statuscolumn = ""
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<c-\\><c-n>", true, true, true), "n", false)
-            vim.keymap.set("n", "q", function()
-                term:toggle()
-            end, { silent = true, buffer = term.bufnr })
-            if M.stay then
-                vim.api.nvim_set_current_win(current_window)
-            end
-            vim.defer_fn(function()
-                vim.wo[term.window].winbar = ""
-            end, 0)
-        end,
-        on_stderr = function()
-            vim.notify("task stderr", vim.log.levels.ERROR, { title = module_name })
+            term:set_mode("n")
         end,
         on_exit = function(t, job, exit_code, name)
             local out = { text = "Success!", level = "info" }
@@ -75,6 +59,9 @@ local function run(cmd, display_name)
     })
     M.console.display_name = display_name or cmd:gsub("^.-::", "")
     M.console:open()
+    if M.stay then
+        vim.api.nvim_set_current_win(current_window)
+    end
     M.last_command = cmd
     return M.console
 end

@@ -46,3 +46,16 @@ require("barbecue").setup({
         TypeParameter = "",
     },
 })
+
+vim.api.nvim_create_autocmd({ "TermOpen", "FileType" }, {
+    callback = function(args)
+        for _, win in ipairs(vim.api.nvim_list_wins()) do
+            if vim.api.nvim_win_get_buf(win) == args.buf then
+                vim.schedule(function()
+                    pcall(require("barbecue.ui").update, win)
+                end)
+                return
+            end
+        end
+    end,
+})

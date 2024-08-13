@@ -264,7 +264,7 @@ local function get_opts(buftype, filetype)
     return default_opts
 end
 
-vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter" }, {
+vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter", "TermOpen" }, {
     pattern = "*",
     callback = function(args)
         local filetype = vim.bo[args.buf].filetype

@@ -2,17 +2,6 @@ local Terminal = require("toggleterm.terminal").Terminal
 
 require("toggleterm").setup({
     shade_terminals = false,
-    on_open = function(term)
-        vim.keymap.set("n", "q", function()
-            term:toggle()
-        end, { silent = true, buffer = term.bufnr })
-        vim.opt_local.signcolumn = "no"
-        vim.opt_local.foldcolumn = "0"
-        vim.opt_local.statuscolumn = ""
-        vim.schedule(function()
-            vim.wo[term.window].winbar = ""
-        end)
-    end,
     hide_numbers = true,
     open_mapping = vim.env.TMUX == nil and "<c-/>" or "<c-_>",
     insert_mappings = true,

@@ -10,7 +10,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 -- windows to close with "q"
 vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "help", "qf", "lspinfo", "list", "lspsagaoutline", "notify" },
+    pattern = { "help", "qf", "lspinfo", "list", "lspsagaoutline", "notify", "toggleterm" },
     callback = function()
         vim.keymap.set("n", "q", "<cmd>close<cr>", { silent = true, buffer = true })
     end,
@@ -35,6 +35,17 @@ vim.api.nvim_create_autocmd("BufReadPost", {
         local lcount = vim.api.nvim_buf_line_count(0)
         if mark[1] > 0 and mark[1] <= lcount then
             pcall(vim.api.nvim_win_set_cursor, 0, mark)
+        end
+    end,
+})
+
+vim.api.nvim_create_autocmd("TermOpen", {
+    callback = function(args)
+        for _, win in ipairs(vim.api.nvim_list_wins()) do
+            if vim.api.nvim_win_get_buf(win) == args.buf then
+                vim.wo[win].sidescrolloff = 0
+                return
+            end
         end
     end,
 })
