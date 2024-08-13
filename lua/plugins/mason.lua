@@ -41,7 +41,7 @@ if vim.fn.executable("nix") == 1 then
     table.insert(lsp, "rnix") -- nix
 end
 if vim.fn.executable("nginx") == 1 then
-    table.insert(lsp, "nginx-language-server") -- nginx
+    table.insert(lsp, "nginx_language_server") -- nginx
 end
 
 require("mason-lspconfig").setup({
