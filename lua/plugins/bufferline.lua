@@ -1,10 +1,14 @@
+local normal = vim.api.nvim_get_hl(0, { name = "Normal" }).bg
+local nvim_tree_win_separator = vim.api.nvim_get_hl(0, { name = "NvimTreeWinSeparator" }).bg
+local nvim_tree_padding = nvim_tree_win_separator == normal and 0 or 1
+
 require("bufferline").setup({
     options = {
         indicator = {
             style = "none",
         },
         offsets = {
-            { filetype = "NvimTree", text = "File Explorer", text_align = "center", padding = 0 },
+            { filetype = "NvimTree", text = "File Explorer", text_align = "center", padding = nvim_tree_padding },
             { filetype = "undotree", text = "Undo", text_align = "center", padding = 0 },
         },
         get_element_icon = function(element)
