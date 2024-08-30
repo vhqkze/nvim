@@ -200,6 +200,12 @@ require("lazy").setup({
         end,
     },
     {
+        "tigion/nvim-asciidoc-preview",
+        ft = { "asciidoc" },
+        build = "cd server && npm install",
+        config = true,
+    },
+    {
         "NvChad/nvim-colorizer.lua",
         event = "VeryLazy",
         config = function()

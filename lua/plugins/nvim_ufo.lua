@@ -205,6 +205,11 @@ require("ufo").setup({
         xml = {},
     },
     provider_selector = function(bufnr, filetype, buftype)
+        if filetype == "asciidoc" then
+            --- create folds by	`vim.g.asciidoc_folding = 1`
+            ---	:help ft-asciidoc-plugin
+            return ""
+        end
         if vim.tbl_get(ftMap, filetype) then
             return function()
                 return getFoldsWithCustom(bufnr, ftMap[filetype])

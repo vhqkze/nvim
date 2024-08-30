@@ -75,6 +75,10 @@ vim.opt.listchars:append({
 vim.opt.diffopt:append({ "vertical" })
 vim.opt.mousescroll = "ver:1,hor:2"
 
+vim.g.asciidoc_folding = 1
+vim.g.asciidoc_fold_under_title = 0
+vim.g.asciidoc_fold_under_title = 0
+
 vim.filetype.add({
     extension = {
         ---@diagnostic disable-next-line: unused-local

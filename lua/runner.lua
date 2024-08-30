@@ -79,6 +79,7 @@ M.file = {
 }
 ---@type table<string, string|cmdOpts>
 M.filetype = {
+    asciidoc = ":AsciiDocPreview",
     bash = "bash $file",
     go = "go run $file",
     html = "open $file",

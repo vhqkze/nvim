@@ -9,6 +9,7 @@ web_devicons.setup({
         ahk = { icon = "", color = "#4caf50", name = "Autohotkey" },
         log = { icon = "󱂅", color = "#4caf50", name = "Log" },
         icns = { icon = "", color = "#a074c4", name = "Icns" },
+        adoc = { icon = "󰈙", color = "#6d8086", name = "Asciidoc" },
     },
     override_by_filename = {
         sketchybarrc = { icon = "", color = "#6d8086", name = "Sketchybarrc" },
