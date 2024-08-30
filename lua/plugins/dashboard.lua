@@ -44,10 +44,7 @@ require("dashboard").setup({
                 icon_hl = "@function",
                 desc = "Session",
                 group = "@property",
-                action = function()
-                    require("auto-session").setup_session_lens()
-                    require("auto-session.session-lens").search_session()
-                end,
+                action = "SessionSearch",
                 key = "s",
             },
             {
