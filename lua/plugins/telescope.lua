@@ -11,6 +11,7 @@ local pickers = require("telescope.pickers")
 local utils = require("telescope.utils")
 local entry_display = require("telescope.pickers.entry_display")
 local conf = require("telescope.config").values
+local builtin = require("telescope.builtin")
 
 local new_maker = function(filepath, bufnr, opts)
     opts = opts or {}
@@ -184,7 +185,16 @@ vim.api.nvim_create_user_command("Theme", require("telescope.builtin").colorsche
 
 vim.keymap.set("n", "<m-j>", "<cmd>Telescope<cr>", { silent = true })
 vim.keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { silent = true })
+vim.keymap.set("n", "<leader>fF", function()
+    builtin.find_files({ hidden = true, no_ignore = true })
+end, { silent = true, desc = "Find Files (No Ignore)" })
 vim.keymap.set("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", { silent = true })
+vim.keymap.set("n", "<leader>fG", function()
+    builtin.live_grep({ additional_args = { "-uu" } })
+end, { silent = true, desc = "Live Grep (No Ignore)" })
+vim.keymap.set({ "n", "x" }, "<leader>fw", function()
+    builtin.grep_string()
+end, { silent = true, desc = "Grep String" })
 vim.keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { silent = true })
 vim.keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", { silent = true })
 vim.keymap.set("n", "<leader>fs", "<cmd>SessionSearch<cr>", { silent = true, desc = "Search Sessions" })
