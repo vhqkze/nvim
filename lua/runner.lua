@@ -74,7 +74,11 @@ M.file = {
     ["/yabairc$"] = { cmd = "yabai --restart-service", open_term = false },
     ["/sketchybarrc$"] = { cmd = "brew services restart sketchybar", open_term = false },
     ["/skhdrc$"] = { cmd = "skhd --restart-service", open_term = false },
-    ["/test_.*%.py$"] = "pytest $file",
+    ["/test_.*%.py$"] = {
+        cmd = "pytest $file",
+        root_pattern = { "pyproject.toml", "pytest.ini", ".pytest.ini", "tox.ini", "setup.cfg", ".git" },
+        focus = false,
+    },
     ["/nvim/.*%.lua$"] = ":luafile %",
 }
 ---@type table<string, string|cmdOpts>

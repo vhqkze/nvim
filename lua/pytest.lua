@@ -30,6 +30,12 @@ function M.toggle(state)
     end
 end
 
+---@return string
+local function get_root_dir()
+    local root_dir = vim.fs.root(0, { "pyproject.toml", "pytest.ini", ".pytest.ini", "tox.ini", "setup.cfg", ".git" })
+    return root_dir or vim.uv.cwd()
+end
+
 local function run(cmd, display_name)
     if cmd == nil or cmd == "" then
         vim.notify("no command", vim.log.levels.INFO, { title = module_name })
@@ -42,7 +48,7 @@ local function run(cmd, display_name)
     M.console = Terminal:new({
         cmd = "pytest --no-header -q " .. cmd,
         hidden = true,
-        dir = "git_dir",
+        dir = get_root_dir(),
         direction = "horizontal",
         close_on_exit = false,
         on_open = function(term)
