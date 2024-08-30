@@ -366,10 +366,10 @@ require("lazy").setup({
         end,
     },
     {
-        "mhartington/formatter.nvim",
-        event = { "BufRead", "VeryLazy" },
+        "stevearc/conform.nvim",
+        event = "VeryLazy",
         config = function()
-            require("plugins.formatter")
+            require("plugins.conform")
         end,
     },
     {
