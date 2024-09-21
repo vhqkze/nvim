@@ -50,6 +50,13 @@ vim.api.nvim_create_autocmd("TermOpen", {
     end,
 })
 
+-- don't load dashboard if read from stdin
+vim.api.nvim_create_autocmd("StdinReadPre", {
+    callback = function()
+        vim.g.read_from_stdin = 1
+    end,
+})
+
 local function close_old_bufs()
     ---@class Buffer
     ---@field bufnr number
