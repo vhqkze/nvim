@@ -8,26 +8,88 @@ require("toggleterm").setup({
     terminal_mappings = true,
 })
 
-vim.keymap.set("t", "<m-8>", "<cmd>88ToggleTerm<cr>", { silent = true })
-
-vim.keymap.set("n", "<m-8>", function()
-    local console = require("toggleterm.terminal").get(88)
-    if console then -- 已经有console
-        return vim.cmd("88ToggleTerm")
-    end
-    -- 没有console， 创建console
-    local filetype = vim.bo.filetype
-    local commands = {
-        lua = "lua",
-        python = "ipython || python3",
+---@param filetype string
+---@return string|nil
+local function get_command_by_ft(filetype)
+    ---@type table<string, string[]>
+    local ft_commands = {
+        java = { "jshell" },
+        javascript = { "node" },
+        lua = { "lua", "luajit" },
+        python = { "ipython", "python3" },
+        ruby = { "irb" },
+        swift = { "swift" },
     }
-    local command = commands[filetype]
-    if command then
-        local terminal = Terminal:new({ cmd = command, count = 88 })
-        terminal:toggle()
-        terminal.display_name = "Console"
+    local commands = ft_commands[filetype]
+    if commands == nil then
+        return
     end
-end, { silent = true })
+    for _, c in ipairs(commands) do
+        if vim.fn.executable(vim.split(c, " ")[1]) == 1 then
+            return c
+        end
+    end
+end
+
+local ft_console = {}
+vim.keymap.set("n", "<m-8>", function()
+    local filetype = vim.bo.filetype
+    if ft_console[filetype] then
+        ft_console[filetype]:toggle()
+        return
+    end
+    local command = get_command_by_ft(filetype)
+    if command == nil then
+        vim.notify("console command not found or not executable", vim.log.levels.WARN)
+        return
+    end
+    local cwd = vim.fs.root(0, { ".git", "pyproject.toml", "package.json" })
+    cwd = cwd or vim.uv.cwd()
+    local console = Terminal:new({
+        cmd = command,
+        hidden = true,
+        dir = cwd,
+        on_open = function(term)
+            vim.keymap.set({ "n", "t" }, "<m-8>", function()
+                term:close()
+            end, { silent = true, buffer = term.bufnr })
+        end,
+    })
+    console:open()
+    ft_console[filetype] = console
+end, { silent = true, desc = "open console" })
+
+if vim.fn.executable("lazygit") == 1 then
+    local lazygit = Terminal:new({
+        cmd = "lazygit",
+        hidden = true,
+        dir = "git_dir",
+        start_in_insert = false,
+        direction = "tab",
+        on_create = function(term)
+            vim.keymap.set({ "t" }, "<esc>", "<esc>", { silent = true, buffer = term.bufnr })
+        end,
+    })
+    vim.keymap.set("n", "<leader>lg", function()
+        lazygit:toggle()
+    end, { silent = true, desc = "toggle lazygit" })
+end
+
+if vim.fn.executable("gitui") == 1 then
+    local gitui = Terminal:new({
+        cmd = "gitui",
+        hidden = true,
+        dir = "git_dir",
+        start_in_insert = false,
+        direction = "tab",
+        on_create = function(term)
+            vim.keymap.set({ "t" }, "<esc>", "<esc>", { silent = true, buffer = term.bufnr })
+        end,
+    })
+    vim.keymap.set("n", "<leader>gu", function()
+        gitui:toggle()
+    end, { silent = true, desc = "toggle gitui" })
+end
 
 local runner = require("runner")
 vim.keymap.set("n", "<leader>rr", runner.run_file, { silent = true, desc = "run current file" })
