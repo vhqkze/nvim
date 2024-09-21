@@ -11,7 +11,6 @@ vim.opt.shiftwidth = 4 -- 自动缩进时，缩进长度为4
 vim.opt.mouse = "a" -- 支持使用鼠标
 -- vim.opt.encoding = "utf-8" -- 使用utf-8编码
 -- vim.opt.fileformat = "unix"
-vim.opt.laststatus = 2 -- 状态栏始终显示
 vim.opt.scrolloff = 3 -- 上下显示多余3行
 vim.opt.sidescrolloff = 20 -- 水平滚动时预留字符数
 
@@ -24,7 +23,7 @@ vim.opt.wrapscan = true -- 重新搜索，在搜索到文件头或尾时，返�
 vim.opt.wrap = false
 vim.opt.swapfile = false
 vim.opt.cmdheight = 0
-vim.opt.whichwrap:append("hl[]") -- 让h、l键在行首、行尾时可以进入上一行、下一行
+vim.opt.whichwrap:append({ h = true, l = true, ["["] = true, ["]"] = true, ["<"] = true, [">"] = true })
 
 vim.opt.clipboard:append("unnamedplus")
 vim.opt.shortmess:append("I")
@@ -47,7 +46,6 @@ vim.opt.termguicolors = true
 vim.opt.signcolumn = "auto:3"
 vim.opt.splitbelow = true
 vim.opt.splitright = true
-vim.opt.splitkeep = "topline"
 
 vim.opt.fillchars:append({
     horiz     = "─",
@@ -73,7 +71,12 @@ vim.opt.listchars:append({
     trail = "·",
 })
 vim.opt.diffopt:append({ "vertical" })
-vim.opt.mousescroll = "ver:1,hor:2"
+vim.opt.mousescroll = { "ver:1", "hor:2" }
+vim.opt.guicursor = {
+    "n-v-sm:block-blinkon30",
+    "i-c-ci-ve:ver25-blinkon30",
+    "r-cr-o:hor20-blinkon30",
+}
 
 vim.g.asciidoc_folding = 1
 vim.g.asciidoc_fold_under_title = 0

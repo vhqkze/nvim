@@ -1,8 +1,18 @@
+local dirname = ""
+local lazypath = vim.fn.stdpath("data") .. "/lazy"
+dirname = string.format("%s:s?%s?%s?", dirname, lazypath, "[PLUGIN]")
+dirname = string.format("%s:s?%s?%s?", dirname, vim.env.VIM, "$VIM")
+dirname = string.format("%s:s?%s?%s?", dirname, vim.uv.fs_realpath(vim.env.TMPDIR), "$TMPDIR")
+dirname = dirname .. ":~:."
+
 require("barbecue").setup({
     attach_navic = false, -- attach navic to LSPs by yourself.
     include_buftypes = { "", "help" },
     exclude_filetypes = { "undotree", "diff", "toggleterm", "gitcommit", "crontab" },
-    theme = 'tokyonight',
+    theme = "tokyonight",
+    modifiers = {
+        dirname = dirname,
+    },
     custom_section = function()
         local diagnostic_count = vim.diagnostic.count(0)
         local signs = { Error = " ", Warn = " ", Info = " ", Hint = " " }

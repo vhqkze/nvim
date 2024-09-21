@@ -16,7 +16,7 @@ M.config = {
         hidden = true,
         notify = true, -- for shell command
         root_pattern = { ".git" },
-        focus = true,
+        focus = false,
         ---@type string|fun(cmd: string): string
         display_name = function(cmd)
             return cmd:match("^%S+")
@@ -80,6 +80,7 @@ M.file = {
         focus = false,
     },
     ["/nvim/.*%.lua$"] = ":luafile %",
+    ["/hammerspoon/.*%.lua$"] = ":!hs %",
 }
 ---@type table<string, string|cmdOpts>
 M.filetype = {
@@ -93,6 +94,7 @@ M.filetype = {
     markdown = ":MarkdownPreview",
     perl = "perl $file",
     python = { cmd = "python3 -u $file", focus = false },
+    ruby = "ruby $file",
     rust = "rustc $file && $fileNameWithoutExt",
     sh = "bash $file",
     swift = "swift $file",

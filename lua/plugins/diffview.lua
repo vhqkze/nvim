@@ -8,4 +8,12 @@ require("diffview").setup({
             vim.opt_local.colorcolumn = { 80 }
         end,
     },
+    keymaps = {
+        view = {
+            { "n", "<c-n>", actions.toggle_files, { desc = "Toggle files panel" } },
+        },
+        file_panel = {
+            { "n", "<c-n>", actions.toggle_files, { desc = "Toggle files panel" } },
+        },
+    },
 })

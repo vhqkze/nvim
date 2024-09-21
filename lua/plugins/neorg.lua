@@ -74,5 +74,8 @@ require("neorg").setup({
                 },
             },
         },
+        ["core.export"] = {
+            config = {},
+        },
     },
 })

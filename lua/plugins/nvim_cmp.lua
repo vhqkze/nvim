@@ -201,9 +201,7 @@ cmp.setup({
         { name = "luasnip" },
         { name = "codeium" },
         { name = "nvim_lsp" },
-        { name = "buffer", option = {
-            keyword_length = 3,
-        }, max_item_count = 6 },
+        { name = "buffer", option = { keyword_length = 3 }, max_item_count = 6 },
         { name = "path" },
     }),
 })
@@ -220,7 +218,7 @@ cmp.setup.filetype({ "lua" }, {
         },
         { name = "nvim_lua" },
         { name = "path" },
-        { name = "buffer" },
+        { name = "buffer", option = { keyword_length = 3 }, max_item_count = 6 },
     },
 })
 
@@ -229,7 +227,7 @@ cmp.setup.filetype({ "markdown" }, {
         { name = "luasnip" },
         { name = "codeium" },
         { name = "path" },
-        { name = "buffer" },
+        { name = "buffer", option = { keyword_length = 3 }, max_item_count = 6 },
     },
 })
 
@@ -238,7 +236,7 @@ cmp.setup.filetype({ "norg" }, {
         { name = "luasnip" },
         { name = "codeium" },
         { name = "neorg" },
-        { name = "buffer" },
+        { name = "buffer", option = { keyword_length = 3 }, max_item_count = 6 },
     },
 })
 

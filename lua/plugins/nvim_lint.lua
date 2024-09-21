@@ -30,6 +30,8 @@ lint.linters.zhlint = {
     end,
 }
 
+lint.linters.commitlint.env = { NODE_PATH = vim.fn.stdpath("data") .. "/mason/packages/commitlint/node_modules" }
+
 require("lint").linters_by_ft = {
     markdown = { "zhlint", "markdownlint" },
     gitcommit = { "commitlint" },
