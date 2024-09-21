@@ -2,7 +2,7 @@ local dirname = ""
 local lazypath = vim.fn.stdpath("data") .. "/lazy"
 dirname = string.format("%s:s?%s?%s?", dirname, lazypath, "[PLUGIN]")
 dirname = string.format("%s:s?%s?%s?", dirname, vim.env.VIM, "$VIM")
-dirname = string.format("%s:s?%s?%s?", dirname, vim.uv.fs_realpath(vim.env.TMPDIR), "$TMPDIR")
+dirname = string.format("%s:s?%s?%s?", dirname, vim.uv.fs_realpath(vim.env.TMPDIR or vim.uv.os_tmpdir()), "$TMPDIR")
 dirname = dirname .. ":~:."
 
 require("barbecue").setup({
