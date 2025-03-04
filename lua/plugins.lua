@@ -417,6 +417,13 @@ require("lazy").setup({
             require("plugins.nvim_navbuddy")
         end,
     },
+    {
+        "Wansmer/symbol-usage.nvim",
+        event = "LspAttach",
+        config = function()
+            require("plugins.symbol_usage")
+        end,
+    },
     -- completion
     {
         "L3MON4D3/LuaSnip",
