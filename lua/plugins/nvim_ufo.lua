@@ -147,7 +147,7 @@ local function handler(virtText, lnum, endLnum, width, truncate, ctx)
         show_end_line = show_end_line or end_content:match("^%s-```")
     elseif filetype == "ron" then
         show_end_line = show_end_line or end_content:match("^%s-%)")
-    elseif filetype == "javascript" then
+    elseif filetype == "javascript" or filetype == "typescript" then
         show_end_line = true
     end
     -- fold-marker
@@ -195,6 +195,8 @@ local ftMap = {
     lua = "treesitter",
     swift = "treesitter",
     vim = "treesitter",
+    javascript = "treesitter",
+    typescript = "treesitter",
 }
 
 require("ufo").setup({
@@ -203,6 +205,7 @@ require("ufo").setup({
         default = { "imports", "comment" },
         html = {},
         xml = {},
+        gitcommit = {},
     },
     provider_selector = function(bufnr, filetype, buftype)
         if filetype == "asciidoc" then

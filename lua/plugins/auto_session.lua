@@ -1,4 +1,4 @@
-vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos"
+vim.o.sessionoptions = "blank,buffers,curdir,help,tabpages,winsize,winpos"
 
 local function close_windows()
     for _, win in ipairs(vim.api.nvim_list_wins()) do
@@ -69,7 +69,7 @@ require("auto-session").setup({
     pre_restore_cmds = { remove_virtual_env },
     post_restore_cmds = { restore_python },
     session_lens = {
-        path_display = { "smart" },
+        path_display = { "absolute" },
         load_on_setup = false,
         previewer = false,
     },

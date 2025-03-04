@@ -6,7 +6,7 @@ conform.setup({
         css = { "prettier" },
         go = { "gofmt" },
         graphql = { "prettier" },
-        html = { "prettier" },
+        html = { lsp_format = "prefer" },
         java = { lsp_format = "prefer" },
         javascript = { "prettier" },
         json = { "prettier" },

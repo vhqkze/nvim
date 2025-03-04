@@ -46,7 +46,7 @@ local function run(cmd, display_name)
     end
     local current_window = vim.api.nvim_get_current_win()
     M.console = Terminal:new({
-        cmd = "pytest --no-header -q " .. cmd,
+        cmd = "pytest --no-header -vv -q " .. cmd,
         hidden = true,
         dir = get_root_dir(),
         direction = "horizontal",
