@@ -26,6 +26,9 @@ require("lspsaga").setup({
         },
     },
     diagnostic = {},
+    implement = {
+        enable = false,
+    },
     lightbulb = {
         sign_priority = 5,
         virtual_text = false,
@@ -43,11 +46,14 @@ require("lspsaga").setup({
         border = "rounded",
         code_action = "💡",
         diagnostic = "🐞",
+        expand = "",
+        collapse = "",
     },
 })
 
 -- show hover doc and press twice will jumpto hover window
-vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<cr>", { silent = true })
+-- see nvim_ufo.lua
+-- vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<cr>", { silent = true })
 
 -- lsp finder to find the cursor word definition and reference
 vim.keymap.set("n", "gh", "<cmd>Lspsaga finder<cr>", { silent = true, desc = "Find definition and reference" })
