@@ -35,6 +35,7 @@ wilder.set_option("pipeline", {
     ),
 })
 -- wilder: highlights
+-- stylua: ignore
 local gradient = {
     "#f4468f", "#fd4a85", "#ff507a", "#ff566f", "#ff5e63",
     "#ff6658", "#ff704e", "#ff7a45", "#ff843d", "#ff9036",

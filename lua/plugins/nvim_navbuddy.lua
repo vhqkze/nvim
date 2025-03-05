@@ -8,6 +8,7 @@ navbuddy.setup({
             branch = " ",
         },
     },
+    -- stylua: ignore
     icons = {
         File          = " ",
         Module        = " ",
@@ -38,6 +39,7 @@ navbuddy.setup({
     },
 })
 
+-- stylua: ignore
 local hls = {
     File          = "@text.uri",
     Module        = "@namespace",

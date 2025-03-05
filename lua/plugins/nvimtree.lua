@@ -28,6 +28,7 @@ require("nvim-tree").setup({
                     arrow_closed = "",
                     arrow_open = "",
                 },
+                -- stylua: ignore
                 git = {
                     unstaged  = "",
                     staged    = "",

@@ -36,6 +36,7 @@ outline.setup({
             python = { "Enum", "Variable", "Module", exclude = true },
             lua = { "Constant", "String", "Variable", "Object", "Array", "Package", "Boolean", exclude = true },
         },
+        -- stylua: ignore
         icons = {
             Array         = { hl = "Constant",   icon = " " },
             Boolean       = { hl = "Boolean",    icon = " " },

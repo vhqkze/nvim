@@ -1,3 +1,4 @@
+-- stylua: ignore
 local mode_map = {
     ["n"]      = "NORMAL",
     ["no"]     = "O-PENDING",

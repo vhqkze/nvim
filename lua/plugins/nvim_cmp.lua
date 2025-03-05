@@ -10,6 +10,7 @@ end
 vim.opt.completeopt = "menu,menuone,noselect"
 vim.opt.complete = ""
 
+-- stylua: ignore
 local cmp_kinds = {
     Text          = " ",
     Method        = " ",
@@ -61,6 +62,7 @@ cmp.setup({
         format = function(entry, vim_item)
             local kind_text = vim_item.kind
             vim_item.kind = string.format(" %s ", cmp_kinds[kind_text])
+            -- stylua: ignore
             local source_names = {
                 nvim_lsp        = "[LSP]",
                 luasnip         = "[Snippet]",
@@ -287,6 +289,7 @@ local cmdline_mapping = {
 local cmdline_formatting = {
     fields = { "abbr", "menu" },
     format = function(entry, vim_item)
+        -- stylua: ignore
         local source_names = {
             buffer          = "[Buffer]",
             path            = "[Path]",
@@ -355,6 +358,7 @@ cmp.setup.cmdline(":", {
     }),
 })
 
+-- stylua: ignore
 local highlight_config = {
     PmenuSel                 = { bg = "#494d64", fg = "NONE"    },
     Pmenu                    = { fg = "#C5CDD9", bg = "#22252A" },

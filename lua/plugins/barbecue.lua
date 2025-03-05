@@ -27,6 +27,7 @@ require("barbecue").setup({
             result_hint,
         }
     end,
+    -- stylua: ignore
     kinds = {
         File          = "",
         Module        = "",

@@ -47,6 +47,7 @@ vim.opt.signcolumn = "auto:3"
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 
+-- stylua: ignore
 vim.opt.fillchars:append({
     horiz     = "─",
     horizup   = "┴",

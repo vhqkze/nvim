@@ -26,9 +26,7 @@ local types = require("luasnip.util.types")
 local parse = require("luasnip.util.parser").parse_snippet
 local snippets, autosnippets = {}, {}
 
-
 ---@see https://docs.asciidoctor.org/asciidoc/latest/attributes/document-attributes-ref
-
 
 local function in_header()
     local end_line = vim.fn.line(".") - 1
@@ -65,23 +63,23 @@ local intrinsic_attributes = {
     s({ trig = ":docdir:", name = "docdir", dscr = "Full path of the directory that contains the source document. Empty if the safe mode is SERVER or SECURE (to conceal the file’s location)." }, { t(":docdir: "), i(1, vim.fn.getcwd()) }, { show_condition = not_api_cli_only }),
     s({ trig = ":docfile:", name = "docfile", dscr = "Full path of the source document. Truncated to the basename if the safe mode is SERVER or SECURE (to conceal the file’s location)." }, { t(":docfile: "), i(1, vim.fn.expand("%:p")) }, { show_condition = not_api_cli_only }),
     s({ trig = ":docfilesuffix:", name = "docfilesuffix", dscr = "File extension of the source document, including the leading period." }, { t(":docfilesuffix: "), i(1, ".adoc") }, { show_condition = not_api_cli_only }),
-    s({ trig = ":docname:", name = "docname", dscr = "Root name of the source document (no leading path or file extension)." }, { t(":docname: "), i(1, vim.fn.expand('%:t:r')) }, { show_condition = not_api_cli_only }),
+    s({ trig = ":docname:", name = "docname", dscr = "Root name of the source document (no leading path or file extension)." }, { t(":docname: "), i(1, vim.fn.expand("%:t:r")) }, { show_condition = not_api_cli_only }),
     s({ trig = ":doctime:", name = "doctime", dscr = "Last modified time of the source document." }, { t(":doctime: "), i(1, os.date("%H:%M:%S UTC")) }, { show_condition = is_line_start }),
     s({ trig = ":doctype-<doctype>:", name = "doctype-<doctype>", dscr = "A convenience attribute for checking the doctype of the document. <doctype> is the value of the `doctype` attribute (e.g., `doctype-book`). Only one such attribute is set at time." }, { t(":doctype-: "), i(1, "<doctype>") }, { show_condition = is_line_start }),
     s({ trig = ":docyear:", name = "docyear", dscr = "Year that the document was last modified." }, { t(":docyear: "), i(1, os.date("%Y")) }, { show_condition = is_line_start }),
     s({ trig = ":embedded:", name = "embedded", dscr = "Only set if content is being converted to an embedded document (i.e., body of document only)." }, { t(":embedded: "), i(1, os.date("%Y")) }, { show_condition = is_line_start }),
     s({ trig = ":filetype:", name = "filetype", dscr = "File extension of the output file name (without leading period)." }, { t(":filetype: "), i(1, "html") }, { show_condition = not_api_cli_only }),
     s({ trig = ":filetype-<filetype>:", name = "filetype-<filetype>", dscr = "A convenience attribute for checking the filetype of the output. <filetype> is the value of the `filetype` attribute (e.g., `filetype-html`). Only one such attribute is set at time." }, { t(":filetype-: "), i(1, "<filetype>") }, { show_condition = is_line_start }),
-    s({ trig = ":htmlsyntax:", name = "htmlsyntax", dscr = "Syntax used when generating the HTML output. Controlled by and derived from the backend name (html=html or xhtml=html)." }, { t(":htmlsyntax: "), c(1, { t('html'), t('xml') }) }, { show_condition = is_line_start }),
+    s({ trig = ":htmlsyntax:", name = "htmlsyntax", dscr = "Syntax used when generating the HTML output. Controlled by and derived from the backend name (html=html or xhtml=html)." }, { t(":htmlsyntax: "), c(1, { t("html"), t("xml") }) }, { show_condition = is_line_start }),
     s({ trig = ":localdate:", name = "localdate", dscr = "Date when the document was converted." }, { t(":localdate: "), i(1, os.date("%Y-%m-%d")) }, { show_condition = is_line_start }),
     s({ trig = ":localdatetime:", name = "localdatetime", dscr = "Date and time when the document was converted." }, { t(":localdatetime: "), i(1, os.date("%Y-%m-%d %H:%M:%S UTC")) }, { show_condition = is_line_start }),
     s({ trig = ":localtime:", name = "localtime", dscr = "Time when the document was converted." }, { t(":localtime: "), i(1, os.date("%H:%M:%S UTC")) }, { show_condition = is_line_start }),
     s({ trig = ":localyear:", name = "localyear", dscr = "Year when the document was converted." }, { t(":localyear: "), i(1, os.date("%Y")) }, { show_condition = is_line_start }),
-    s({ trig = ":outdir:", name = "outdir", dscr = "Full path of the output directory. (Cannot be referenced in the content. Only available to the API once the document is converted)." }, { t(":outdir: "), i(1, vim.fn.expand('%:p')) }, { show_condition = is_line_start }),
-    s({ trig = ":outfile:", name = "outfile", dscr = "Full path of the output file. (Cannot be referenced in the content. Only available to the API once the document is converted)." }, { t(":outfile: "), i(1, vim.fn.expand('%:p:r')..".html") }, { show_condition = is_line_start }),
+    s({ trig = ":outdir:", name = "outdir", dscr = "Full path of the output directory. (Cannot be referenced in the content. Only available to the API once the document is converted)." }, { t(":outdir: "), i(1, vim.fn.expand("%:p")) }, { show_condition = is_line_start }),
+    s({ trig = ":outfile:", name = "outfile", dscr = "Full path of the output file. (Cannot be referenced in the content. Only available to the API once the document is converted)." }, { t(":outfile: "), i(1, vim.fn.expand("%:p:r") .. ".html") }, { show_condition = is_line_start }),
     s({ trig = ":outfilesuffix:", name = "outfilesuffix", dscr = "File extension of the output file (starting with a period) as determined by the backend (`.html` for `html`, `.xml` for `docbook`, etc.)." }, { t(":outfilesuffix: "), i(1, ".html") }, { show_condition = is_line_start }),
-    s({ trig = ":safe-mode-level:", name = "safe-mode-level", dscr = "Numeric value of the safe mode setting. (0=UNSAFE, 1=SAFE, 10=SERVER, 20=SECURE)." }, { t(":safe-mode-level: "), c(1, { t('0'), t('1'), t("10"), t("20") }) }, { show_condition = is_line_start }),
-    s({ trig = ":safe-mode-name:", name = "safe-mode-name", dscr = "Textual value of the safe mode setting." }, { t(":safe-mode-name: "), c(1, { t('UNSAFE'), t('SAFE'), t("SERVER"), t("SECURE") }) }, { show_condition = is_line_start }),
+    s({ trig = ":safe-mode-level:", name = "safe-mode-level", dscr = "Numeric value of the safe mode setting. (0=UNSAFE, 1=SAFE, 10=SERVER, 20=SECURE)." }, { t(":safe-mode-level: "), c(1, { t("0"), t("1"), t("10"), t("20") }) }, { show_condition = is_line_start }),
+    s({ trig = ":safe-mode-name:", name = "safe-mode-name", dscr = "Textual value of the safe mode setting." }, { t(":safe-mode-name: "), c(1, { t("UNSAFE"), t("SAFE"), t("SERVER"), t("SECURE") }) }, { show_condition = is_line_start }),
     s({ trig = ":safe-mode-unsafe:", name = "safe-mode-unsafe", dscr = "Set if the safe mode is UNSAFE." }, { t(":safe-mode-unsafe: ") }, { show_condition = is_line_start }),
     s({ trig = ":safe-mode-safe:", name = "safe-mode-safe", dscr = "Set if the safe mode is SAFE." }, { t(":safe-mode-safe: ") }, { show_condition = is_line_start }),
     s({ trig = ":safe-mode-server:", name = "safe-mode-server", dscr = "Set if the safe mode is SERVER." }, { t(":safe-mode-server: ") }, { show_condition = is_line_start }),
@@ -90,11 +88,11 @@ local intrinsic_attributes = {
 }
 
 local compliance_attributes = {
-    s({ trig = ":attribute-missing:", name = "attribute-missing", dscr = "Controls how missing attribute references are handled." }, { t(":attribute-missing: "), c(1, { t('skip'), t('drop'), t('drop-line'), t('warn') }) }, { show_condition = is_line_start }),
-    s({ trig = ":attribute-undefined:", name = "attribute-undefined", dscr = "Controls how attribute unassignments are handled." }, { t(":attribute-undefined: "), c(1, { t('drop'), t('drop-line') }) }, { show_condition = is_line_start }),
+    s({ trig = ":attribute-missing:", name = "attribute-missing", dscr = "Controls how missing attribute references are handled." }, { t(":attribute-missing: "), c(1, { t("skip"), t("drop"), t("drop-line"), t("warn") }) }, { show_condition = is_line_start }),
+    s({ trig = ":attribute-undefined:", name = "attribute-undefined", dscr = "Controls how attribute unassignments are handled." }, { t(":attribute-undefined: "), c(1, { t("drop"), t("drop-line") }) }, { show_condition = is_line_start }),
     s({ trig = ":compat-mode:", name = "compat-mode", dscr = "Controls when the legacy parsing mode is used to parse the document." }, { t(":"), i(1), t({ "compat-mode:", "" }) }, { show_condition = is_line_start }),
-    s({ trig = ":experimental:", name = "experimental", dscr = "Enables Button and Menu UI Macros and the Keyboard Macro." }, { t(":"), i(1),t({ "experimental:", "" }) }, { show_condition = in_header }),
-    s({ trig = ":reproducible:", name = "reproducible", dscr = "Prevents last-updated date from being added to HTML footer or DocBook info element. Useful for storing the output in a source code control system as it prevents spurious changes every time you convert the document. Alternately, you can use the SOURCE_DATE_EPOCH environment variable, which sets the epoch of all source documents and the local datetime to a fixed value." }, { t(":"), i(1),t({ "reproducible:", "" }) }, { show_condition = in_header }),
+    s({ trig = ":experimental:", name = "experimental", dscr = "Enables Button and Menu UI Macros and the Keyboard Macro." }, { t(":"), i(1), t({ "experimental:", "" }) }, { show_condition = in_header }),
+    s({ trig = ":reproducible:", name = "reproducible", dscr = "Prevents last-updated date from being added to HTML footer or DocBook info element. Useful for storing the output in a source code control system as it prevents spurious changes every time you convert the document. Alternately, you can use the SOURCE_DATE_EPOCH environment variable, which sets the epoch of all source documents and the local datetime to a fixed value." }, { t(":"), i(1), t({ "reproducible:", "" }) }, { show_condition = in_header }),
     s({ trig = ":skip-front-matter:", name = "skip-front-matter", dscr = "Consume YAML-style frontmatter at top of document and store it in `front-matter` attribute." }, { t(":"), i(1), t({ "skip-front-matter:", "" }) }, { show_condition = in_header }),
 }
 
@@ -224,7 +222,7 @@ local source_highlighting_and_formatting_attributes = {
     s({ trig = ":pygments-style:", name = "pygments-style", dscr = "Name of style used by Pygments." }, { t(":pygments-style: "), i(1, "pastie") }, { show_condition = in_header }),
     s({ trig = ":pygments-unavailable:", name = "pygments-unavailable", dscr = "Instructs processor not to load Pygments. Also set if processor fails to load Pygments." }, { t(":"), i(1), t({ "pygments-unavailable: ", "" }) }, { show_condition = in_header }),
     s({ trig = ":rouge-css:", name = "rouge-css", dscr = "Controls whether Rouge uses CSS classes or inline styles." }, { t(":rouge-css: "), i(1, "class") }, { show_condition = in_header }),
-    s({ trig = ":rouge-linenums-mode:", name = "rouge-linenums-mode", dscr = "Sets how Rouge inserts line numbers into source listings. `inline` not yet supported by Asciidoctor. See asciidoctor#3641." }, { t(":rouge-linenums-mode: "), i(1, "table") }, { show_condition = is_line_start }),  -- not currently implemented, see #3641
+    s({ trig = ":rouge-linenums-mode:", name = "rouge-linenums-mode", dscr = "Sets how Rouge inserts line numbers into source listings. `inline` not yet supported by Asciidoctor. See asciidoctor#3641." }, { t(":rouge-linenums-mode: "), i(1, "table") }, { show_condition = is_line_start }), -- not currently implemented, see #3641
     s({ trig = ":rouge-style:", name = "rouge-style", dscr = "Name of style used by Rouge." }, { t(":rouge-style: "), i(1, "github") }, { show_condition = in_header }),
     s({ trig = ":rouge-unavailable:", name = "rouge-unavailable", dscr = "Instructs processor not to load Rouge. Also set if processor fails to load Rouge." }, { t(":"), i(1), t({ "rouge-unavailable: ", "" }) }, { show_condition = in_header }),
     s({ trig = ":source-highlighter:", name = "source-highlighter", dscr = "Specifies source code highlighter. Any other value is permitted, but must be supported by a custom syntax highlighter adapter." }, { t(":source-highlighter: "), c(1, { t("highlight.js"), t("coderay"), t("pygments"), t("rouge") }) }, { show_condition = in_header }),
@@ -263,52 +261,21 @@ local security_attributes = {
 local other_snippets = {
     s({ trig = "note", name = "[NOTE] block" }, { t({ "[NOTE]", "====", "" }), i(1), t({ "", "====", "", "" }) }, { show_condition = is_line_start }),
     s({ trig = "tip", name = "[TIP] block" }, { t({ "[TIP]", "====", "" }), i(1), t({ "", "====", "", "" }) }, { show_condition = is_line_start }),
-    s(
-        { trig = "warning", name = "[WARNING] block" },
-        { t({ "[WARNING]", "====", "" }), i(1), t({ "", "====", "", "" }) },
-        { show_condition = is_line_start }
-    ),
-    s(
-        { trig = "caution", name = "[CAUTION] block" },
-        { t({ "[CAUTION]", "====", "" }), i(1), t({ "", "====", "", "" }) },
-        { show_condition = is_line_start }
-    ),
-    s(
-        { trig = "important", name = "[IMPORTANT] block" },
-        { t({ "[IMPORTANT]", "====", "" }), i(1), t({ "", "====", "", "" }) },
-        { show_condition = is_line_start }
-    ),
+    s({ trig = "warning", name = "[WARNING] block" }, { t({ "[WARNING]", "====", "" }), i(1), t({ "", "====", "", "" }) }, { show_condition = is_line_start }),
+    s({ trig = "caution", name = "[CAUTION] block" }, { t({ "[CAUTION]", "====", "" }), i(1), t({ "", "====", "", "" }) }, { show_condition = is_line_start }),
+    s({ trig = "important", name = "[IMPORTANT] block" }, { t({ "[IMPORTANT]", "====", "" }), i(1), t({ "", "====", "", "" }) }, { show_condition = is_line_start }),
     s({ trig = "note", name = "NOTE:" }, { t("NOTE: ") }, { show_condition = is_line_start }),
     s({ trig = "tip", name = "TIP:" }, { t("TIP: ") }, { show_condition = is_line_start }),
     s({ trig = "warning", name = "WARNING:" }, { t("WARNING: ") }, { show_condition = is_line_start }),
     s({ trig = "caution", name = "CAUTION:" }, { t("CAUTION: ") }, { show_condition = is_line_start }),
     s({ trig = "important", name = "IMPORTANT:" }, { t("IMPORTANT: ") }, { show_condition = is_line_start }),
-    s(
-        { trig = "source", name = "source block" },
-        { t("[source, "), i(1, "laungurge"), t({ "]", "----", "" }), i(2), t({ "", "----", "", "" }) },
-        { show_condition = is_line_start }
-    ),
-    s(
-        { trig = "quote", name = "quote block" },
-        { t("[quote, "), i(1, "author"), t(", "), i(2, "book"), t({ "]", "____", "" }), i(3), t({ "", "____", "", "" }) },
-        { show_condition = is_line_start }
-    ),
+    s({ trig = "source", name = "source block" }, { t("[source, "), i(1, "laungurge"), t({ "]", "----", "" }), i(2), t({ "", "----", "", "" }) }, { show_condition = is_line_start }),
+    s({ trig = "quote", name = "quote block" }, { t("[quote, "), i(1, "author"), t(", "), i(2, "book"), t({ "]", "____", "" }), i(3), t({ "", "____", "", "" }) }, { show_condition = is_line_start }),
     s({ trig = "sidebar", name = "sidebar block" }, { t({ "****", "" }), i(1), t({ "", "****", "", "" }) }, { show_condition = is_line_start }),
-    s(
-        { trig = "image:", name = "image one line" },
-        { t("image:"), i(1, "url"), t("["), i(2, "alt"), t(","), i(3, "width"), t(","), i(4, "height"), t("]") }
-    ),
-    s(
-        { trig = "image::", name = "image block", dscr = "hello" },
-        { t("image::"), i(1, "url"), t("["), i(2, "alt"), t(","), i(3, "width"), t(","), i(4, "height"), t("]") },
-        { show_condition = is_line_start }
-    ),
+    s({ trig = "image:", name = "image one line" }, { t("image:"), i(1, "url"), t("["), i(2, "alt"), t(","), i(3, "width"), t(","), i(4, "height"), t("]") }),
+    s({ trig = "image::", name = "image block", dscr = "hello" }, { t("image::"), i(1, "url"), t("["), i(2, "alt"), t(","), i(3, "width"), t(","), i(4, "height"), t("]") }, { show_condition = is_line_start }),
     s({ trig = "toc::", name = "toc", dscr = "toc macro" }, { t("toc::[]") }, { show_condition = is_line_start }),
-    s(
-        { trig = "ifgithub", name = "ifgithub" },
-        { t({ "ifdef::env-github[]", "" }), i(1), t({ "", "endif::[]", "" }) },
-        { show_condition = is_line_start }
-    ),
+    s({ trig = "ifgithub", name = "ifgithub" }, { t({ "ifdef::env-github[]", "" }), i(1), t({ "", "endif::[]", "" }) }, { show_condition = is_line_start }),
     s({ trig = "link", name = "link macro" }, { t("link:"), i(1, "url"), t("["), i(2, "text"), t("]") }),
 }
 

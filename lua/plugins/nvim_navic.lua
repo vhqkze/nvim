@@ -1,5 +1,6 @@
 local navic = require("nvim-navic")
 navic.setup({
+    -- stylua: ignore
     icons = {
         File          = " ",
         Module        = " ",
