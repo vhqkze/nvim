@@ -5,11 +5,8 @@ require("gitsigns").setup({
     },
     sign_priority = 100,
     culhl = true,
-    diff_opts = {
-        algorithm = "histogram",
-    },
     on_attach = function(bufnr)
-        local gs = package.loaded.gitsigns
+        local gs = require("gitsigns")
 
         local function map(mode, l, r, opts)
             opts = opts or {}
@@ -22,7 +19,7 @@ require("gitsigns").setup({
             if vim.wo.diff then
                 vim.cmd.normal({ "]c", bang = true })
             else
-                gs.nav_hunk("next")
+                gs.nav_hunk("next", { preview = true })
             end
         end, { silent = true, desc = "Gitsigns next_hunk" })
 
@@ -30,7 +27,7 @@ require("gitsigns").setup({
             if vim.wo.diff then
                 vim.cmd.normal({ "[c", bang = true })
             else
-                gs.nav_hunk("prev")
+                gs.nav_hunk("prev", { preview = true })
             end
         end, { silent = true, desc = "Gitsigns prev_hunk" })
 
@@ -44,20 +41,27 @@ require("gitsigns").setup({
             gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
         end, { silent = true, desc = "Gitsigns reset_selected" })
         map("n", "<leader>hS", gs.stage_buffer, { silent = true, desc = "Gitsigns stage_buffer" })
-        map("n", "<leader>hu", gs.undo_stage_hunk, { silent = true, desc = "Gitsigns undo_stage_hunk" })
         map("n", "<leader>hR", gs.reset_buffer, { silent = true, desc = "Gitsigns reset_buffer" })
         map("n", "<leader>hp", gs.preview_hunk, { silent = true, desc = "Gitsigns preview_hunk" })
+        map("n", "<leader>hi", gs.preview_hunk_inline, { silent = true, desc = "Gitsigns preview_hunk_inline" })
         map("n", "<leader>hb", function()
             gs.blame_line({ full = true })
         end, { silent = true, desc = "Gitsigns blame_line" })
-        map("n", "<leader>tb", gs.toggle_current_line_blame, { silent = true, desc = "Gitsigns toggle_current_line_blame" })
         map("n", "<leader>hd", gs.diffthis, { silent = true, desc = "Gitsigns diffthis" })
         map("n", "<leader>hD", function()
             gs.diffthis("~")
         end, { silent = true, desc = "Gitsigns diffthis~" })
+        map("n", "<leader>hQ", function()
+            gs.setqflist("all")
+        end, { silent = true, desc = "Gitsigns quickfix all" })
+        map("n", "<leader>hq", gs.setqflist, { silent = true, desc = "Gitsigns quickfix" })
+
+        -- Toggles
+        map("n", "<leader>tb", gs.toggle_current_line_blame, { silent = true, desc = "Gitsigns toggle_current_line_blame" })
         map("n", "<leader>td", gs.toggle_deleted, { silent = true, desc = "Gitsigns toggle_deleted" })
+        map("n", "<leader>tw", gs.toggle_word_diff, { silent = true, desc = "Gitsigns toggle_word_diff" })
 
         -- Text object
-        map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", { silent = true, desc = "Gitsigns select_hunk" })
+        map({ "o", "x" }, "ih", gs.select_hunk, { silent = true, desc = "Gitsigns select_hunk" })
     end,
 })

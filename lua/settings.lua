@@ -71,7 +71,7 @@ vim.opt.listchars:append({
     space = "·",
     trail = "·",
 })
-vim.opt.diffopt:append({ "vertical" })
+vim.opt.diffopt:append({ "vertical", "indent-heuristic", "algorithm:histogram", "context:100000" })
 vim.opt.mousescroll = { "ver:1", "hor:2" }
 vim.opt.guicursor = {
     "n-v-sm:block-blinkon30",
