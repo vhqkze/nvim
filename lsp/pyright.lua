@@ -13,6 +13,41 @@ local function set_python_path(path)
     end
 end
 
+local function get_python_venv_path(root_dir)
+    if vim.fn.isdirectory(root_dir .. "/venv") == 1 then
+        return root_dir .. "/venv"
+    elseif vim.fn.isdirectory(root_dir .. "/.venv") == 1 then
+        return root_dir .. "/.venv"
+    elseif vim.fn.executable("poetry") == 1 then
+        local obj = vim.system({ "poetry", "env", "info", "-p" }, { cwd = root_dir, text = true }):wait()
+        if obj.code == 0 then
+            return vim.trim(obj.stdout)
+        end
+    end
+end
+
+local function reset_python_env(root_dir)
+    local venv_path = get_python_venv_path(root_dir)
+    if not venv_path then
+        vim.notify("no python interpreter!", vim.log.levels.WARN, { title = "pyright" })
+        return
+    end
+    if vim.env.VIRTUAL_ENV ~= nil then
+        local old_venv_path = vim.env.VIRTUAL_ENV
+        local new_path = {}
+        for _, path in pairs(vim.split(vim.env.PATH, ":")) do
+            if path ~= nil and not vim.startswith(path, old_venv_path) then
+                table.insert(new_path, path)
+            end
+        end
+        vim.env.VIRTUAL_ENV = nil
+        vim.env.path = table.concat(new_path, ":")
+    end
+    vim.env.VIRTUAL_ENV = venv_path
+    vim.env.PATH = vim.env.VIRTUAL_ENV .. "/bin:" .. vim.env.PATH
+    set_python_path(venv_path .. "/bin/python")
+end
+
 return {
     cmd = { "pyright-langserver", "--stdio" },
     filetypes = { "python" },
@@ -42,6 +77,7 @@ return {
         client.server_capabilities.referencesProvider = false
         client.server_capabilities.completionProvider = false
         client.server_capabilities.signatureHelpProvider = false
+        reset_python_env(client.root_dir)
     end,
     on_attach = function(client, bufnr)
         vim.api.nvim_buf_create_user_command(bufnr, "PyrightOrganizeImports", function()
