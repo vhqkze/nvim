@@ -90,14 +90,6 @@ vim.keymap.set({ "n", "x" }, "<m-z>", function()
     vim.o.wrap = not vim.o.wrap
 end, { silent = true, desc = "Toggle wrap" })
 
-vim.keymap.set(
-    "n",
-    "<leader>pj",
-    "<cmd>enew<cr>p<cmd>set filetype=json<cr><cmd>sleep 600m<cr><cmd>Format<cr><cmd>sleep 300m<cr>gg",
-    { silent = true, desc = "Paste json to a new buffer" }
-)
-vim.keymap.set("n", "<leader>pr", "ggVGp<cmd>Format<cr><cmd>sleep 300m<cr>gg", { silent = true, desc = "Paste json to current buffer" })
-
 -- diagnostic
 vim.keymap.set("n", "<leader>dt", function()
     vim.diagnostic.enable(not vim.diagnostic.is_enabled())

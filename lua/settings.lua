@@ -27,6 +27,7 @@ vim.opt.whichwrap:append({ h = true, l = true, ["["] = true, ["]"] = true, ["<"]
 
 vim.opt.clipboard:append("unnamedplus")
 vim.opt.shortmess:append("I")
+vim.g.health = { style = "float" }
 
 -- provider
 if vim.fn.has("mac") == 1 then

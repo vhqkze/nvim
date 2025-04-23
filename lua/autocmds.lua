@@ -1,9 +1,9 @@
 -- highlight on yank
 local yankGrp = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {
-    -- command = "silent! lua vim.highlight.on_yank({higroup='Search', timeout=800})",
+    -- command = "silent! lua vim.hl.on_yank({higroup='Search', timeout=800})",
     callback = function()
-        vim.highlight.on_yank({ higroup = "Search", timeout = 800 })
+        vim.hl.on_yank({ higroup = "Search", timeout = 800 })
     end,
     group = yankGrp,
 })
@@ -13,12 +13,6 @@ vim.api.nvim_create_autocmd("FileType", {
     pattern = { "help", "qf", "lspinfo", "list", "lspsagaoutline", "notify", "toggleterm" },
     callback = function()
         vim.keymap.set("n", "q", "<cmd>close<cr>", { silent = true, buffer = true })
-    end,
-})
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "man" },
-    callback = function()
-        vim.keymap.set("n", "q", "<cmd>quit<cr>", { silent = true, buffer = true })
     end,
 })
 vim.api.nvim_create_autocmd("BufEnter", {
