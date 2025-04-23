@@ -276,20 +276,6 @@ vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter", "TermOpen" }, {
     end,
 })
 
-vim.defer_fn(function()
-    local cl_bg = vim.api.nvim_get_hl(0, { name = "CursorLine", link = false }).bg
-    for _, sign in ipairs(vim.fn.sign_getdefined()) do
-        if sign.texthl and not sign.culhl then
-            local testhl = vim.api.nvim_get_hl(0, { name = sign.texthl, link = false })
-            local culhl = sign.texthl .. "Cul"
-            if vim.tbl_isempty(vim.api.nvim_get_hl(0, { name = culhl })) then
-                vim.api.nvim_set_hl(0, culhl, { fg = testhl.fg, bg = cl_bg })
-            end
-            vim.fn.sign_define(sign.name, { culhl = culhl })
-        end
-    end
-end, 1000)
-
 vim.keymap.set("n", "<leader>in", function()
     local result = ""
     result = result .. "buftype:" .. vim.bo.buftype .. "\n"
