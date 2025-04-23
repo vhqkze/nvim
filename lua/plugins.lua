@@ -339,15 +339,8 @@ require("lazy").setup({
     },
     -- lsp
     {
-        "neovim/nvim-lspconfig",
-        event = "VeryLazy",
-        config = function()
-            require("plugins.nvim_lspconfig")
-        end,
-    },
-    {
         "williamboman/mason.nvim",
-        lazy = true,
+        event = "VeryLazy",
         config = function()
             require("plugins.mason")
         end,
@@ -388,7 +381,6 @@ require("lazy").setup({
     {
         "SmiteshP/nvim-navic",
         event = "BufRead",
-        dependencies = { "neovim/nvim-lspconfig" },
         config = function()
             require("plugins.nvim_navic")
         end,

@@ -15,6 +15,7 @@ local lsp = {
     "html",
     "jsonls",
     "lemminx",
+    "ltex",
     "lua_ls",
     "marksman",
     "taplo",
@@ -31,17 +32,18 @@ end
 if vim.fn.executable("java") == 1 then
     table.insert(lsp, "jdtls") -- java lsp
 end
-if vim.fn.executable("languagetool") == 1 then
-    table.insert(lsp, "ltex") -- languagetool
-end
 if vim.fn.executable("node") == 1 then
     table.insert(lsp, "eslint") -- typescript
+    table.insert(lsp, "ts_ls") -- typescript
 end
 if vim.fn.executable("nix") == 1 then
     table.insert(lsp, "rnix") -- nix
 end
 if vim.fn.executable("nginx") == 1 then
     table.insert(lsp, "nginx_language_server") -- nginx
+end
+if vim.fn.executable("gem") == 1 then
+    table.insert(lsp, "rubocop") -- ruby
 end
 
 require("mason-lspconfig").setup({
