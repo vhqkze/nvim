@@ -28,6 +28,11 @@ require("bufferline").setup({
     },
 })
 
+vim.api.nvim_set_hl(0, "TabLineFill", {
+    fg = vim.api.nvim_get_hl(0, { name = "TabLineFill" }).fg,
+    bg = vim.api.nvim_get_hl(0, { name = "BufferLineBufferSelected" }).bg,
+})
+
 vim.keymap.set("n", "<leader>b", "<cmd>BufferLinePick<cr>", { silent = true })
 vim.keymap.set("n", "[b", "<cmd>BufferLineCyclePrev<cr>", { silent = true })
 vim.keymap.set("n", "]b", "<cmd>BufferLineCycleNext<cr>", { silent = true })
