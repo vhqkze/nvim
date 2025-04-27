@@ -25,6 +25,17 @@ require("bufferline").setup({
         end,
         show_close_icon = false,
         always_show_bufferline = false,
+        custom_filter = function(bufnr, bufnrs)
+            if vim.bo[bufnr].buftype == "acwrite" then
+                return false
+            end
+            if vim.bo[bufnr].buftype == "nofile" then
+                if vim.bo[bufnr].bufhidden == "hide" or vim.bo[bufnr].bufhidden == "unload" then
+                    return false
+                end
+            end
+            return true
+        end,
     },
 })
 
