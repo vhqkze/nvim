@@ -3,7 +3,6 @@ require("tokyonight").setup({
     styles = {
         functions = { italic = true },
     },
-    sidebars = { "qf" },
     on_highlights = function(hl, c)
         local CursorLineBg = hl.CursorLine.bg
         hl.GitSignsAddCul = { fg = hl.GitSignsAdd.fg, bg = CursorLineBg }
@@ -15,5 +14,6 @@ require("tokyonight").setup({
         hl.CursorLineNr.bg = CursorLineBg
         hl.CursorLineFold = { bg = CursorLineBg }
         hl.CursorLineSign = { bg = CursorLineBg }
+        hl.BufferLineIndicatorSelected = { fg = hl.TabLineSel.fg, bg = hl.Normal.bg }
     end,
 })
