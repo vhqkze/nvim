@@ -10,67 +10,86 @@ require("mason").setup({
     },
 })
 
-local lsp = {
-    "bashls",
-    "html",
-    "jsonls",
-    "lemminx",
-    "ltex",
-    "lua_ls",
+local ensure_installed = {
+    -- lua
+    "lua-language-server",
+    "stylua", -- lua formatter
+    -- text
+    "ltex-ls",
     "marksman",
-    "taplo",
-    "vimls",
-    "yamlls",
+    "markdownlint",
+    -- other
+    "bash-language-server",
+    "html-lsp",
+    "json-lsp",
+    "lemminx", -- xml lsp
+    "taplo", -- toml lsp
+    "vim-language-server",
+    "yaml-language-server",
+    "prettier",
+    "shfmt", -- shell formatter
+    "shellcheck", -- bash linter
 }
-if vim.fn.executable("python") == 1 then
-    table.insert(lsp, "pylsp") -- python lsp
-    table.insert(lsp, "pyright") -- python lsp
+if vim.fn.executable("python3") == 1 then
+    table.insert(ensure_installed, "python-lsp-server")
+    table.insert(ensure_installed, "pyright")
+    table.insert(ensure_installed, "yapf") -- python formatter
 end
 if vim.fn.executable("go") == 1 then
-    table.insert(lsp, "gopls") -- go lsp
+    table.insert(ensure_installed, "gopls") -- go lsp
 end
 if vim.fn.executable("java") == 1 then
-    table.insert(lsp, "jdtls") -- java lsp
+    table.insert(ensure_installed, "jdtls") -- java lsp
 end
 if vim.fn.executable("node") == 1 then
-    table.insert(lsp, "eslint") -- typescript
-    table.insert(lsp, "ts_ls") -- typescript
+    table.insert(ensure_installed, "eslint-lsp") -- typescript
+    table.insert(ensure_installed, "typescript-language-server") -- typescript
 end
 if vim.fn.executable("nix") == 1 then
-    table.insert(lsp, "rnix") -- nix
+    table.insert(ensure_installed, "rnix-lsp") -- nix
 end
 if vim.fn.executable("nginx") == 1 then
-    table.insert(lsp, "nginx_language_server") -- nginx
+    table.insert(ensure_installed, "nginx-language-server") -- nginx
 end
 if vim.fn.executable("gem") == 1 then
-    table.insert(lsp, "rubocop") -- ruby
+    table.insert(ensure_installed, "rubocop") -- ruby
 end
 
-require("mason-lspconfig").setup({
-    ensure_installed = lsp,
-})
+if vim.env.TERMUX_VERSION then
+    ensure_installed = vim.tbl_filter(function(item)
+        return not vim.list_contains({
+            "lemminx",
+            "ltex-ls",
+            "lua-language-server",
+        }, item)
+    end, ensure_installed)
+end
 
-local need_install = {
-    "markdownlint",
-    "prettier",
-    "stylua",
-    "yapf",
-    "shfmt",
-    "shellcheck",
-}
-
-local function mason_install_all_need_tools(packages)
+local function mason_install(packages)
     local registry = require("mason-registry")
     for _, package_name in pairs(packages) do
         if registry.has_package(package_name) then
-            local package = registry.get_package(package_name)
-            if not package:is_installed() then
-                package:install()
+            if not registry.is_installed(package_name) then
+                local package = registry.get_package(package_name)
+                vim.notify("Installing " .. package_name, vim.log.levels.INFO, { title = "mason.nvim" })
+                package:install(
+                    {},
+                    vim.schedule_wrap(function(success, err)
+                        if success then
+                            vim.notify(package_name .. " was successfully installed.", vim.log.levels.INFO, { title = "mason.nvim" })
+                        else
+                            local msg = string.format("%s failed to install.\n%s", package_name, err)
+                            vim.notify(msg, vim.log.levels.ERROR, { title = "mason.nvim" })
+                        end
+                    end)
+                )
             end
         else
-            print("package is not exist:", package_name)
+            vim.notify(package_name .. " does not exist.", vim.log.levels.WARN, { title = "mason.nvim" })
         end
     end
 end
 
-mason_install_all_need_tools(need_install)
+vim.schedule(function()
+    mason_install(ensure_installed)
+end)

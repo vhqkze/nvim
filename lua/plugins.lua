@@ -86,7 +86,7 @@ require("lazy").setup({
         end,
     },
     {
-        "arcticicestudio/nord-vim",
+        "nordtheme/vim",
         cond = false,
         priority = 1000,
     },
@@ -206,7 +206,7 @@ require("lazy").setup({
         config = true,
     },
     {
-        "NvChad/nvim-colorizer.lua",
+        "catgoose/nvim-colorizer.lua",
         event = "VeryLazy",
         config = function()
             require("colorizer").setup({
@@ -339,16 +339,11 @@ require("lazy").setup({
     },
     -- lsp
     {
-        "williamboman/mason.nvim",
+        "mason-org/mason.nvim",
         event = "VeryLazy",
         config = function()
             require("plugins.mason")
         end,
-    },
-    {
-        "williamboman/mason-lspconfig.nvim",
-        lazy = true,
-        dependencies = { "williamboman/mason.nvim" },
     },
     {
         "nvimdev/lspsaga.nvim",
@@ -467,7 +462,7 @@ require("lazy").setup({
         config = true,
     },
     {
-        "Exafunction/codeium.nvim",
+        "Exafunction/windsurf.nvim",
         event = "InsertEnter",
         config = function()
             require("plugins.codeium")
