@@ -62,7 +62,7 @@ return {
         },
     },
     on_attach = function(client)
-        vim.api.nvim_buf_create_user_command(0, "LspEslintFixAll", function()
+        vim.api.nvim_buf_create_user_command(0, "EslintFixAll", function()
             local bufnr = vim.api.nvim_get_current_buf()
 
             client:exec_cmd({
@@ -71,7 +71,7 @@ return {
                 arguments = {
                     {
                         uri = vim.uri_from_bufnr(bufnr),
-                        version = lsp.util.buf_versions[bufnr],
+                        version = vim.lsp.util.buf_versions[bufnr],
                     },
                 },
             }, { bufnr = bufnr })
@@ -131,11 +131,11 @@ return {
             return 4 -- approved
         end,
         ["eslint/probeFailed"] = function()
-            vim.notify("[lspconfig] ESLint probe failed.", vim.log.levels.WARN)
+            vim.notify("ESLint probe failed.", vim.log.levels.WARN, { title = "lsp" })
             return {}
         end,
         ["eslint/noLibrary"] = function()
-            vim.notify("[lspconfig] Unable to find ESLint library.", vim.log.levels.WARN)
+            vim.notify("Unable to find ESLint library.", vim.log.levels.WARN, { title = "lsp" })
             return {}
         end,
     },

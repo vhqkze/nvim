@@ -15,11 +15,13 @@ local ensure_installed = {
     "lua-language-server",
     "stylua", -- lua formatter
     -- text
-    "ltex-ls",
+    "ltex-ls-plus",
     "marksman",
     "markdownlint",
     -- other
     "bash-language-server",
+    "commitlint",
+    "css-lsp",
     "html-lsp",
     "json-lsp",
     "lemminx", -- xml lsp
@@ -32,7 +34,7 @@ local ensure_installed = {
 }
 if vim.fn.executable("python3") == 1 then
     table.insert(ensure_installed, "python-lsp-server")
-    table.insert(ensure_installed, "pyright")
+    table.insert(ensure_installed, "basedpyright")
     table.insert(ensure_installed, "yapf") -- python formatter
 end
 if vim.fn.executable("go") == 1 then
@@ -58,8 +60,8 @@ end
 if vim.env.TERMUX_VERSION then
     ensure_installed = vim.tbl_filter(function(item)
         return not vim.list_contains({
+            "basedpyright",
             "lemminx",
-            "ltex-ls",
             "lua-language-server",
         }, item)
     end, ensure_installed)

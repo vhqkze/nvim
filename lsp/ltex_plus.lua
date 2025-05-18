@@ -1,25 +1,34 @@
+---see: https://github.com/ltex-plus/ltex-ls-plus/blob/develop/src/main/kotlin/org/bsplines/ltexls/tools/FileIo.kt
 local language_id_mapping = {
+    bash = "shellscript",
+    sh = "shellscript",
+    fish = "shellscript",
     bib = "bibtex",
-    plaintex = "tex",
+    norg = "neorg",
+    pandoc = "markdown",
+    plaintex = "latex",
     rnoweb = "rsweave",
     rst = "restructuredtext",
     tex = "latex",
-    pandoc = "markdown",
     text = "plaintext",
+    xhtml = "html",
+    zsh = "shellscript",
 }
 
 local filetypes = {
     "asciidoc",
     "gitcommit",
     "html",
-    "latex",
     "mail",
     "markdown",
+    "norg",
     "org",
+    "pandoc",
     "plaintex",
-    "restructuredtext",
     "rst",
     "text",
+    "typst",
+    "xhtml",
 }
 
 local function get_language_id(_, filetype)
@@ -39,9 +48,10 @@ do
 end
 
 return {
-    cmd = { "ltex-ls" },
+    cmd = { "ltex-ls-plus" },
     filetypes = filetypes,
     root_markers = { ".git" },
+    get_language_id = get_language_id,
     settings = {
         ltex = {
             enabled = enabled_ids,

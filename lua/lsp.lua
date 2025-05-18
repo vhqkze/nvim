@@ -10,17 +10,19 @@ vim.lsp.config("*", {
 })
 
 vim.lsp.enable({
+    "basedpyright",
     "bashls",
+    "cssls",
     "eslint",
     "gopls",
     "html",
     "jdtls",
     "jsonls",
     "lemminx",
-    "ltex",
+    "ltex_plus",
     "lua_ls",
+    "marksman",
     "pylsp",
-    "pyright",
     "rubocop",
     "sourcekit",
     "taplo",
@@ -31,6 +33,7 @@ vim.lsp.enable({
 
 vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("my.lsp", {}),
+    ---@param args {buf: number, data: {client_id: number}, event: string, file: string, id: number, match: string, group: number}
     callback = function(args)
         local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
         local bufnr = args.buf

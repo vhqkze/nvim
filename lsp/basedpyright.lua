@@ -1,11 +1,11 @@
 local function set_python_path(path)
     local clients = vim.lsp.get_clients({
         bufnr = vim.api.nvim_get_current_buf(),
-        name = "pyright",
+        name = "basedpyright",
     })
     for _, client in ipairs(clients) do
         if client.settings then
-            client.settings.python = vim.tbl_deep_extend("force", client.settings.python, { pythonPath = path })
+            client.settings.python = vim.tbl_deep_extend("force", client.settings.python or {}, { pythonPath = path })
         else
             client.config.settings = vim.tbl_deep_extend("force", client.config.settings, { python = { pythonPath = path } })
         end
@@ -49,7 +49,7 @@ local function reset_python_env(root_dir)
 end
 
 return {
-    cmd = { "pyright-langserver", "--stdio" },
+    cmd = { "basedpyright-langserver", "--stdio" },
     filetypes = { "python" },
     root_markers = {
         "pyproject.toml",
@@ -61,7 +61,7 @@ return {
         ".git",
     },
     settings = {
-        python = {
+        basedpyright = {
             analysis = {
                 autoSearchPaths = true,
                 useLibraryCodeForTypes = true,
@@ -81,16 +81,16 @@ return {
     end,
     on_attach = function(client, bufnr)
         vim.api.nvim_buf_create_user_command(bufnr, "PyrightOrganizeImports", function()
-            local params = { command = "pyright.organizeimports", arguments = { vim.uri_from_bufnr(bufnr) } }
+            local params = { command = "basedpyright.organizeimports", arguments = { vim.uri_from_bufnr(bufnr) } }
             client:request("workspace/executeCommand", params, nil, 0)
         end, { desc = "Organize Imports" })
         vim.api.nvim_buf_create_user_command(bufnr, "PyrightSetPythonPath", set_python_path, {
-            desc = "Reconfigure pyright with the provided python path",
+            desc = "Reconfigure basedpyright with the provided python path",
             nargs = 1,
             complete = "file",
         })
         vim.keymap.set("n", "<leader>o", function()
-            local params = { command = "pyright.organizeimports", arguments = { vim.uri_from_bufnr(bufnr) } }
+            local params = { command = "basedpyright.organizeimports", arguments = { vim.uri_from_bufnr(bufnr) } }
             client:request("workspace/executeCommand", params, nil, 0)
         end, { silent = true, buffer = bufnr, desc = "Organize imports" })
     end,
