@@ -233,3 +233,18 @@ vim.keymap.set("n", "K", function()
         vim.cmd("Lspsaga hover_doc")
     end
 end)
+
+vim.api.nvim_create_autocmd("FileType", {
+    ---@param args {buf: number, event: string, file: string, id: number, match: string}
+    callback = function(args)
+        local buftype = vim.bo[args.buf].buftype
+        local bufname = vim.api.nvim_buf_get_name(args.buf)
+        if buftype == "" and bufname == "" then
+            local ufo = require("ufo")
+            if ufo.hasAttached(args.buf) then
+                ufo.detach(args.buf)
+                ufo.attach(args.buf)
+            end
+        end
+    end,
+})
