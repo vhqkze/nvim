@@ -1,4 +1,4 @@
-vim.o.sessionoptions = "blank,buffers,curdir,help,tabpages,winsize,winpos"
+vim.o.sessionoptions = "blank,buffers,curdir,help,tabpages,winsize,winpos,globals"
 
 local function close_windows()
     for _, win in ipairs(vim.api.nvim_list_wins()) do

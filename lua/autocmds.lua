@@ -58,6 +58,7 @@ local function close_old_bufs()
     ---@field loaded number
     ---@field lastused number
     ---@field changed number
+    ---@field name string
 
     ---@type Buffer[]
     local bufs = vim.fn.getbufinfo({ buflisted = 1 })
@@ -66,6 +67,7 @@ local function close_old_bufs()
     end)
     local last_used_time = os.time() - 30 * 60 -- 30分钟前
     local remain = #bufs
+    local pinned = vim.split(vim.g.BufferlinePinnedBuffers or "", ",", { trimempty = true })
 
     for _, buf in ipairs(bufs) do
         if remain <= 10 then
@@ -74,7 +76,8 @@ local function close_old_bufs()
         local is_old = buf.lastused < last_used_time
         local is_changed = buf.changed == 1
         local is_invisible = buf.hidden == 1 or buf.loaded == 0
-        if is_old and is_invisible and not is_changed then
+        local is_pinned = vim.tbl_contains(pinned, buf.name)
+        if is_old and is_invisible and not is_changed and not is_pinned then
             vim.api.nvim_buf_delete(buf.bufnr, { force = false, unload = false })
             remain = remain - 1
         end
