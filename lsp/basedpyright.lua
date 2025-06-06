@@ -84,7 +84,9 @@ return {
             local params = { command = "basedpyright.organizeimports", arguments = { vim.uri_from_bufnr(bufnr) } }
             client:request("workspace/executeCommand", params, nil, 0)
         end, { desc = "Organize Imports" })
-        vim.api.nvim_buf_create_user_command(bufnr, "PyrightSetPythonPath", set_python_path, {
+        vim.api.nvim_buf_create_user_command(bufnr, "PyrightSetPythonPath", function(opts)
+            set_python_path(opts.args)
+        end, {
             desc = "Reconfigure basedpyright with the provided python path",
             nargs = 1,
             complete = "file",
