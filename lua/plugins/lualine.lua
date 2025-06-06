@@ -91,15 +91,30 @@ require("lualine").setup({
             },
             {
                 function()
-                    local res = vim.fn.searchcount({ maxcount = 10000, timeout = 500 })
-                    if res.total > 0 then
-                        return string.format("[%s/%d] %s", res.current, res.total, vim.fn.getreg("/"))
-                    else
-                        return ""
+                    ---@type {current: number, exact_match: number, incomplete: number, maxcount: number, total: number}
+                    local res = vim.fn.searchcount({ maxcount = 0, timeout = 1000 })
+                    local content = vim.fn.getreg("/")
+                    if content:len() > 50 then
+                        content = content:sub(1, 47) .. "..."
+                    end
+                    if res.incomplete == 0 then
+                        if res.total > 0 then
+                            return string.format("%s [%d/%d]", content, res.current, res.total)
+                        else
+                            return ""
+                        end
+                    elseif res.incomplete == 1 then
+                        return string.format("%s [?/??]", content)
+                    elseif res.incomplete == 2 then
+                        if res.total > res.maxcount and res.current > res.maxcount then
+                            return string.format("%s [>%d/>%d]", content, res.current - 1, res.maxcount)
+                        elseif res.total > res.maxcount then
+                            return string.format("%s [%d/>%d]", content, res.current, res.maxcount)
+                        end
                     end
                 end,
                 cond = function()
-                    return vim.api.nvim_get_vvar("hlsearch") ~= 0
+                    return vim.api.nvim_get_vvar("hlsearch") == 1
                 end,
             },
             {
