@@ -138,6 +138,7 @@ require("lazy").setup({
     {
         "hedyhli/outline.nvim",
         event = "VeryLazy",
+        dependencies = { "msr1k/outline-asciidoc-provider.nvim" },
         config = function()
             require("plugins.symbols_outline")
         end,

@@ -25,7 +25,8 @@ outline.setup({
     keymaps = {
         hover_symbol = "J",
     },
-    provider = {
+    providers = {
+        priority = { "lsp", "markdown", "norg", "man", "asciidoc" },
         lsp = {
             blacklist_clients = {},
         },
