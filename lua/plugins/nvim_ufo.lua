@@ -106,6 +106,104 @@ local function addVirtText(virtText, width, truncate, isEnd)
     return newVirtText, usedWidth
 end
 
+---@type {[string]: fun(start_line: string, end_line: string): boolean?}
+local ft_end = {
+    ["*"] = function(start_line, end_line)
+        if vim.endswith(start_line, "(") and vim.startswith(end_line, ")") then
+            return true
+        elseif vim.endswith(start_line, "{") and vim.startswith(end_line, "}") then
+            return true
+        elseif vim.endswith(start_line, "[") and vim.startswith(end_line, "]") then
+            return true
+        elseif vim.endswith(start_line, "`") and vim.startswith(end_line, "`") then
+            return true
+        elseif start_line:match("{{{") and end_line:match("}}}") then
+            return true
+        end
+    end,
+    html = function(start_line, end_line)
+        if vim.startswith(end_line, "</") then
+            return true
+        end
+    end,
+    javascript = function(start_line, end_line)
+        if vim.startswith(end_line, "</") then
+            return true
+        elseif start_line:match("`") and end_line:match("`") then
+            return true
+        end
+    end,
+    lua = function(start_line, end_line)
+        if vim.startswith(end_line, "end") then
+            return true
+        elseif start_line:match("repeat") and end_line:match("until") then
+            return true
+        end
+    end,
+    markdown = function(start_line, end_line)
+        if start_line:match("```") and end_line:match("```") then
+            return true
+        end
+    end,
+    python = function(start_line, end_line)
+        if start_line:match('"""') and end_line:match('"""') then
+            return true
+        elseif start_line:match("'''") and end_line:match("'''") then
+            return true
+        elseif start_line:match("%[%s-#.*") and vim.startswith(end_line, "]") then
+            return true
+        elseif start_line:match("%(%s-#.*") and vim.startswith(end_line, ")") then
+            return true
+        elseif start_line:match("{%s-#.*") and vim.startswith(end_line, "}") then
+            return true
+        end
+    end,
+    ruby = function(start_line, end_line)
+        if vim.startswith(end_line, "end") then
+            return true
+        end
+    end,
+    sh = function(start_line, end_line)
+        if vim.startswith(end_line, "fi") then
+            return true
+        elseif vim.startswith(end_line, "esac") then
+            return true
+        elseif vim.startswith(end_line, "done") then
+            return true
+        elseif start_line:match("<<%-?%s-['\"]?%w+['\"]?$") then
+            local eof = start_line:match("<<%-?%s-['\"]?(%w+)['\"]?$")
+            if end_line == eof then
+                return true
+            end
+        end
+    end,
+    vim = function(start_line, end_line)
+        if vim.startswith(end_line, "augroup") then
+            return true
+        elseif vim.startswith(end_line, "endif") then
+            return true
+        elseif vim.startswith(end_line, "endfunction") then
+            return true
+        elseif vim.startswith(end_line, "endfor") then
+            return true
+        elseif vim.startswith(end_line, "endwhile") then
+            return true
+        elseif vim.startswith(end_line, "endtry") then
+            return true
+        end
+    end,
+}
+ft_end.bash = ft_end.sh
+ft_end.zsh = ft_end.sh
+
+---@param filetype string
+---@param start_line string
+---@param end_line string
+---@return boolean?
+local function contain_end_line(filetype, start_line, end_line)
+    return ft_end[filetype] and ft_end[filetype](start_line, end_line) or ft_end["*"](start_line, end_line)
+end
+
 -- Customize fold text
 -- use setup: fold_virt_text_handler = handler
 local function handler(virtText, lnum, endLnum, width, truncate, ctx)
@@ -125,35 +223,7 @@ local function handler(virtText, lnum, endLnum, width, truncate, ctx)
     local start_content = vim.trim(vim.fn.getline(lnum))
     local end_content = vim.trim(vim.fn.getline(endLnum))
     local filetype = vim.bo.filetype
-    local show_end_line = false
-    local need_end_ft = { "go", "toml", "java", "json", "jsonc", "nix" }
-    if vim.tbl_contains(need_end_ft, filetype) then
-        show_end_line = show_end_line or end_content:match("^%s-[}%])]")
-    elseif filetype == "python" then
-        show_end_line = show_end_line or end_content:match("^%s-[}%])]")
-        show_end_line = show_end_line or end_content:match([[^%s-"""]])
-    elseif filetype == "lua" then
-        show_end_line = show_end_line or end_content:match("^%s-[}%])]")
-        show_end_line = show_end_line or end_content:match("^%s-end")
-    elseif vim.tbl_contains({ "sh", "bash", "zsh" }, filetype) then
-        show_end_line = show_end_line or end_content:match("^%s-[}%])]")
-        show_end_line = show_end_line or end_content:match("^%s-fi")
-        show_end_line = show_end_line or end_content:match("^%s-esac")
-    elseif filetype == "vim" then
-        show_end_line = show_end_line or end_content:match("^%s-[}%])]")
-        show_end_line = show_end_line or end_content:match("^%s-endif")
-        show_end_line = show_end_line or end_content:match("^%s-endfunction")
-    elseif filetype == "markdown" then
-        show_end_line = show_end_line or end_content:match("^%s-```")
-    elseif filetype == "ron" then
-        show_end_line = show_end_line or end_content:match("^%s-%)")
-    elseif filetype == "javascript" or filetype == "typescript" then
-        show_end_line = true
-    end
-    -- fold-marker
-    if start_content:match("{{{") and end_content:match("}}}%s-$") then
-        show_end_line = true
-    end
+    local show_end_line = contain_end_line(filetype, start_content, end_content)
     if show_end_line then
         table.insert(newVirtText, { " ••• ", "UfoFoldedFg" })
         usedWidth = usedWidth + 5
@@ -189,14 +259,16 @@ local function handler(virtText, lnum, endLnum, width, truncate, ctx)
 end
 
 local ftMap = {
+    css = "treesitter",
     go = "treesitter",
+    html = "treesitter",
+    javascript = "treesitter",
     json = "treesitter",
     jsonc = "treesitter",
     lua = "treesitter",
     swift = "treesitter",
-    vim = "treesitter",
-    javascript = "treesitter",
     typescript = "treesitter",
+    vim = "treesitter",
 }
 
 require("ufo").setup({
@@ -204,8 +276,17 @@ require("ufo").setup({
     close_fold_kinds_for_ft = {
         default = { "imports", "comment" },
         html = {},
+        http = {},
         xml = {},
         gitcommit = {},
+    },
+    preview = {
+        mappings = {
+            scrollU = "<c-u>",
+            scrollD = "<c-d>",
+            jumpTop = "[",
+            jumpBot = "]",
+        },
     },
     provider_selector = function(bufnr, filetype, buftype)
         if filetype == "asciidoc" then
