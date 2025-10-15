@@ -44,7 +44,7 @@ require("dashboard").setup({
                 icon_hl = "@function",
                 desc = "Session",
                 group = "@property",
-                action = "SessionSearch",
+                action = "AutoSession search",
                 key = "s",
             },
             {

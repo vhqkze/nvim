@@ -65,18 +65,8 @@ vim.keymap.set("i", "<c-e>", "<cmd>normal <c-e><cr>", default_opts)
 vim.keymap.set("i", "<c-y>", "<cmd>normal <c-y><cr>", default_opts)
 vim.keymap.set("i", "<c-z>", "<cmd>normal zz<cr>", default_opts)
 
--- window move
-vim.keymap.set("n", "<c-h>", "<c-w>h", default_opts)
-vim.keymap.set("n", "<c-j>", "<c-w>j", default_opts)
-vim.keymap.set("n", "<c-k>", "<c-w>k", default_opts)
-vim.keymap.set("n", "<c-l>", "<c-w>l", default_opts)
-
 vim.keymap.set("t", "<esc>", "<c-\\><c-n>", default_opts)
 vim.keymap.set("t", "<c-q>", "<c-\\><c-n>", default_opts)
-vim.keymap.set("t", "<c-h>", "<c-\\><c-n><c-w>h", default_opts)
-vim.keymap.set("t", "<c-j>", "<c-\\><c-n><c-w>j", default_opts)
-vim.keymap.set("t", "<c-k>", "<c-\\><c-n><c-w>k", default_opts)
-vim.keymap.set("t", "<c-l>", "<c-\\><c-n><c-w>l", default_opts)
 
 vim.keymap.set("s", "<backspace>", "b<backspace>", default_opts)
 vim.keymap.set("s", "<del>", "<c-o>c", default_opts)

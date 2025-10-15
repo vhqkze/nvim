@@ -271,21 +271,6 @@ require("lazy").setup({
         end,
     },
     {
-        "vhyrro/luarocks.nvim",
-        -- priority = 1000, -- We'd like this plugin to load first out of the rest
-        event = "VeryLazy",
-        config = true, -- This automatically runs `require("luarocks-nvim").setup()`
-    },
-    {
-        "nvim-neorg/neorg",
-        ft = { "norg" },
-        dependencies = { "vhyrro/luarocks.nvim" },
-        version = "*",
-        config = function()
-            require("plugins.neorg")
-        end,
-    },
-    {
         "preservim/vim-markdown",
         ft = "markdown",
         config = function()
@@ -530,6 +515,12 @@ require("lazy").setup({
         event = "VeryLazy",
         config = true,
     },
+    {
+        "vhqkze/seamless.nvim",
+        build = "./extras/kitty/kitty.sh",
+        dev = false,
+        config = true,
+    }
 }, lazy_config)
 
 vim.cmd.colorscheme("tokyonight-storm")
