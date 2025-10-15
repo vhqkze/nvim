@@ -24,21 +24,6 @@ local default_opts = { silent = true }
 vim.keymap.set({ "n", "x" }, "j", "gj", default_opts)
 vim.keymap.set({ "n", "x" }, "k", "gk", default_opts)
 
-vim.keymap.set("i", "<up>", function()
-    if vim.o.wrap then
-        vim.cmd("normal gk")
-    else
-        vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<up>", true, true, true), "n")
-    end
-end, { silent = true, expr = false })
-vim.keymap.set("i", "<down>", function()
-    if vim.o.wrap then
-        vim.cmd("normal gj")
-    else
-        vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<down>", true, true, true), "n")
-    end
-end, { silent = true, expr = false })
-
 -- Reselect visual block after indent/outdent
 vim.keymap.set("x", "<", "<gv", default_opts)
 vim.keymap.set("x", ">", ">gv", default_opts)

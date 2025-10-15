@@ -112,6 +112,8 @@ cmp.setup({
                 cmp.select_next_item()
             elseif luasnip.choice_active() then
                 luasnip.change_choice(1)
+            elseif vim.o.wrap then
+                vim.cmd("normal! gj")
             else
                 fallback()
             end
@@ -151,6 +153,8 @@ cmp.setup({
                 cmp.select_prev_item()
             elseif luasnip.choice_active() then
                 luasnip.change_choice(-1)
+            elseif vim.o.wrap then
+                vim.cmd("normal! gk")
             else
                 fallback()
             end
