@@ -22,6 +22,7 @@ vim.lsp.enable({
     "ltex_plus",
     "lua_ls",
     "marksman",
+    "nixd",
     "pylsp",
     "rubocop",
     "sourcekit",
@@ -68,7 +69,7 @@ vim.api.nvim_create_user_command("LspInfo", ":checkhealth vim.lsp", {})
 
 vim.diagnostic.config({
     virtual_text = {
-        prefix = " ",
+        prefix = "•",
     },
     signs = {
         priority = 80,

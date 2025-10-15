@@ -47,9 +47,6 @@ if vim.fn.executable("node") == 1 then
     table.insert(ensure_installed, "eslint-lsp") -- typescript
     table.insert(ensure_installed, "typescript-language-server") -- typescript
 end
-if vim.fn.executable("nix") == 1 then
-    table.insert(ensure_installed, "rnix-lsp") -- nix
-end
 if vim.fn.executable("nginx") == 1 then
     table.insert(ensure_installed, "nginx-language-server") -- nginx
 end

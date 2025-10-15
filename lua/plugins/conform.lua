@@ -14,7 +14,7 @@ conform.setup({
         jsonc = { "prettier" },
         lua = { "stylua" },
         markdown = { "markdownlint" },
-        nix = { "nixpkgs_fmt" },
+        nix = { "nixfmt" },
         python = { "yapf" },
         scss = { "prettier" },
         sh = { "shfmt" },
@@ -34,6 +34,10 @@ conform.setup({
 })
 
 vim.keymap.set({ "n", "x" }, "<leader>fm", function()
+    if vim.bo.modifiable == false then
+        vim.notify("Cannot format, 'modifiable' is off", vim.log.levels.ERROR, { title = "Conform" })
+        return
+    end
     conform.format({ async = true }, function(err)
         if not err then
             local mode = vim.api.nvim_get_mode().mode
