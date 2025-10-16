@@ -40,7 +40,11 @@ require("lint").linters_by_ft = {
 vim.api.nvim_create_autocmd({ "BufRead", "TextChanged", "BufWritePost", "InsertLeave" }, {
     callback = function()
         if vim.bo.modifiable then
-            require("lint").try_lint()
+            lint.try_lint()
+        end
+        local filepath = vim.api.nvim_buf_get_name(0)
+        if filepath:match(".*/%.github/workflows/.*%.ya?ml") then
+            lint.try_lint("actionlint")
         end
     end,
 })

@@ -31,6 +31,7 @@ local ensure_installed = {
     "prettier",
     "shfmt", -- shell formatter
     "shellcheck", -- bash linter
+    "actionlint", -- github action linter
 }
 if vim.fn.executable("python3") == 1 then
     table.insert(ensure_installed, "python-lsp-server")
