@@ -14,6 +14,19 @@ local function close_windows()
     end
 end
 
+local function rename_terminal_tab(session_name)
+    local display_name = session_name:match("([^/]+)$")
+    if vim.env.TMUX then
+        vim.system({ "tmux", "rename-window", display_name })
+    elseif vim.env.SSH_CONNECTION then
+        return
+    elseif vim.env.KITTY_WINDOW_ID then
+        vim.system({ "kitten", "@", "set-tab-title", display_name })
+    elseif vim.env.WEZTERM_EXECUTABLE then
+        vim.system({ "wezterm", "cli", "set-tab-title", display_name })
+    end
+end
+
 require("auto-session").setup({
     log_level = vim.log.levels.ERROR,
     auto_save = true,
@@ -34,6 +47,7 @@ require("auto-session").setup({
     args_allow_files_auto_save = false,
     cwd_change_handling = false,
     pre_save_cmds = { close_windows },
+    post_restore_cmds = { rename_terminal_tab },
     session_lens = {
         path_display = { "absolute" },
         load_on_setup = false,
