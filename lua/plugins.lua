@@ -424,6 +424,13 @@ require("lazy").setup({
         end,
     },
     {
+        "folke/trouble.nvim",
+        event = "VeryLazy",
+        config = function()
+            require("plugins.trouble")
+        end,
+    },
+    {
         "stevearc/dressing.nvim",
         event = "VeryLazy",
         config = function()
@@ -520,7 +527,7 @@ require("lazy").setup({
         build = "./extras/kitty/kitty.sh",
         dev = false,
         config = true,
-    }
+    },
 }, lazy_config)
 
 vim.cmd.colorscheme("tokyonight-storm")
