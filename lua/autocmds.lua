@@ -1,3 +1,27 @@
+local theme_last_changed = os.time()
+local function set_color_scheme()
+    local colorscheme = "tokyonight-storm"
+    if vim.o.background == "light" then
+        colorscheme = "rose-pine-dawn"
+    end
+    vim.schedule_wrap(function()
+        if vim.g.colors_name ~= colorscheme then
+            vim.cmd.colorscheme(colorscheme)
+        end
+    end)()
+end
+
+vim.api.nvim_create_autocmd("OptionSet", {
+    pattern = "background",
+    callback = function()
+        if vim.v.option_new == vim.v.option_old or os.time() - theme_last_changed < 1 then
+            return
+        end
+        theme_last_changed = os.time()
+        set_color_scheme()
+    end,
+})
+
 -- highlight on yank
 local yankGrp = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {

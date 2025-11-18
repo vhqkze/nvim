@@ -1,3 +1,5 @@
+local utils = require("utils")
+
 vim.g.mapleader = ","
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.uv.fs_stat(lazypath) then
@@ -39,7 +41,7 @@ local lazy_config = {
         patterns = { "vhqkze" },
     },
     install = {
-        colorscheme = { "catppuccin-macchiato", "tokyonight-storm", "onedark", "habamax" },
+        colorscheme = { "tokyonight-storm", "habamax" },
     },
     performance = {
         rtp = {
@@ -52,28 +54,20 @@ local lazy_config = {
 
 require("lazy").setup({
     {
-        "joshdick/onedark.vim",
-        cond = false,
-        priority = 1000,
-        config = function()
-            vim.g.onedark_terminal_italics = 1
-        end,
-    },
-    {
-        "mhartington/oceanic-next",
-        cond = false,
-        priority = 1000,
-        config = function()
-            vim.g.oceanic_next_terminal_bold = 1
-            vim.g.oceanic_next_terminal_italic = 1
-        end,
-    },
-    {
         "folke/tokyonight.nvim",
         cond = true,
         priority = 1000,
         config = function()
             require("plugins.tokyonight")
+        end,
+    },
+    {
+        "rose-pine/neovim",
+        name = "rose-pine",
+        cond = true,
+        priority = 1000,
+        config = function()
+            require("plugins.rose_pine")
         end,
     },
     {
@@ -84,11 +78,6 @@ require("lazy").setup({
         config = function()
             require("plugins.catppuccin")
         end,
-    },
-    {
-        "nordtheme/vim",
-        cond = false,
-        priority = 1000,
     },
     {
         "nvim-tree/nvim-web-devicons",
@@ -530,5 +519,8 @@ require("lazy").setup({
     },
 }, lazy_config)
 
-vim.cmd.colorscheme("tokyonight-storm")
--- vim.cmd.colorscheme("catppuccin-macchiato")
+local colorscheme = "tokyonight-storm"
+if utils.get_term_theme() == "light" then
+    colorscheme = "rose-pine-dawn"
+end
+vim.cmd.colorscheme(colorscheme)

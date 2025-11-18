@@ -1,5 +1,6 @@
 require("tokyonight").setup({
     style = "storm",
+    light_style = "storm",
     styles = {
         functions = { italic = true },
     },
@@ -15,6 +16,7 @@ require("tokyonight").setup({
         hl.CursorLineFold = { bg = CursorLineBg }
         hl.CursorLineSign = { bg = CursorLineBg }
         hl.BufferLineIndicatorSelected = { fg = hl.TabLineSel.fg, bg = hl.Normal.bg }
+        hl.DiagnosticUnnecessary = {}
 
         -- cmp
         hl.CmpItemAbbrDeprecated = { fg = c.comment, bg = c.none, strikethrough = true }
@@ -57,3 +59,5 @@ require("tokyonight").setup({
         hl.CmpItemKindCodeium = { fg = c.dark3, bg = c.cyan }
     end,
 })
+
+require("tokyonight").styles = { dark = "storm", light = "storm" }

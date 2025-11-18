@@ -1,4 +1,5 @@
 local navbuddy = require("nvim-navbuddy")
+local utils = require("utils")
 
 navbuddy.setup({
     node_markers = {
@@ -69,16 +70,22 @@ local hls = {
     TypeParameter = "@parameter",
 }
 
-local utils = require("utils")
-
-for t, d in pairs(hls) do
-    local color = utils.get_hl(d, "fg#")
-    if color ~= nil and color ~= "" then
-        vim.cmd("hi Navbuddy" .. t .. " guifg=" .. color)
+local function update_navbuddy_color()
+    for t, d in pairs(hls) do
+        local color = utils.get_hl(d, "fg#")
+        if color ~= nil and color ~= "" then
+            vim.cmd("hi Navbuddy" .. t .. " guifg=" .. color)
+        end
     end
+    vim.cmd("hi NavbuddyCursorLine cterm=bold,reverse gui=bold,reverse")
+
+    local bg_color = utils.get_hl("normal", "bg#")
+    bg_color = bg_color == "" and "NONE" or bg_color
+    vim.cmd("hi NavbuddyNormalFloat guibg=" .. bg_color)
+    vim.cmd("hi NavbuddyFloatBorder guibg=" .. bg_color)
 end
 
-vim.cmd("hi NavbuddyNormalFloat guibg=" .. utils.get_hl("normal", "bg#"))
-vim.cmd("hi NavbuddyFloatBorder guibg=" .. utils.get_hl("normal", "bg#"))
+update_navbuddy_color()
+vim.api.nvim_create_autocmd("ColorScheme", { callback = update_navbuddy_color })
 
 vim.keymap.set("n", "<leader>nb", navbuddy.open, { silent = true, desc = "Navbuddy" })

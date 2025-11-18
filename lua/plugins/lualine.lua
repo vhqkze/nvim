@@ -212,7 +212,6 @@ require("lualine").setup({
                     dos = "", -- e70f
                     mac = "", -- e711
                 },
-                color = { fg = "#77c2d2" },
                 on_click = function()
                     vim.ui.select({ "unix", "dos", "mac" }, {
                         prompt = "Set fileformat",

@@ -49,4 +49,31 @@ function M.system_notify(content, title, sound)
     end
 end
 
+---@return "dark"|"light
+function M.get_term_theme()
+    if vim.env.KITTY_INSTALLATION_DIR then
+        local obj = vim.system({ "kitten", "@", "get-colors" }, { stdout = true, stderr = false }):wait()
+        local hex = obj.stdout:match("\nbackground%s+#(%x%x%x%x%x%x)\n")
+        if hex then
+            local bg_r = tonumber(hex:sub(1, 2), 16)
+            local bg_g = tonumber(hex:sub(3, 4), 16)
+            local bg_b = tonumber(hex:sub(5, 6), 16)
+            local luma = 0.299 * bg_r + 0.587 * bg_g + 0.114 * bg_b
+            return luma < 128 and "dark" or "light"
+        end
+    end
+    if vim.fn.has("mac") == 1 then
+        local obj = vim.system({ "defaults", "read", "-g", "AppleInterfaceStyle" }, { stdout = true, stderr = false }):wait()
+        if obj.code == 0 and obj.stdout == "Dark\n" then
+            return "dark"
+        end
+        return "light"
+    end
+    local hour = tonumber(os.date("%H"))
+    if hour >= 6 and hour < 18 then
+        return "light"
+    end
+    return "dark"
+end
+
 return M
