@@ -91,11 +91,10 @@ vim.diagnostic.config({
 -- Create a custom namespace. This will aggregate signs from all other
 -- namespaces and only show the one with the highest severity on a
 -- given line
-local ns = vim.api.nvim_create_namespace("my_diagnostics_signs")
 local orig_signs_handler = vim.diagnostic.handlers.signs
 
 vim.diagnostic.handlers.signs = {
-    show = function(_, bufnr, _, opts)
+    show = function(namespace, bufnr, _, opts)
         local diagnostics = vim.diagnostic.get(bufnr)
         local line_count = vim.api.nvim_buf_line_count(bufnr)
         local max_severity_per_line = {}
@@ -107,10 +106,12 @@ vim.diagnostic.handlers.signs = {
                 end
             end
         end
-        local filtered_diagnostics = vim.tbl_values(max_severity_per_line)
-        orig_signs_handler.show(ns, bufnr, filtered_diagnostics, opts)
+        local filtered_diagnostics = vim.tbl_filter(function(d)
+            return d.namespace == namespace
+        end, vim.tbl_values(max_severity_per_line))
+        orig_signs_handler.show(namespace, bufnr, filtered_diagnostics, opts)
     end,
-    hide = function(_, bufnr)
-        orig_signs_handler.hide(ns, bufnr)
+    hide = function(namespace, bufnr)
+        orig_signs_handler.hide(namespace, bufnr)
     end,
 }
