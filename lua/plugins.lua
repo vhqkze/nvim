@@ -438,8 +438,8 @@ require("lazy").setup({
         end,
     },
     {
-        "vhqkze/text-radar",
-        cond = IS_ME,
+        "vhqkze/radar.nvim",
+        dev = false,
         event = "VeryLazy",
         config = true,
     },
@@ -515,6 +515,7 @@ require("lazy").setup({
         "vhqkze/seamless.nvim",
         build = "./extras/kitty/kitty.sh",
         dev = false,
+        event = "VeryLazy",
         config = true,
     },
 }, lazy_config)
