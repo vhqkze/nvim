@@ -207,6 +207,7 @@ require("lazy").setup({
                 user_default_options = {
                     AARRGGBB = true,
                 },
+                filetypes = { "css", "html", "conf", "toml", "yaml" },
             })
         end,
     },

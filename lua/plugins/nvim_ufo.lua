@@ -20,7 +20,10 @@ local function getCommentFolds(bufnr)
     end
     for i = 0, line_count - 1 do
         local line = vim.api.nvim_buf_get_lines(bufnr, i, i + 1, false)[1]
-        local is_comment_line = line:match(comment_pattern)
+        local ok, is_comment_line = pcall(string.match, line, comment_pattern)
+        if not ok then
+            is_comment_line = false
+        end
         if not is_in_comment and is_comment_line then
             is_in_comment = true
             comment_start = i
@@ -41,7 +44,7 @@ local function getCommentFolds(bufnr)
 end
 
 local function getFoldsWithCustom(bufnr, providerName)
-    local folds = require("ufo").getFolds(bufnr, providerName)
+    local folds = require("ufo").getFolds(bufnr, providerName) or {}
     if providerName == "lsp" then
         folds = folds:thenCall(function(lsp_folds)
             if lsp_folds == nil then
@@ -269,6 +272,7 @@ local ftMap = {
     swift = "treesitter",
     typescript = "treesitter",
     vim = "treesitter",
+    yaml = "indent",
 }
 
 require("ufo").setup({
@@ -304,10 +308,11 @@ require("ufo").setup({
     fold_virt_text_handler = handler,
 })
 
-vim.keymap.set("n", "zR", require("ufo").openAllFolds)
-vim.keymap.set("n", "zM", require("ufo").closeAllFolds)
-vim.keymap.set("n", "zr", require("ufo").openFoldsExceptKinds)
-vim.keymap.set("n", "zm", require("ufo").closeFoldsWith) -- closeAllFolds == closeFoldsWith(0)
+vim.keymap.set("n", "zR", require("ufo").openAllFolds, { desc = "open all folds" })
+vim.keymap.set("n", "zM", require("ufo").closeAllFolds, { desc = "close all folds" })
+vim.keymap.set("n", "zr", require("ufo").openFoldsExceptKinds, { desc = "open folds except kinds" })
+vim.keymap.set("n", "zm", require("ufo").closeFoldsWith, { desc = "close folds with level" })
+vim.keymap.set("n", "zk", require("ufo").goPreviousStartFold, { desc = "previous fold" })
 vim.keymap.set("n", "K", function()
     local winid = require("ufo").peekFoldedLinesUnderCursor()
     if not winid then

@@ -34,7 +34,7 @@ vim.keymap.set("x", ">", ">gv", default_opts)
 vim.keymap.set("x", "p", '"0P', default_opts)
 
 -- cancel search highlighting with esc
-vim.keymap.set("n", "<ESC>", ":nohlsearch<Bar>:echo<cr>", default_opts)
+vim.keymap.set("n", "<ESC>", "<cmd>nohlsearch<cr>", default_opts)
 
 -- move selected line / block of text in visual mode
 vim.keymap.set("x", "K", ":move '<-2<cr>gv=gv", default_opts)
@@ -72,6 +72,8 @@ end, { silent = true, desc = "Toggle diagnostic" })
 
 vim.keymap.set({ "n" }, "<S-ScrollWheelLeft>", "<ScrollWheelLeft>", default_opts)
 vim.keymap.set({ "n" }, "<S-ScrollWheelRight>", "<ScrollWheelRight>", default_opts)
+vim.keymap.set({ "n" }, "<X1Mouse>", "<c-o>", default_opts)
+vim.keymap.set({ "n" }, "<X2Mouse>", "<c-i>", default_opts)
 
 vim.keymap.set({ "n", "i" }, "<home>", function()
     -- 按home键在行首第一个字符和第一个非空字符之间跳转

@@ -4,6 +4,7 @@ require("toggleterm").setup({
     shade_terminals = false,
     hide_numbers = true,
     open_mapping = vim.env.TMUX == nil and "<c-/>" or "<c-_>",
+    start_in_insert = true,
     insert_mappings = true,
     terminal_mappings = true,
 })
@@ -64,31 +65,15 @@ if vim.fn.executable("lazygit") == 1 then
         cmd = "lazygit",
         hidden = true,
         dir = "git_dir",
-        start_in_insert = false,
         direction = "tab",
         on_create = function(term)
+            vim.cmd.nohlsearch()
             vim.keymap.set({ "t" }, "<esc>", "<esc>", { silent = true, buffer = term.bufnr })
         end,
     })
     vim.keymap.set("n", "<leader>lg", function()
         lazygit:toggle()
     end, { silent = true, desc = "toggle lazygit" })
-end
-
-if vim.fn.executable("gitui") == 1 then
-    local gitui = Terminal:new({
-        cmd = "gitui",
-        hidden = true,
-        dir = "git_dir",
-        start_in_insert = false,
-        direction = "tab",
-        on_create = function(term)
-            vim.keymap.set({ "t" }, "<esc>", "<esc>", { silent = true, buffer = term.bufnr })
-        end,
-    })
-    vim.keymap.set("n", "<leader>gu", function()
-        gitui:toggle()
-    end, { silent = true, desc = "toggle gitui" })
 end
 
 local runner = require("runner")
