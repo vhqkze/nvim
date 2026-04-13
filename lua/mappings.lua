@@ -105,3 +105,6 @@ vim.keymap.set("n", "<c-r>", function()
         vim.cmd("redo")
     end
 end)
+
+vim.keymap.set("x", "+", "an", { remap = true, desc = "Incremental selection (more)" })
+vim.keymap.set("x", "-", "in", { remap = true, desc = "Incremental selection (less)" })

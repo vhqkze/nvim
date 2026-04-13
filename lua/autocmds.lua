@@ -68,6 +68,23 @@ vim.api.nvim_create_autocmd("TermOpen", {
     end,
 })
 
+vim.api.nvim_create_autocmd("FileType", {
+    ---@param ev {buf: number, event: string, file: string, id: number, match: string}
+    callback = function(ev)
+        if vim.api.nvim_buf_line_count(ev.buf) > 50000 then
+            return
+        end
+        local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(ev.buf))
+        if ok and stats and stats.size > 1024 * 1024 * 3 then -- 3MiB
+            return
+        end
+        local lang = vim.treesitter.language.get_lang(ev.match)
+        if vim.treesitter.language.add(lang) then
+            vim.treesitter.start(ev.buf, lang)
+        end
+    end,
+})
+
 -- don't load dashboard if read from stdin
 vim.api.nvim_create_autocmd("StdinReadPre", {
     callback = function()

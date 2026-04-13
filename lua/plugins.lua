@@ -141,19 +141,23 @@ require("lazy").setup({
     },
     {
         "nvim-treesitter/nvim-treesitter",
+        branch = "main",
         event = "VeryLazy",
-        dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
-        build = function()
-            local ts_update = require("nvim-treesitter.install").update({ with_sync = true })
-            ts_update()
-        end,
+        build = ":TSUpdate",
         config = function()
             require("plugins.nvim_treesitter")
         end,
     },
     {
+        "nvim-treesitter/nvim-treesitter-textobjects",
+        branch = "main",
+        event = "VeryLazy",
+        config = function()
+            require("plugins.nvim_treesitter_textobjects")
+        end,
+    },
+    {
         "m-demare/hlargs.nvim",
-        dependencies = { "nvim-treesitter/nvim-treesitter" },
         event = "VeryLazy",
         config = function()
             require("plugins.hlargs")
@@ -474,7 +478,6 @@ require("lazy").setup({
     },
     {
         "danymat/neogen",
-        dependencies = { "nvim-treesitter/nvim-treesitter" },
         event = "VeryLazy",
         config = function()
             require("plugins.neogen")
