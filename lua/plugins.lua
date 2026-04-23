@@ -187,13 +187,6 @@ require("lazy").setup({
         dependencies = { { "nvim-tree/nvim-web-devicons" } },
     },
     {
-        "iamcco/markdown-preview.nvim",
-        ft = { "markdown" },
-        build = function()
-            vim.fn["mkdp#util#install"]()
-        end,
-    },
-    {
         "tigion/nvim-asciidoc-preview",
         ft = { "asciidoc" },
         build = "cd server && npm install",
@@ -262,14 +255,6 @@ require("lazy").setup({
         build = ":UpdateRemotePlugins",
         config = function()
             require("plugins.wilder")
-        end,
-    },
-    {
-        "preservim/vim-markdown",
-        ft = "markdown",
-        config = function()
-            vim.g.vim_markdown_folding_disabled = 1
-            vim.g.vim_markdown_emphasis_multiline = 0
         end,
     },
     {

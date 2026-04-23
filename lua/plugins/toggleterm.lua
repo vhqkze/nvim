@@ -76,6 +76,27 @@ if vim.fn.executable("lazygit") == 1 then
     end, { silent = true, desc = "toggle lazygit" })
 end
 
+vim.api.nvim_create_user_command("MarkdownPreview", function()
+    if vim.fn.executable("glow") ~= 1 then
+        vim.notify("Please install glow first!", vim.log.levels.ERROR, { title = "MarkdownPreview" })
+        return
+    end
+    if vim.bo.filetype ~= "markdown" then
+        vim.notify("It's not markdown file!", vim.log.levels.ERROR, { title = "MarkdownPreview" })
+        return
+    end
+    local glow = Terminal:new({
+        cmd = "glow -t " .. vim.api.nvim_buf_get_name(0),
+        hidden = true,
+        dir = "git_dir",
+        direction = "vertical",
+        on_create = function(term)
+            vim.keymap.set({ "t" }, "<esc>", "<esc>", { silent = true, buffer = term.bufnr })
+        end,
+    })
+    glow:toggle(80)
+end, {})
+
 local runner = require("runner")
 vim.keymap.set("n", "<leader>rr", runner.run_file, { silent = true, desc = "run current file" })
 vim.keymap.set("n", "<leader>rl", runner.run_last_command, { silent = true, desc = "run last command" })
