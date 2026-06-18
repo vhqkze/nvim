@@ -224,6 +224,16 @@ local my_opts = {
             statuscolumn = " %l%@v:lua.FoldClick@%{v:lua.FoldSymbol()}%X",
             number = true,
         },
+        kulala_ui = {
+            statuscolumn = {
+                "%s",
+                "%=",
+                "%l",
+                "%@v:lua.FoldClick@%{v:lua.FoldSymbol()}%X",
+            },
+            signcolumn = "yes:1",
+            number = true,
+        },
         ["*"] = "",
     },
     nowrite = {

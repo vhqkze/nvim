@@ -501,6 +501,13 @@ require("lazy").setup({
         config = true,
     },
     {
+        "mistweaverco/kulala.nvim",
+        ft = { "http", "rest" },
+        config = function()
+            require("plugins.kulala")
+        end,
+    },
+    {
         "vhqkze/seamless.nvim",
         build = "./extras/kitty/kitty.sh",
         dev = false,

@@ -7,6 +7,7 @@ conform.setup({
         go = { "gofmt" },
         graphql = { "prettier" },
         html = { lsp_format = "prefer" },
+        http = { "kulala-fmt" },
         java = { lsp_format = "prefer" },
         javascript = { "prettier" },
         json = { "prettier" },

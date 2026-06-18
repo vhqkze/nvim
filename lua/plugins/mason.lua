@@ -24,6 +24,7 @@ local ensure_installed = {
     "css-lsp",
     "html-lsp",
     "json-lsp",
+    "kulala-fmt", -- http formatter
     "lemminx", -- xml lsp
     "taplo", -- toml lsp
     "vim-language-server",

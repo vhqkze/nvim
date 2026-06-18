@@ -20,4 +20,5 @@ wk.setup({
 wk.add({
     { "<leader>f", group = "file" },
     { "<leader>h", group = "Gitsigns" },
+    { "<leader>k", group = "kulala" },
 })

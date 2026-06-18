@@ -36,6 +36,7 @@ outline.setup({
             default = { exclude = true },
             python = { "Enum", "Variable", "Module", exclude = true },
             lua = { "Constant", "String", "Variable", "Object", "Array", "Package", "Boolean", exclude = true },
+            http = { "Function" },
         },
         -- stylua: ignore
         icons = {
