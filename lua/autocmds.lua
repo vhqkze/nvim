@@ -23,26 +23,23 @@ vim.api.nvim_create_autocmd("OptionSet", {
 })
 
 -- highlight on yank
-local yankGrp = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
-vim.api.nvim_create_autocmd("TextYankPost", {
-    -- command = "silent! lua vim.hl.on_yank({higroup='Search', timeout=800})",
+vim.api.nvim_create_autocmd({ "TextYankPost", "TextPutPost" }, {
     callback = function()
-        vim.hl.on_yank({ higroup = "Search", timeout = 800 })
+        vim.hl.hl_op({ higroup = "Search", timeout = 800 })
     end,
-    group = yankGrp,
 })
 
 -- windows to close with "q"
 vim.api.nvim_create_autocmd("FileType", {
     pattern = { "help", "qf", "lspinfo", "list", "lspsagaoutline", "notify", "toggleterm" },
-    callback = function()
-        vim.keymap.set("n", "q", "<cmd>close<cr>", { silent = true, buffer = true })
+    callback = function(ev)
+        vim.keymap.set("n", "q", "<cmd>close<cr>", { silent = true, buf = ev.buf })
     end,
 })
 vim.api.nvim_create_autocmd("BufEnter", {
     pattern = { "terminal" },
-    callback = function()
-        vim.keymap.set("n", "q", "<cmd>close<cr>", { silent = true, buffer = true })
+    callback = function(ev)
+        vim.keymap.set("n", "q", "<cmd>close<cr>", { silent = true, buf = ev.buf })
     end,
 })
 

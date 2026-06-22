@@ -53,7 +53,7 @@ vim.keymap.set("n", "<m-8>", function()
         on_open = function(term)
             vim.keymap.set({ "n", "t" }, "<m-8>", function()
                 term:close()
-            end, { silent = true, buffer = term.bufnr })
+            end, { silent = true, buf = term.bufnr })
         end,
     })
     console:open()
@@ -68,7 +68,7 @@ if vim.fn.executable("lazygit") == 1 then
         direction = "tab",
         on_create = function(term)
             vim.cmd.nohlsearch()
-            vim.keymap.set({ "t" }, "<esc>", "<esc>", { silent = true, buffer = term.bufnr })
+            vim.keymap.set({ "t" }, "<esc>", "<esc>", { silent = true, buf = term.bufnr })
         end,
     })
     vim.keymap.set("n", "<leader>lg", function()
@@ -91,7 +91,7 @@ vim.api.nvim_create_user_command("MarkdownPreview", function()
         dir = "git_dir",
         direction = "vertical",
         on_create = function(term)
-            vim.keymap.set({ "t" }, "<esc>", "<esc>", { silent = true, buffer = term.bufnr })
+            vim.keymap.set({ "t" }, "<esc>", "<esc>", { silent = true, buf = term.bufnr })
         end,
     })
     glow:toggle(80)

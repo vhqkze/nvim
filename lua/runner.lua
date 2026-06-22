@@ -150,7 +150,7 @@ end
 ---@return cmdOpts
 local function substitute(cmd)
     local default = M.config.default
-    cmd.root_pattern = vim.F.if_nil(cmd.root_pattern, default.root_pattern)
+    cmd.root_pattern = vim.nonnil(cmd.root_pattern, default.root_pattern)
     if cmd.dir == nil or cmd.dir == "" then
         cmd.dir = get_root_dir(cmd.root_pattern)
     end
@@ -179,14 +179,14 @@ end
 ---@return cmdOpts
 local function set_default(cmd)
     local default = M.config.default
-    cmd.open_term = vim.F.if_nil(cmd.open_term, default.open_term)
-    cmd.hidden = vim.F.if_nil(cmd.hidden, default.hidden)
-    cmd.notify = vim.F.if_nil(cmd.notify, default.notify)
-    cmd.root_pattern = vim.F.if_nil(cmd.root_pattern, default.root_pattern)
+    cmd.open_term = vim.nonnil(cmd.open_term, default.open_term)
+    cmd.hidden = vim.nonnil(cmd.hidden, default.hidden)
+    cmd.notify = vim.nonnil(cmd.notify, default.notify)
+    cmd.root_pattern = vim.nonnil(cmd.root_pattern, default.root_pattern)
     if cmd.dir == nil or cmd.dir == "" then
         cmd.dir = get_root_dir(cmd.root_pattern)
     end
-    cmd.focus = vim.F.if_nil(cmd.focus, default.focus)
+    cmd.focus = vim.nonnil(cmd.focus, default.focus)
     if cmd.display_name == nil then
         local display_name = default.display_name
         if type(display_name) == "function" then
@@ -195,10 +195,10 @@ local function set_default(cmd)
             cmd.display_name = display_name
         end
     end
-    cmd.direction = vim.F.if_nil(cmd.direction, default.direction)
-    cmd.env = vim.F.if_nil(cmd.env, default.env)
-    cmd.clear_env = vim.F.if_nil(cmd.clear_env, default.clear_env)
-    cmd.start_in_insert = vim.F.if_nil(cmd.start_in_insert, default.start_in_insert)
+    cmd.direction = vim.nonnil(cmd.direction, default.direction)
+    cmd.env = vim.nonnil(cmd.env, default.env)
+    cmd.clear_env = vim.nonnil(cmd.clear_env, default.clear_env)
+    cmd.start_in_insert = vim.nonnil(cmd.start_in_insert, default.start_in_insert)
     return cmd
 end
 

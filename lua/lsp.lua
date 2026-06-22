@@ -49,19 +49,19 @@ vim.api.nvim_create_autocmd("LspAttach", {
             vim.treesitter.stop(bufnr)
         end
 
-        vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { silent = true, buffer = bufnr, desc = "Go to declaration" })
-        vim.keymap.set("n", "gd", vim.lsp.buf.definition, { silent = true, buffer = bufnr, desc = "Go to definition" })
-        vim.keymap.set("n", "gri", vim.lsp.buf.implementation, { silent = true, buffer = bufnr, desc = "Go to implementation" })
-        vim.keymap.set("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, { silent = true, buffer = bufnr, desc = "Add workspace folder" })
-        vim.keymap.set("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, { silent = true, buffer = bufnr, desc = "Remove workspace folder" })
+        vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { silent = true, buf = bufnr, desc = "Go to declaration" })
+        vim.keymap.set("n", "gd", vim.lsp.buf.definition, { silent = true, buf = bufnr, desc = "Go to definition" })
+        vim.keymap.set("n", "gri", vim.lsp.buf.implementation, { silent = true, buf = bufnr, desc = "Go to implementation" })
+        vim.keymap.set("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, { silent = true, buf = bufnr, desc = "Add workspace folder" })
+        vim.keymap.set("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, { silent = true, buf = bufnr, desc = "Remove workspace folder" })
         vim.keymap.set("n", "<leader>wl", function()
             print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-        end, { silent = true, buffer = bufnr, desc = "Show workspace folders" })
-        vim.keymap.set("n", "<space>D", vim.lsp.buf.type_definition, { silent = true, buffer = bufnr, desc = "type definition" })
-        vim.keymap.set("n", "grr", vim.lsp.buf.references, { silent = true, buffer = bufnr, desc = "Show references" })
+        end, { silent = true, buf = bufnr, desc = "Show workspace folders" })
+        vim.keymap.set("n", "<space>D", vim.lsp.buf.type_definition, { silent = true, buf = bufnr, desc = "type definition" })
+        vim.keymap.set("n", "grr", vim.lsp.buf.references, { silent = true, buf = bufnr, desc = "Show references" })
         vim.keymap.set("n", "<space>f", function()
             vim.lsp.buf.format({ async = true })
-        end, { silent = true, buffer = bufnr, desc = "lsp formatting" })
+        end, { silent = true, buf = bufnr, desc = "lsp formatting" })
     end,
 })
 

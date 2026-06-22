@@ -94,6 +94,6 @@ return {
         vim.keymap.set("n", "<leader>o", function()
             local params = { command = "basedpyright.organizeimports", arguments = { vim.uri_from_bufnr(bufnr) } }
             client:request("workspace/executeCommand", params, nil, 0)
-        end, { silent = true, buffer = bufnr, desc = "Organize imports" })
+        end, { silent = true, buf = bufnr, desc = "Organize imports" })
     end,
 }
