@@ -1,4 +1,19 @@
+local api = require("nvim-tree.api")
+
+local function on_attach(bufnr)
+    api.map.on_attach.default(bufnr)
+
+    vim.keymap.set("n", "<space>", function()
+        if vim.fn.executable("qlmanage") == 0 then
+            return
+        end
+        local file = api.tree.get_node_under_cursor().absolute_path
+        vim.system({ "qlmanage", "-p", file })
+    end, { buf = bufnr, nowait = true, desc = "quick look" })
+end
+
 require("nvim-tree").setup({
+    on_attach = on_attach,
     view = {
         width = {
             min = 25,
